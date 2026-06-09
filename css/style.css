@@ -380,6 +380,12 @@ footer {
     color: rgba(255, 255, 255, 0.6);
 }
 
+.social-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
 /* Responsive */
 @media (max-width: 992px) {
     .container {
