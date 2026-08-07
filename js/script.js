@@ -1,163 +1,332 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Smooth scroll for internal links
-    const links = document.querySelectorAll('nav a, .hero a, .footer a');
+/* ==========================================================================
+   Matheus Biancardine — Federal MG 2026
+   ========================================================================== */
 
-    links.forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-            if (href.startsWith('#')) {
-                e.preventDefault();
-                const targetId = href.substring(1);
-                const targetElement = document.getElementById(targetId);
+(function () {
+  "use strict";
 
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80, // Adjust for fixed header
-                        behavior: 'smooth'
-                    });
-                }
-            }
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ----------------------------------------------------------------------
+     Header: fundo ao rolar, menu mobile e link ativo
+     ---------------------------------------------------------------------- */
+
+  function initHeader() {
+    var bar = document.querySelector(".header-bar");
+    var toggle = document.querySelector(".nav__toggle");
+    var menu = document.getElementById("mobile-menu");
+    if (!bar) return;
+
+    var onScroll = function () {
+      bar.dataset.scrolled = window.scrollY > 24 ? "true" : "false";
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    if (toggle && menu) {
+      var setOpen = function (open) {
+        menu.dataset.open = open ? "true" : "false";
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+      };
+
+      toggle.addEventListener("click", function () {
+        setOpen(menu.dataset.open !== "true");
+      });
+
+      menu.addEventListener("click", function (event) {
+        if (event.target.closest("a")) setOpen(false);
+      });
+    }
+
+    // Link ativo conforme a seção visível
+    var links = Array.prototype.slice.call(
+      document.querySelectorAll(".nav__links a")
+    );
+    var sections = links
+      .map(function (link) {
+        return document.querySelector(link.getAttribute("href"));
+      })
+      .filter(Boolean);
+
+    if (!sections.length || !("IntersectionObserver" in window)) return;
+
+    var spy = new IntersectionObserver(
+      function (entries) {
+        var visible = entries
+          .filter(function (entry) {
+            return entry.isIntersecting;
+          })
+          .sort(function (a, b) {
+            return b.intersectionRatio - a.intersectionRatio;
+          })[0];
+        if (!visible) return;
+
+        links.forEach(function (link) {
+          var isCurrent = link.getAttribute("href") === "#" + visible.target.id;
+          if (isCurrent) {
+            link.setAttribute("aria-current", "true");
+          } else {
+            link.removeAttribute("aria-current");
+          }
         });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5] }
+    );
+
+    sections.forEach(function (section) {
+      spy.observe(section);
     });
+  }
 
-    // Gallery Lightbox (Simple Implementation)
-    const galleryItems = document.querySelectorAll('.gallery-item');
+  /* ----------------------------------------------------------------------
+     Animação de entrada por scroll
+     ---------------------------------------------------------------------- */
 
-    galleryItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const imgSrc = item.querySelector('img').src;
-            const imgAlt = item.querySelector('img').alt;
+  function initReveal() {
+    var items = document.querySelectorAll(".reveal");
+    if (!items.length) return;
 
-            const lightbox = document.createElement('div');
-            lightbox.id = 'lightbox';
-            lightbox.style.position = 'fixed';
-            lightbox.style.top = '0';
-            lightbox.style.left = '0';
-            lightbox.style.width = '100%';
-            lightbox.style.height = '100%';
-            lightbox.style.backgroundColor = 'rgba(0,0,0,0.9)';
-            lightbox.style.display = 'flex';
-            lightbox.style.justifyContent = 'center';
-            lightbox.style.alignItems = 'center';
-            lightbox.style.zIndex = '9999';
-            lightbox.style.cursor = 'zoom-out';
-            lightbox.setAttribute('role', 'dialog');
-            lightbox.setAttribute('aria-label', 'Visualização da imagem');
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      items.forEach(function (item) {
+        item.dataset.visible = "true";
+      });
+      return;
+    }
 
-            const img = document.createElement('img');
-            img.src = imgSrc;
-            img.alt = imgAlt;
-            img.style.maxWidth = '90%';
-            img.style.maxHeight = '90%';
-            img.style.boxShadow = '0 0 50px rgba(0,0,0,0.5)';
-            img.style.borderRadius = '5px';
-
-            lightbox.appendChild(img);
-            document.body.appendChild(lightbox);
-
-            lightbox.addEventListener('click', () => {
-                document.body.removeChild(lightbox);
-            });
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.dataset.visible = "true";
+          observer.unobserve(entry.target);
         });
-    });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+    );
 
-    // Header interaction on scroll
-    const header = document.querySelector('header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.style.padding = '10px 0';
-            header.style.boxShadow = '0 5px 20px rgba(0,0,0,0.2)';
-        } else {
-            header.style.padding = '15px 0';
-            header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
-        }
+    items.forEach(function (item) {
+      item.dataset.visible = "false";
+      observer.observe(item);
     });
-});
+  }
 
-// ==========================================================================
-// Lógica do Carrossel de Credenciais
-// ==========================================================================
-document.addEventListener('DOMContentLoaded', function () {
-    const carousel = document.getElementById('mnCarousel');
+  /* ----------------------------------------------------------------------
+     Carrossel de credenciais
+     ---------------------------------------------------------------------- */
+
+  function initCarousel() {
+    var carousel = document.getElementById("credenciais");
     if (!carousel) return;
 
-    const track = carousel.querySelector('.mn-carousel-track');
-    const slides = Array.from(track.children);
-    const nextBtn = carousel.querySelector('.mn-next');
-    const prevBtn = carousel.querySelector('.mn-prev');
-    const dotsNav = carousel.querySelector('.mn-carousel-dots');
+    var slides = Array.prototype.slice.call(
+      carousel.querySelectorAll(".carousel__slide")
+    );
+    var dotsNav = carousel.querySelector(".carousel__dots");
+    var prev = carousel.querySelector(".carousel__arrow--prev");
+    var next = carousel.querySelector(".carousel__arrow--next");
+    if (slides.length < 2) return;
 
-    let current = 0;
-    let autoPlayInterval;
-    let isHovering = false;
+    var current = 0;
+    var timer = null;
 
-    // Cria dots
-    slides.forEach((_, i) => {
-        const dot = document.createElement('button');
-        dot.setAttribute('aria-label', 'Ir para credencial ' + (i + 1));
-        if (i === 0) dot.classList.add('active');
-        dotsNav.appendChild(dot);
+    var dots = slides.map(function (slide, index) {
+      var title = slide.querySelector("h3");
+      var dot = document.createElement("button");
+      dot.type = "button";
+      dot.setAttribute("role", "tab");
+      dot.setAttribute(
+        "aria-label",
+        "Ir para " + (title ? title.textContent.trim() : "credencial " + (index + 1))
+      );
+      dot.setAttribute("aria-selected", index === 0 ? "true" : "false");
+      dot.addEventListener("click", function () {
+        goTo(index);
+        restart();
+      });
+      dotsNav.appendChild(dot);
+      return dot;
     });
 
-    const dots = Array.from(dotsNav.children);
-
-    const moveTo = (idx) => {
-        if (idx < 0) idx = slides.length - 1;
-        if (idx >= slides.length) idx = 0;
-        track.style.transform = `translateX(-${idx * 100}%)`;
-        dots[current].classList.remove('active');
-        dots[idx].classList.add('active');
-        current = idx;
-    };
-
-    const nextSlide = () => moveTo(current + 1);
-    const prevSlide = () => moveTo(current - 1);
-
-    const startAutoPlay = () => {
-        if (!isHovering) {
-            autoPlayInterval = setInterval(nextSlide, 6500);
+    function goTo(index) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach(function (slide, i) {
+        if (i === current) {
+          slide.dataset.active = "true";
+        } else {
+          delete slide.dataset.active;
         }
-    };
+      });
+      dots.forEach(function (dot, i) {
+        dot.setAttribute("aria-selected", i === current ? "true" : "false");
+      });
+    }
 
-    const stopAutoPlay = () => clearInterval(autoPlayInterval);
+    function restart() {
+      window.clearInterval(timer);
+      timer = window.setInterval(function () {
+        goTo(current + 1);
+      }, 6500);
+    }
 
-    nextBtn.addEventListener('click', () => { stopAutoPlay(); nextSlide(); startAutoPlay(); });
-    prevBtn.addEventListener('click', () => { stopAutoPlay(); prevSlide(); startAutoPlay(); });
-    dots.forEach((dot, i) => dot.addEventListener('click', () => { stopAutoPlay(); moveTo(i); startAutoPlay(); }));
-
-    // Pausa no hover desktop
-    carousel.addEventListener('mouseenter', () => { isHovering = true; stopAutoPlay(); });
-    carousel.addEventListener('mouseleave', () => { isHovering = false; startAutoPlay(); });
-
-    // Swipe mobile
-    let startX = 0;
-    let isDragging = false;
-
-    track.addEventListener('touchstart', e => {
-        startX = e.touches[0].clientX;
-        isDragging = true;
-        stopAutoPlay();
-    }, { passive: true });
-
-    track.addEventListener('touchmove', e => {
-        if (!isDragging) return;
-        const currentX = e.touches[0].clientX;
-        const diff = startX - currentX;
-        // Previne rolagem de tela apenas quando for um movimento horizontal
-        if (Math.abs(diff) > 10) {
-            e.preventDefault();
-        }
-    }, { passive: false });
-
-    track.addEventListener('touchend', e => {
-        if (!isDragging) return;
-        isDragging = false;
-        const endX = e.changedTouches[0].clientX;
-        const diff = startX - endX;
-        if (diff > 50) nextSlide();
-        if (diff < -50) prevSlide();
-        startAutoPlay();
+    prev.addEventListener("click", function () {
+      goTo(current - 1);
+      restart();
+    });
+    next.addEventListener("click", function () {
+      goTo(current + 1);
+      restart();
     });
 
-    startAutoPlay();
-});
+    carousel.addEventListener("mouseenter", function () {
+      window.clearInterval(timer);
+    });
+    carousel.addEventListener("mouseleave", restart);
+
+    // Swipe no mobile
+    var startX = null;
+    carousel.addEventListener(
+      "touchstart",
+      function (event) {
+        startX = event.touches[0].clientX;
+        window.clearInterval(timer);
+      },
+      { passive: true }
+    );
+    carousel.addEventListener("touchend", function (event) {
+      if (startX === null) return;
+      var delta = startX - event.changedTouches[0].clientX;
+      if (delta > 50) goTo(current + 1);
+      if (delta < -50) goTo(current - 1);
+      startX = null;
+      restart();
+    });
+
+    restart();
+  }
+
+  /* ----------------------------------------------------------------------
+     Propostas: ver mais / esconder
+     ---------------------------------------------------------------------- */
+
+  function initProposals() {
+    var cards = [];
+
+    document.querySelectorAll(".proposal__toggle").forEach(function (button, index) {
+      var card = button.closest(".proposal");
+      var label = button.querySelector("span");
+      var text = card.querySelector(".proposal__text");
+
+      text.id = text.id || "proposta-texto-" + (index + 1);
+      button.setAttribute("aria-controls", text.id);
+      cards.push({ card: card, text: text });
+
+      button.addEventListener("click", function () {
+        var expanded = card.dataset.expanded === "true";
+
+        // A altura é medida do conteúdo real: o texto nunca fica cortado.
+        text.style.maxHeight = expanded ? "" : text.scrollHeight + "px";
+        card.dataset.expanded = expanded ? "false" : "true";
+        button.setAttribute("aria-expanded", expanded ? "false" : "true");
+        label.textContent = expanded ? "Ver mais" : "Esconder";
+      });
+    });
+
+    // Ao mudar a largura da tela o texto reflui e a altura precisa ser refeita.
+    var resizeTimer;
+    window.addEventListener("resize", function () {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        cards.forEach(function (entry) {
+          if (entry.card.dataset.expanded !== "true") return;
+          entry.text.style.maxHeight = "none";
+          entry.text.style.maxHeight = entry.text.scrollHeight + "px";
+        });
+      }, 150);
+    });
+  }
+
+  /* ----------------------------------------------------------------------
+     Galeria: lightbox
+     ---------------------------------------------------------------------- */
+
+  function initLightbox() {
+    var items = document.querySelectorAll(".gallery-item");
+    if (!items.length) return;
+
+    var open = function (src, alt, caption) {
+      var box = document.createElement("div");
+      box.className = "lightbox";
+      box.setAttribute("role", "dialog");
+      box.setAttribute("aria-modal", "true");
+      box.setAttribute("aria-label", "Visualização da imagem");
+
+      box.innerHTML =
+        '<button type="button" class="lightbox__close" aria-label="Fechar">' +
+        '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"' +
+        ' fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
+        '<path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>';
+
+      var img = document.createElement("img");
+      img.src = src;
+      img.alt = alt;
+      box.appendChild(img);
+
+      if (caption) {
+        var text = document.createElement("p");
+        text.textContent = caption;
+        box.appendChild(text);
+      }
+
+      var close = function () {
+        box.remove();
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", onKey);
+      };
+      var onKey = function (event) {
+        if (event.key === "Escape") close();
+      };
+
+      box.addEventListener("click", close);
+      document.addEventListener("keydown", onKey);
+      document.body.style.overflow = "hidden";
+      document.body.appendChild(box);
+      box.querySelector(".lightbox__close").focus();
+    };
+
+    items.forEach(function (item) {
+      item.addEventListener("click", function () {
+        var img = item.querySelector("img");
+        var figure = item.closest("figure");
+        var caption = figure && figure.querySelector("figcaption");
+        open(img.src, img.alt, caption ? caption.textContent.trim() : "");
+      });
+    });
+  }
+
+  /* ----------------------------------------------------------------------
+     Vídeos: apenas um tocando por vez
+     ---------------------------------------------------------------------- */
+
+  function initVideos() {
+    var videos = Array.prototype.slice.call(
+      document.querySelectorAll(".video-card video")
+    );
+    videos.forEach(function (video) {
+      video.addEventListener("play", function () {
+        videos.forEach(function (other) {
+          if (other !== video) other.pause();
+        });
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    initHeader();
+    initReveal();
+    initCarousel();
+    initProposals();
+    initLightbox();
+    initVideos();
+  });
+})();

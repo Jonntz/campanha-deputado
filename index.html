@@ -3,27 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Matheus BIANCARDINE | Federal MG 2026</title>
+    <meta name="theme-color" content="#12303c" />
+    <title>Matheus Biancardine — Tolerância Zero por Minas</title>
     <meta
       name="description"
-      content="Site oficial da campanha de Matheus BIANCARDINE para Deputado Federal por Minas Gerais. Conheça nossas propostas por renovação, liberdade e segurança."
+      content="Pré-candidato a Deputado Federal por Minas Gerais. Fim da saidinha, leis mais rígidas e cadeia para quem recruta jovens para o tráfico."
     />
     <meta
       name="keywords"
-      content="Matheus BIANCARDINE, Deputado Federal, Minas Gerais, Política, Renovação, MG 2026"
+      content="Matheus Biancardine, Deputado Federal, Minas Gerais, Segurança Pública, Tolerância Zero, MG 2026"
     />
+    <meta name="author" content="Matheus Biancardine" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Matheus BIANCARDINE | Federal MG 2026" />
+    <meta
+      property="og:title"
+      content="Matheus Biancardine — Tolerância Zero por Minas"
+    />
     <meta
       property="og:description"
-      content="Juntos por uma Minas Gerais mais próspera e segura."
+      content="Pré-candidato a Deputado Federal por Minas Gerais. Enquanto a velha política passa pano pro crime, eu defendo Minas."
     />
-    <meta property="og:image" content="assets/images/hero.jpg" />
+    <meta property="og:image" content="assets/images/hero-matheus.jpg" />
     <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap"
+    />
     <link rel="stylesheet" href="css/style.css" />
 
     <!-- Google tag (gtag.js) -->
@@ -37,7 +49,6 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-JXEBVJVR0M");
     </script>
 
@@ -49,71 +60,33 @@
         "name": "Matheus Biancardine",
         "jobTitle": "Pré-candidato a Deputado Federal",
         "url": "https://www.matheusbiancardine.com.br/",
-        "image": "https://www.matheusbiancardine.com.br/assets/images/main.jpeg",
-        "description": "Matheus Biancardine é um pré-candidato a Deputado Federal por Minas Gerais, com foco em liberdade, segurança, oportunidades para a juventude e menos impostos.",
+        "image": "https://www.matheusbiancardine.com.br/assets/images/hero-matheus.jpg",
+        "description": "Matheus Biancardine é pré-candidato a Deputado Federal por Minas Gerais, com foco em segurança pública, oportunidades para a juventude e menos impostos.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressRegion": "MG",
+          "addressCountry": "BR"
+        },
         "sameAs": ["https://instagram.com/matheus.biancardine"]
       }
     </script>
   </head>
 
   <body>
-    <!-- Skip Navigation Link for Accessibility -->
     <a href="#main-content" class="sr-only">Pular para o conteúdo principal</a>
 
-    <header role="banner">
-      <div class="container">
-        <div class="logo">
-          <span>MATHEUS <span class="highlight">BIANCARDINE</span></span>
-        </div>
-        <nav role="navigation" aria-label="Menu Principal">
-          <ul>
-            <li><a href="#hero">Início</a></li>
-            <li><a href="#bio">Biografia</a></li>
-            <li><a href="#propostas">Propostas</a></li>
-            <li><a href="#galeria">Galeria</a></li>
-            <li><a href="#contato">Contato</a></li>
-          </ul>
-        </nav>
-        <a href="#contato" class="btn btn-primary" style="text-align: center"
-          >Faça parte do projeto</a
-        >
-      </div>
-    </header>
-
-    <main id="main-content">
-      <div class="donation-ribbon">
-        <span>Considere fazer uma doação!</span>
-        <a
-          href="https://queroapoiar.com.br/matheusbiancardine"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Doar</a
-        >
-      </div>
-      <!-- <section id="hero" class="main-banner">
-        <img
-          src="assets/images/pc.jpeg"
-          alt="Lançamento Matheus Biancardine"
-          class="banner-img desktop-img"
-        />
-
-        <!-- Imagem Mobile (Oculta no PC via CSS) -->
-        <img
-          src="assets/images/mobile.jpeg"
-          alt="Lançamento Matheus Biancardine"
-          class="banner-img mobile-img"
-        />
-
-        <!-- Container do Botão Posicionado Absolutamente
-        <div class="banner-button-wrapper">
-          <div class="container banner-button-container">
-            <a
-              href="https://campanhas.matheusbiancardine.com.br/"
-              class="btn-banner"
+    <header class="site-header" role="banner">
+      <div class="header-bar" data-scrolled="false">
+        <nav class="nav" aria-label="Navegação principal">
+          <div class="nav__side">
+            <button
+              type="button"
+              class="nav__toggle"
+              aria-label="Abrir menu"
+              aria-expanded="false"
+              aria-controls="mobile-menu"
             >
-              Confirmar presença
               <svg
-                class="arrow-icon"
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
                 height="20"
@@ -122,387 +95,1114 @@
                 stroke="currentColor"
                 stroke-width="2"
                 stroke-linecap="round"
-                stroke-linejoin="round"
+                aria-hidden="true"
               >
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
+                <path d="M4 5h16" />
+                <path d="M4 12h16" />
+                <path d="M4 19h16" />
               </svg>
-            </a>
-          </div>
-        </div>
-      </section> -->
-
-      <section
-        class="credentials-carousel-section"
-        style="
-          background-color: var(--color-navy);
-          padding-top: 40px;
-          padding-bottom: 20px;
-        "
-      >
-        <div class="mn-carousel-wrapper">
-          <div class="mn-carousel" id="mnCarousel">
-            <div class="mn-carousel-track">
-              <!-- SLIDE 1 -->
-              <div class="mn-carousel-slide">
-                <img
-                  src="assets/images/simoes.jpeg"
-                  alt="Matheus Biancardine"
-                />
-                <h3>Assessor do Vice-Governador Mateus Simões</h3>
-                <p>
-                  Atuação na Vice-Governadoria de Minas Gerais. Articulação com
-                  prefeituras e Assembleia Legislativa.
-                </p>
-              </div>
-
-              <!-- SLIDE 2 -->
-              <div class="mn-carousel-slide">
-                <img
-                  src="assets/images/gallery_2.jpg"
-                  alt="Matheus Biancardine"
-                />
-                <h3>Fundador da Juventude do Partido Novo</h3>
-                <p>
-                  Criou e liderou o movimento que formou a nova geração liberal
-                  de Minas Gerais.
-                </p>
-              </div>
-
-              <!-- SLIDE 3 -->
-              <div class="mn-carousel-slide">
-                <img
-                  src="assets/images/gallery_3.jpg"
-                  alt="Matheus Biancardine"
-                />
-                <h3>Diretor de Políticas para Juventude</h3>
-                <p>
-                  Na gestão Romeu Zema. Responsável por programas que impactam
-                  4,2 milhões de jovens mineiros.
-                </p>
-              </div>
-
-              <!-- SLIDE 4 -->
-              <div class="mn-carousel-slide">
-                <img
-                  src="assets/images/gallery_4.jpg"
-                  alt="Matheus Biancardine"
-                />
-                <h3>Medalha Juscelino Kubitschek</h3>
-                <p>
-                  Maior honraria do Estado de Minas Gerais. Reconhecimento por
-                  serviços prestados a MG.
-                </p>
-              </div>
-            </div>
-
-            <button
-              class="mn-carousel-arrow mn-prev"
-              aria-label="Credencial anterior"
-            >
-              ‹
             </button>
-            <button
-              class="mn-carousel-arrow mn-next"
-              aria-label="Próxima credencial"
+            <ul class="nav__links">
+              <li><a href="#inicio" aria-current="true">Início</a></li>
+              <li><a href="#bio">Biografia</a></li>
+              <li><a href="#propostas">Propostas</a></li>
+              <li><a href="#galeria">Galeria</a></li>
+              <li><a href="#contato">Contato</a></li>
+            </ul>
+          </div>
+
+          <a href="#inicio" class="brand">Minas <span>é o mundo</span></a>
+
+          <div class="nav__side nav__side--end">
+            <a
+              href="https://queroapoiar.com.br/matheusbiancardine"
+              target="_blank"
+              rel="noreferrer noopener"
+              class="btn btn--primary btn--sm pulse-cta nav__cta"
+              >Faça parte do projeto</a
             >
-              ›
-            </button>
+          </div>
+        </nav>
 
-            <div class="mn-carousel-controls">
-              <div class="mn-carousel-dots"></div>
+        <div class="mobile-menu" id="mobile-menu" data-open="false">
+          <ul>
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#bio">Biografia</a></li>
+            <li><a href="#propostas">Propostas</a></li>
+            <li><a href="#galeria">Galeria</a></li>
+            <li><a href="#contato">Contato</a></li>
+            <li>
+              <a
+                href="https://queroapoiar.com.br/matheusbiancardine"
+                target="_blank"
+                rel="noreferrer noopener"
+                >Faça parte do projeto</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ribbon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path
+            d="M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762"
+          />
+        </svg>
+        <span>Considere fazer uma doação!</span>
+        <a
+          href="https://queroapoiar.com.br/matheusbiancardine"
+          target="_blank"
+          rel="noreferrer noopener"
+          >Doar</a
+        >
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- ================= HERO ================= -->
+      <section id="inicio" class="hero">
+        <div class="glow hero__glow" aria-hidden="true"></div>
+        <div class="wrap">
+          <div class="hero__grid">
+            <div class="reveal">
+              <p class="hero__badge">Minas Gerais · 2026</p>
+              <h1>
+                Tolerância zero<br />por <span class="text-gradient">Minas.</span>
+              </h1>
+              <p class="hero__subtitle">
+                Pré-candidato a Deputado Federal por Minas Gerais
+              </p>
+              <p class="hero__text">
+                Enquanto a velha política passa pano pro crime, eu defendo o fim
+                da saidinha, leis mais rígidas e cadeia para quem recruta jovens
+                para o tráfico. Minas sempre foi terra de gente trabalhadora e de
+                bem. Vai continuar sendo.
+              </p>
+              <div class="hero__actions">
+                <a href="#contato" class="btn btn--primary pulse-cta">
+                  Apoio essa luta
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+                    />
+                  </svg>
+                </a>
+                <a href="#propostas" class="btn btn--ghost">
+                  Minhas propostas
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 5v14" />
+                    <path d="m19 12-7 7-7-7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <div class="hero__portrait">
+              <div class="hero__portrait-glow" aria-hidden="true"></div>
+              <div class="hero__frame">
+                <picture>
+                  <source
+                    srcset="assets/images/hero-matheus.webp"
+                    type="image/webp"
+                  />
+                  <img
+                    src="assets/images/hero-matheus.jpg"
+                    alt="Matheus Biancardine, pré-candidato a Deputado Federal por Minas Gerais"
+                    width="1600"
+                    height="1075"
+                    fetchpriority="high"
+                  />
+                </picture>
+
+                <!-- Cortina: bandeira do Brasil (esquerda) -->
+                <div class="curtain curtain--left" aria-hidden="true">
+                  <svg viewBox="0 0 720 504" preserveAspectRatio="none">
+                    <rect width="720" height="504" fill="#009c3b" />
+                    <path d="M360 42 682 252 360 462 38 252Z" fill="#ffdf00" />
+                    <circle cx="360" cy="252" r="94" fill="#002776" />
+                    <path
+                      d="M266 232c70-18 142-6 188 30-2 10-5 19-9 28-44-38-116-51-186-32 2-9 4-18 7-26Z"
+                      fill="#fff"
+                    />
+                  </svg>
+                </div>
+
+                <!-- Cortina: bandeira de Minas Gerais (direita) -->
+                <div class="curtain curtain--right" aria-hidden="true">
+                  <svg viewBox="0 0 720 504" preserveAspectRatio="none">
+                    <rect width="720" height="504" fill="#fff" />
+                    <path d="M360 96 566 424H154Z" fill="#c8102e" />
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Hero Section -->
-      <section id="hero" class="hero">
-        <div class="container">
-          <div class="hero-content">
-            <h1>JOVEM A SERVIÇO DE MINAS.</h1>
-            <p class="subtitle">Matheus Biancardine Pré Candidato a Deputado</p>
-            <p>
-              Por uma Minas Gerais com mais liberdade, segurança e oportunidades
-              para todos.
-            </p>
-            <div style="margin-top: 30px; display: flex; gap: 15px">
-              <a href="#propostas" class="btn btn-primary">Minhas Propostas</a>
-              <a href="#bio" class="btn btn-secondary">Quem sou eu</a>
-            </div>
-          </div>
-          <div class="hero-image">
-            <img
-              src="assets/images/main.jpeg"
-              alt="Matheus Biancardine sorridente, pré candidato a Deputado Federal"
-            />
-          </div>
-        </div>
-      </section>
-
-      <!-- Biography Section -->
-      <section id="bio" class="bio">
-        <div class="container">
-          <div class="bio-image">
-            <img
-              src="assets/images/bio.jpg"
-              alt="Matheus Biancardine em ambiente de trabalho"
-            />
-          </div>
-          <div class="bio-text">
-            <div class="section-title" style="text-align: left">
-              <h2>Quem é Matheus Biancardine?</h2>
-            </div>
-            <p>
-              <strong>Matheus Biancardine</strong> encontrou em Minas Gerais sua
-              casa e seu propósito. Mudou-se para o estado com a família em
-              busca de segurança e oportunidades, e desde então construiu uma
-              relação de amor incondicional com Minas, sua gente, sua história,
-              seus valores e sua juventude.
-            </p>
-            <br />
-            <p>
-              Católico, estudante de Direito e de Ciências Políticas, iniciou
-              sua trajetória pública na juventude, fundando a Juventude do
-              Partido NOVO e atuando como presidente estadual e nacional do
-              movimento. Também presidiu o Conselho Estadual da Juventude de
-              Minas Gerais, foi conselheiro estadual, delegado nacional de
-              juventude e Diretor Estadual de Políticas para as Juventudes no
-              Governo de Minas, pela Sedese.
-            </p>
-            <br />
-            <p>
-              Atualmente, atua como assessor do Governo de Minas, levando sua
-              experiência na gestão pública, na articulação política e na defesa
-              da juventude para uma missão maior: representar uma nova geração
-              na política.
-            </p>
-            <br />
-            <p>
-              Em 2026, seu objetivo é chegar à Câmara dos Deputados como uma voz
-              jovem, liberal e corajosa a serviço de Minas Gerais, defendendo
-              liberdade, segurança, menos impostos, oportunidades para a
-              juventude e uma política feita com propósito, responsabilidade e
-              coragem.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Proposals Section -->
-      <section id="propostas" class="propostas">
-        <div class="container">
-          <div class="section-title">
-            <h2>Nossas Propostas</h2>
-            <p>Foco no que Minas precisa para crescer.</p>
-          </div>
-          <div class="proposals-grid" role="list">
-            <div class="proposal-card" role="listitem">
-              <h3>Primeiro Emprego</h3>
-              <p>
-                Atualizar a Lei da Aprendizagem, reduzindo a burocracia para as
-                empresas e criando o "Jovem Aprendiz 2.0" para conectar educação
-                técnica e mercado de trabalho.
-              </p>
-            </div>
-            <div class="proposal-card" role="listitem">
-              <h3>Jovem do Campo, Futuro de Minas</h3>
-              <p>
-                Apoio ao crédito, internet rural e sucessão familiar para os
-                jovens produtores agrícolas mineiros, garantindo o futuro do
-                nosso agronegócio.
-              </p>
-            </div>
-            <div class="proposal-card" role="listitem">
-              <h3>Segurança para as Famílias</h3>
-              <p>
-                Leis mais rígidas contra o crime, proteção da família e combate
-                ao recrutamento de jovens por facções criminosas.
-              </p>
-            </div>
-            <div class="proposal-card" role="listitem">
-              <h3>Mandato Econômico e Transparente</h3>
-              <p>
-                Redução drástica de gastos de gabinete e prestação de contas
-                contínua de todas as emendas e ações parlamentares.
-              </p>
-            </div>
-            <div class="proposal-card" role="listitem">
-              <h3>Brasil Sem Corrupção</h3>
-              <p>
-                Fortalecimento das leis de transparência, compliance em
-                contratos públicos e punição efetiva para desvios de dinheiro
-                público.
-              </p>
-            </div>
-            <div class="proposal-card" role="listitem">
-              <h3>Menos Imposto, Mais Oportunidade</h3>
-              <p>
-                Lutar pela simplificação tributária e desoneração para quem quer
-                empreender e gerar empregos em Minas Gerais.
-              </p>
-            </div>
-            <div class="proposal-card" role="listitem">
-              <h3>Renovação Política de Verdade</h3>
-              <p>
-                Mandato aberto, formação de novas lideranças e redução de
-                privilégios políticos no Congresso Nacional.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Gallery Section -->
-      <section id="galeria" class="gallery">
-        <div class="container">
-          <div class="section-title">
-            <h2>Galeria de Fotos</h2>
-          </div>
-          <div
-            class="gallery-grid"
-            aria-label="Galeria de fotos do pré candidato"
-          >
-            <div class="gallery-item">
-              <img
-                src="assets/images/gallery_1.jpg"
-                alt="Matheus em Brasília"
-              />
-            </div>
-            <div class="gallery-item">
-              <img
-                src="assets/images/gallery_2.jpg"
-                alt="Matheus com apoiadores"
-              />
-            </div>
-            <div class="gallery-item">
-              <img
-                src="assets/images/gallery_3.jpg"
-                alt="Matheus no Edifício JK em BH"
-              />
-            </div>
-            <div class="gallery-item">
-              <img
-                src="assets/images/gallery_4.jpg"
-                alt="Matheus em conversa com a comunidade"
-              />
-            </div>
-            <div class="gallery-item">
-              <img
-                src="assets/images/gallery_5.jpg"
-                alt="Matheus em evento político"
-              />
-            </div>
-            <div class="gallery-item">
-              <img
-                src="assets/images/gallery_6.jpg"
-                alt="Matheus BIANCARDINE"
-              />
-            </div>
-            <div class="gallery-item">
-              <img
-                src="assets/images/gallery_7.jpg"
-                alt="Matheus BIANCARDINE"
-              />
-            </div>
-            <div class="gallery-item">
-              <img
-                src="assets/images/gallery_8.jpg"
-                alt="Matheus BIANCARDINE"
-              />
-            </div>
-            <div class="gallery-item">
-              <img
-                src="assets/images/gallery_9.jpg"
-                alt="Matheus BIANCARDINE"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact Section -->
+      <!-- ================= CARROSSEL DE CREDENCIAIS ================= -->
       <section
-        id="contato"
-        class="contact"
-        style="background-color: var(--color-light-gray)"
+        class="credentials section--ink"
+        aria-label="Trajetória e credenciais"
       >
-        <div class="container">
-          <div class="section-title">
-            <h2>Fale Conosco</h2>
+        <div class="wrap">
+          <div class="reveal">
+            <div
+              class="carousel surface-card"
+              id="credenciais"
+              aria-roledescription="carrossel"
+            >
+              <button
+                type="button"
+                class="carousel__arrow carousel__arrow--prev"
+                aria-label="Credencial anterior"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="carousel__arrow carousel__arrow--next"
+                aria-label="Próxima credencial"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+
+              <div class="carousel__slides">
+                <div class="carousel__slide" data-active="true">
+                  <img
+                    src="assets/images/simoes.jpeg"
+                    alt="Matheus Biancardine ao lado do governador Mateus Simões"
+                    style="object-position: 50% 30%"
+                    loading="lazy"
+                  />
+                  <h3>Assessor do Governador Mateus Simões</h3>
+                  <p>
+                    Atuação no Governo de Minas Gerais. Articulação com
+                    prefeituras e Assembleia Legislativa.
+                  </p>
+                </div>
+
+                <div class="carousel__slide">
+                  <img
+                    src="assets/images/cred-partido-novo.jpeg"
+                    alt="Matheus Biancardine discursando em evento do Partido NOVO"
+                    style="object-position: 58% 22%"
+                    loading="lazy"
+                  />
+                  <h3>Fundador da Juventude do Partido Novo</h3>
+                  <p>
+                    Criou e liderou o movimento que formou a nova geração liberal
+                    de Minas Gerais.
+                  </p>
+                </div>
+
+                <div class="carousel__slide">
+                  <img
+                    src="assets/images/cred-diretor-juventude.jpeg"
+                    alt="Matheus Biancardine ao lado do governador Romeu Zema"
+                    style="object-position: 45% 20%"
+                    loading="lazy"
+                  />
+                  <h3>Diretor de Políticas para Juventude</h3>
+                  <p>
+                    Na gestão Romeu Zema. Responsável por programas que impactam
+                    4,2 milhões de jovens mineiros.
+                  </p>
+                </div>
+
+                <div class="carousel__slide">
+                  <img
+                    src="assets/images/cred-medalha-jk.jpeg"
+                    alt="Matheus Biancardine na cerimônia da Medalha Juscelino Kubitschek"
+                    style="object-position: 28% 32%"
+                    loading="lazy"
+                  />
+                  <h3>Medalha Juscelino Kubitschek</h3>
+                  <p>
+                    Maior honraria do Estado de Minas Gerais. Reconhecimento por
+                    serviços prestados a MG.
+                  </p>
+                </div>
+              </div>
+
+              <div class="carousel__dots" role="tablist" aria-label="Credenciais"></div>
+            </div>
           </div>
-          <div style="max-width: 600px; margin: 0 auto; text-align: center">
-            <p>
+        </div>
+      </section>
+
+      <!-- ================= BIOGRAFIA ================= -->
+      <section id="bio" class="section">
+        <div class="wrap">
+          <div class="bio__grid">
+            <div class="reveal">
+              <div class="bio__figure">
+                <img
+                  src="assets/images/quem-matheus.jpeg"
+                  alt="Matheus Biancardine discursando ao microfone"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            <div class="reveal" style="transition-delay: 100ms">
+              <p class="eyebrow">Biografia</p>
+              <h2 class="section-title">
+                Quem é <span class="text-gradient">Matheus Biancardine?</span>
+              </h2>
+              <div class="bio__body">
+                <p>
+                  <strong>Matheus Biancardine</strong> encontrou em Minas Gerais
+                  sua casa e seu propósito. Mudou-se para o estado com a família
+                  em busca de segurança e oportunidades, e desde então construiu
+                  uma relação de amor incondicional com Minas, sua gente, sua
+                  história, seus valores e sua juventude.
+                </p>
+                <p>
+                  Católico, estudante de Direito e de Ciências Políticas, iniciou
+                  sua trajetória pública na juventude, fundando a Juventude do
+                  Partido NOVO e atuando como presidente estadual e nacional do
+                  movimento. Também presidiu o Conselho Estadual da Juventude de
+                  Minas Gerais, foi conselheiro estadual, delegado nacional de
+                  juventude e Diretor Estadual de Políticas para as Juventudes no
+                  Governo de Minas, pela Sedese.
+                </p>
+                <p>
+                  Atualmente, atua como assessor do Governo de Minas, levando sua
+                  experiência na gestão pública, na articulação política e na
+                  defesa da juventude para uma missão maior: representar uma nova
+                  geração na política.
+                </p>
+                <p>
+                  Em 2026, seu objetivo é chegar à Câmara dos Deputados como uma
+                  voz jovem, liberal e corajosa a serviço de Minas Gerais,
+                  defendendo segurança, liberdade, menos impostos, oportunidades
+                  para a juventude e uma política feita com propósito,
+                  responsabilidade e coragem.
+                </p>
+              </div>
+
+              <dl class="bio__stats">
+                <div class="surface-card">
+                  <dt>4,2 mi</dt>
+                  <dd>jovens mineiros impactados</dd>
+                </div>
+                <div class="surface-card">
+                  <dt>1º</dt>
+                  <dd>presidente da Juventude NOVO</dd>
+                </div>
+                <div class="surface-card">
+                  <dt>JK</dt>
+                  <dd>Medalha Juscelino Kubitschek</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROPOSTAS ================= -->
+      <section id="propostas" class="section section--ink">
+        <div class="wrap">
+          <div class="reveal" style="max-width: 42rem">
+            <p class="eyebrow">Propostas</p>
+            <h2 class="section-title">
+              Nossas <span class="text-gradient">Propostas</span>
+            </h2>
+            <p class="section-lead">Foco no que Minas precisa para crescer.</p>
+          </div>
+
+          <div class="proposals">
+            <!-- 1 -->
+            <article class="proposal surface-card reveal" data-expanded="false">
+              <span class="proposal__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                  <rect width="20" height="14" x="2" y="6" rx="2" />
+                </svg>
+              </span>
+              <span class="proposal__tag">Juventude</span>
+              <h3>Rota Nacional do Primeiro Trabalho</h3>
+              <div class="proposal__text">
+                <p>
+                  A proposta consiste em criar uma rota nacional conectando
+                  escolas públicas, institutos federais, Sistema S, empresas e
+                  serviços locais de juventude. Uma plataforma única faria o
+                  diagnóstico de habilidades, ofereceria cursos curtos e
+                  gratuitos, reuniria vagas de aprendizagem, estágio e primeiro
+                  emprego e emitiria um portfólio digital de competências.
+                  Empresas participantes receberiam apoio para formar tutores e
+                  incentivos vinculados à permanência do jovem por pelo menos 12
+                  meses. A prioridade seria atender quem está fora da escola e do
+                  trabalho, com metas públicas de inserção, formação e
+                  continuidade dos estudos.
+                </p>
+                <span class="proposal__source">Fonte: Planalto</span>
+              </div>
+              <button type="button" class="proposal__toggle" aria-expanded="false">
+                <span>Ver mais</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </article>
+
+            <!-- 2 -->
+            <article class="proposal surface-card reveal" data-expanded="false">
+              <span class="proposal__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"
+                  />
+                  <path d="M22 10v6" />
+                  <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+                </svg>
+              </span>
+              <span class="proposal__tag">Educação</span>
+              <h3>Ensino Médio com Futuro</h3>
+              <div class="proposal__text">
+                <p>
+                  A proposta consiste em ampliar a formação técnica integrada ao
+                  ensino médio sem reduzir o aprendizado de português,
+                  matemática, ciências e humanidades. Cada rede escolheria cursos
+                  ligados à economia regional, em parceria com institutos
+                  federais, Sistema S, universidades e empresas, utilizando
+                  laboratórios já existentes. A formação incluiria educação
+                  financeira, competências digitais, inteligência artificial,
+                  comunicação e orientação profissional. Os recursos federais
+                  seriam vinculados a metas de aprendizagem, redução do abandono,
+                  formação dos professores, conectividade adequada e divulgação
+                  transparente dos resultados de cada escola.
+                </p>
+                <span class="proposal__source"
+                  >Fonte: Serviços e Informações do Brasil</span
+                >
+              </div>
+              <button type="button" class="proposal__toggle" aria-expanded="false">
+                <span>Ver mais</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </article>
+
+            <!-- 3 -->
+            <article class="proposal surface-card reveal" data-expanded="false">
+              <span class="proposal__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"
+                  />
+                  <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+                  <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+                  <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+                  <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+                </svg>
+              </span>
+              <span class="proposal__tag">Cultura</span>
+              <h3>Rede de Economia Criativa</h3>
+              <div class="proposal__text">
+                <p>
+                  A proposta consiste em criar polos regionais de economia
+                  criativa em bibliotecas, centros culturais, escolas técnicas e
+                  outros equipamentos públicos já existentes. Os espaços
+                  ofereceriam formação em gestão, direitos autorais, produção
+                  digital, vendas, exportação e acesso a crédito para música,
+                  audiovisual, design, games, artesanato, moda e atividades
+                  culturais. Um balcão único ajudaria na formalização e
+                  conectaria profissionais a empresas, plataformas, editais e
+                  compras públicas. O apoio teria seleção transparente e metas de
+                  faturamento, formalização e geração de trabalho, evitando
+                  dependência permanente de subsídios.
+                </p>
+                <span class="proposal__source"
+                  >Fonte: Serviços e Informações do Brasil</span
+                >
+              </div>
+              <button type="button" class="proposal__toggle" aria-expanded="false">
+                <span>Ver mais</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </article>
+
+            <!-- 4 -->
+            <article class="proposal surface-card reveal" data-expanded="false">
+              <span class="proposal__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3"
+                  />
+                  <path d="M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4" />
+                  <path d="M5 21h14" />
+                </svg>
+              </span>
+              <span class="proposal__tag">Jovem do Campo</span>
+              <h3>Sucessão Rural 4.0</h3>
+              <div class="proposal__text">
+                <p>
+                  A proposta consiste em transformar a Política Nacional de
+                  Juventude e Sucessão Rural em atendimento simples e acessível.
+                  Em um único canal, o jovem poderia obter o Cadastro da
+                  Agricultura Familiar, assistência técnica, capacitação,
+                  orientação para o Pronaf Jovem e apoio para elaborar seu plano
+                  produtivo. O programa apoiaria conectividade, irrigação
+                  eficiente, mecanização leve, energia renovável e tecnologias de
+                  gestão, priorizando atividades que agreguem valor à produção.
+                  Também incluiria orientação para sucessão familiar,
+                  cooperativismo e acesso a mercados, com acompanhamento técnico
+                  por três anos e indicadores de renda e permanência no campo.
+                </p>
+                <span class="proposal__source">Fonte: Planalto</span>
+              </div>
+              <button type="button" class="proposal__toggle" aria-expanded="false">
+                <span>Ver mais</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </article>
+
+            <!-- 5 -->
+            <article class="proposal surface-card reveal" data-expanded="false">
+              <span class="proposal__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+                  />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+              </span>
+              <span class="proposal__tag">Segurança</span>
+              <h3>Estratégia Nacional contra Facções</h3>
+              <div class="proposal__text">
+                <p>
+                  A proposta consiste em fortalecer a aplicação da Lei
+                  Antifacção por meio de uma estratégia permanente de asfixia
+                  financeira e desarticulação das lideranças criminosas. Polícia
+                  Federal, polícias estaduais, Receita, Coaf, Ministério Público
+                  e sistema prisional atuariam em forças-tarefa com metas e
+                  compartilhamento seguro de dados. A medida incluiria
+                  rastreamento e administração profissional de bens apreendidos,
+                  combate a empresas de fachada e controle das comunicações
+                  criminosas nos presídios. Penas e agravantes alcançariam
+                  especialmente líderes, financiadores, recrutadores de menores e
+                  agentes públicos envolvidos, preservando controle judicial e
+                  direito de defesa.
+                </p>
+                <span class="proposal__source">Fonte: Senado Federal</span>
+              </div>
+              <button type="button" class="proposal__toggle" aria-expanded="false">
+                <span>Ver mais</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </article>
+
+            <!-- 6 -->
+            <article class="proposal surface-card reveal" data-expanded="false">
+              <span class="proposal__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7" />
+                  <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+                  <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4" />
+                  <path d="M2 7h20" />
+                  <path
+                    d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"
+                  />
+                </svg>
+              </span>
+              <span class="proposal__tag">Empreendedorismo</span>
+              <h3>Empresa Pequena, Caminho Livre</h3>
+              <div class="proposal__text">
+                <p>
+                  A proposta consiste em estabelecer um padrão nacional de
+                  simplificação para micro e pequenas empresas. Atividades de
+                  baixo risco teriam licenciamento automático, cadastro único e
+                  calendário integrado de obrigações, reduzindo formulários
+                  repetidos entre União, estados e municípios. Nos primeiros 12
+                  meses, erros formais corrigíveis receberiam orientação antes da
+                  aplicação de multa, sem tolerância para fraude, risco
+                  sanitário, dano ambiental ou violação trabalhista. O programa
+                  ampliaria o acesso a compras públicas, capacitação e crédito
+                  com garantia de recebíveis, além de publicar o tempo, o custo e
+                  as etapas exigidas para manter cada negócio.
+                </p>
+                <span class="proposal__source"
+                  >Fonte: Serviços e Informações do Brasil</span
+                >
+              </div>
+              <button type="button" class="proposal__toggle" aria-expanded="false">
+                <span>Ver mais</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </article>
+
+            <!-- 7 -->
+            <article class="proposal surface-card reveal" data-expanded="false">
+              <span class="proposal__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M10 18v-7" />
+                  <path
+                    d="M11.12 2.198a2 2 0 0 1 1.76.006l7.866 3.847c.476.233.31.949-.22.949H3.474c-.53 0-.695-.716-.22-.949z"
+                  />
+                  <path d="M14 18v-7" />
+                  <path d="M18 18v-7" />
+                  <path d="M3 22h18" />
+                  <path d="M6 18v-7" />
+                </svg>
+              </span>
+              <span class="proposal__tag">Projeto Nacional</span>
+              <h3>Plano de Desenvolvimento da Juventude</h3>
+              <div class="proposal__text">
+                <p>
+                  A proposta consiste em instituir um plano nacional de dez anos,
+                  com metas mensuráveis para educação, trabalho, segurança,
+                  cultura, empreendedorismo, saúde e participação social. Em vez
+                  de criar uma nova estrutura, o plano utilizaria o Sistema
+                  Nacional de Juventude para integrar ministérios, estados,
+                  municípios, conselhos e organizações locais. Os repasses
+                  federais seriam vinculados a diagnóstico territorial, metas e
+                  prestação de contas em painel público. Cada jovem teria uma
+                  porta de entrada digital e presencial para oportunidades e
+                  serviços, enquanto avaliações independentes identificariam
+                  iniciativas eficazes e encerrariam programas sem resultado
+                  comprovado.
+                </p>
+                <span class="proposal__source"
+                  >Fonte: Serviços e Informações do Brasil</span
+                >
+              </div>
+              <button type="button" class="proposal__toggle" aria-expanded="false">
+                <span>Ver mais</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= GALERIA ================= -->
+      <section id="galeria" class="section">
+        <div class="wrap">
+          <div class="reveal" style="max-width: 42rem">
+            <p class="eyebrow">Galeria</p>
+            <h2 class="section-title">
+              Galeria de <span class="text-gradient">Fotos</span>
+            </h2>
+            <p class="section-lead">
+              Momentos do lançamento da pré-candidatura e das agendas por Minas.
+            </p>
+          </div>
+
+          <div class="gallery-grid">
+            <figure class="gallery-card surface-card reveal">
+              <button type="button" class="gallery-item" aria-label="Ampliar foto">
+                <img
+                  src="assets/images/evento-01.jpeg"
+                  alt="Matheus Biancardine ao lado de uma liderança do Partido NOVO durante o lançamento da pré-candidatura"
+                  loading="lazy"
+                />
+              </button>
+              <figcaption>Ao lado de lideranças do Partido NOVO no lançamento da
+                  pré-candidatura.</figcaption>
+            </figure>
+
+            <figure class="gallery-card surface-card reveal" style="transition-delay: 80ms">
+              <button type="button" class="gallery-item" aria-label="Ampliar foto">
+                <img
+                  src="assets/images/evento-02.jpeg"
+                  alt="Matheus Biancardine concedendo entrevista com bandeiras da campanha ao fundo"
+                  loading="lazy"
+                />
+              </button>
+              <figcaption>Entrevista à imprensa durante o encontro Juntos por Minas.</figcaption>
+            </figure>
+
+            <figure class="gallery-card surface-card reveal" style="transition-delay: 160ms">
+              <button type="button" class="gallery-item" aria-label="Ampliar foto">
+                <img
+                  src="assets/images/evento-03.jpeg"
+                  alt="Matheus Biancardine conversando com uma repórter na chegada ao evento"
+                  loading="lazy"
+                />
+              </button>
+              <figcaption>Conversa com a imprensa na chegada ao evento de lançamento.</figcaption>
+            </figure>
+
+            <figure class="gallery-card surface-card reveal">
+              <button type="button" class="gallery-item" aria-label="Ampliar foto">
+                <img
+                  src="assets/images/evento-04.jpeg"
+                  alt="Matheus Biancardine assinando o mapa de Minas Gerais em um painel da campanha"
+                  loading="lazy"
+                />
+              </button>
+              <figcaption>Assinatura no mapa de Minas: compromisso com todas as regiões
+                  do estado.</figcaption>
+            </figure>
+
+            <figure class="gallery-card surface-card reveal" style="transition-delay: 80ms">
+              <button type="button" class="gallery-item" aria-label="Ampliar foto">
+                <img
+                  src="assets/images/evento-05.jpeg"
+                  alt="Matheus Biancardine conversando com jovens durante o evento"
+                  loading="lazy"
+                />
+              </button>
+              <figcaption>Ouvindo a juventude mineira e as pautas de quem quer mudar o
+                  estado.</figcaption>
+            </figure>
+
+            <figure class="gallery-card surface-card reveal" style="transition-delay: 160ms">
+              <button type="button" class="gallery-item" aria-label="Ampliar foto">
+                <img
+                  src="assets/images/evento-06.jpeg"
+                  alt="Matheus Biancardine abraçado a um apoiador com camiseta do NOVO"
+                  loading="lazy"
+                />
+              </button>
+              <figcaption>O abraço dos apoiadores e da militância no dia do lançamento.</figcaption>
+            </figure>
+          </div>
+
+          <h3 class="subsection-title reveal">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <polygon points="6 3 20 12 6 21 6 3" />
+            </svg>
+            Vídeos do evento
+          </h3>
+
+          <div class="videos-grid">
+            <figure class="video-card surface-card reveal">
+              <video
+                controls
+                preload="none"
+                playsinline
+                poster="assets/videos/evento-video-1.jpg"
+              >
+                <source src="assets/videos/evento-video-1.mp4" type="video/mp4" />
+                Seu navegador não suporta vídeo em HTML5.
+              </video>
+              <figcaption>
+                Lideranças falam sobre a mobilização por Minas Gerais.
+              </figcaption>
+            </figure>
+
+            <figure
+              class="video-card surface-card reveal"
+              style="transition-delay: 80ms"
+            >
+              <video
+                controls
+                preload="none"
+                playsinline
+                poster="assets/videos/evento-video-2.jpg"
+              >
+                <source src="assets/videos/evento-video-2.mp4" type="video/mp4" />
+                Seu navegador não suporta vídeo em HTML5.
+              </video>
+              <figcaption>
+                Apoiadoras dão seu depoimento durante o encontro.
+              </figcaption>
+            </figure>
+
+            <figure
+              class="video-card surface-card reveal"
+              style="transition-delay: 160ms"
+            >
+              <video
+                controls
+                preload="none"
+                playsinline
+                poster="assets/videos/evento-video-3.jpg"
+              >
+                <source src="assets/videos/evento-video-3.mp4" type="video/mp4" />
+                Seu navegador não suporta vídeo em HTML5.
+              </video>
+              <figcaption>
+                A nova geração que caminha junto com o projeto por Minas.
+              </figcaption>
+            </figure>
+
+            <figure
+              class="video-card surface-card reveal"
+              style="transition-delay: 240ms"
+            >
+              <video
+                controls
+                preload="none"
+                playsinline
+                poster="assets/videos/evento-video-4.jpg"
+              >
+                <source src="assets/videos/evento-video-4.mp4" type="video/mp4" />
+                Seu navegador não suporta vídeo em HTML5.
+              </video>
+              <figcaption>
+                Quem esteve presente conta o que espera da nova política.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CONTATO ================= -->
+      <section id="contato" class="section contact">
+        <div class="glow contact__glow" aria-hidden="true"></div>
+        <div class="wrap">
+          <div class="reveal">
+            <p class="eyebrow">Contato</p>
+            <h2 class="section-title">
+              Fale <span class="text-gradient">Conosco</span>
+            </h2>
+            <p class="contact__lead">
               Sua voz é fundamental para construirmos uma Minas melhor. Entre em
               contato e acompanhe nossas redes sociais.
             </p>
-            <div
-              style="
-                margin: 30px 0;
-                font-size: 1.2rem;
-                font-weight: bold;
-                color: var(--color-navy);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-              "
-            >
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: left;
-                  gap: 10px;
-                  white-space: nowrap;
-                "
+          </div>
+
+          <div class="contact__cards">
+            <div class="reveal">
+              <a
+                href="https://wa.me/5531996965298"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="contact-card surface-card"
               >
-                <img
-                  src="assets/images/whatsapp.png"
-                  alt=""
-                  class="social-icon"
-                />
-                <span>WhatsApp: (31) 98593-1115</span>
-              </div>
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: left;
-                  gap: 10px;
-                  white-space: nowrap;
-                "
-              >
-                <img
-                  src="assets/images/instagram.png"
-                  alt=""
-                  class="social-icon"
-                />
-                <span>Instagram: @matheus.biancardine</span>
-              </div>
+                <span class="contact-card__icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"
+                    />
+                  </svg>
+                </span>
+                <span>
+                  <strong>WhatsApp</strong>
+                  <span>(31) 99696-5298</span>
+                </span>
+              </a>
             </div>
-            <div
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 15px;
-                margin-top: 30px;
-              "
-            >
+
+            <div class="reveal" style="transition-delay: 90ms">
               <a
                 href="https://instagram.com/matheus.biancardine"
-                class="btn btn-secondary"
                 target="_blank"
-                >Seguir no Instagram</a
+                rel="noreferrer noopener"
+                class="contact-card contact-card--amber surface-card"
               >
+                <span class="contact-card__icon">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                  </svg>
+                </span>
+                <span>
+                  <strong>Instagram</strong>
+                  <span>@matheus.biancardine</span>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div class="reveal" style="transition-delay: 140ms">
+            <div class="contact__actions">
               <a
-                href="https://wa.me/5531985931115"
-                class="btn btn-primary"
+                href="https://instagram.com/matheus.biancardine"
                 target="_blank"
+                rel="noreferrer noopener"
+                class="btn btn--ghost"
               >
-                <span style="white-space: nowrap">Conversar no </span>
-                WhatsApp
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                </svg>
+                Seguir no Instagram
+              </a>
+              <a
+                href="https://wa.me/5531996965298"
+                target="_blank"
+                rel="noreferrer noopener"
+                class="btn btn--primary pulse-cta"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"
+                  />
+                </svg>
+                Conversar no WhatsApp
               </a>
             </div>
           </div>
@@ -510,16 +1210,66 @@
       </section>
     </main>
 
-    <footer role="contentinfo">
-      <div class="container">
-        <p>&copy; 2026 Matheus Biancardine. Todos os direitos reservados.</p>
-
-        <!-- Accessibility: Accessibility features notice -->
-        <div style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7">
-          Site acessível para leitores de tela e adaptado para baixa visão.
-        </div>
+    <footer class="site-footer" role="contentinfo">
+      <div class="wrap">
+        <p class="site-footer__brand">Matheus <span>Biancardine</span></p>
+        <p>
+          Tolerância zero por Minas · Pré-candidato a Deputado Federal · Minas
+          Gerais
+        </p>
       </div>
     </footer>
+
+    <div class="floating">
+      <a
+        href="https://instagram.com/matheus.biancardine"
+        target="_blank"
+        rel="noreferrer noopener"
+        aria-label="Instagram"
+        class="is-instagram pulse-cta"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+          <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+        </svg>
+      </a>
+      <a
+        href="https://wa.me/5531996965298"
+        target="_blank"
+        rel="noreferrer noopener"
+        aria-label="WhatsApp"
+        class="is-whatsapp pulse-cta"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path
+            d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719"
+          />
+        </svg>
+      </a>
+    </div>
 
     <script src="js/script.js"></script>
 
