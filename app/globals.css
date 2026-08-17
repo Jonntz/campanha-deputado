@@ -1,0 +1,327 @@
+/* ==========================================================================
+   Matheus Biancardine — Federal MG 2026
+   Design system: tokens, reset e utilitários compartilhados.
+   O estilo de cada componente vive no seu próprio *.module.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  --radius: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
+
+  /* Fallbacks em hex para navegadores sem oklch; sobrescritos logo abaixo. */
+  --ink: #131f2c;
+  --background: #12303c;
+  --foreground: #f7fafc;
+  --surface: #17283a;
+  --surface-2: #1c3a49;
+  --secondary: #1d3d4d;
+  --brand-green: #17c964;
+  --brand-green-soft: #46e089;
+  --brand-amber: #e8a33c;
+  --brand-yellow: #f5cb2c;
+  --primary-foreground: #05271a;
+  --accent-foreground: #2b1e06;
+  --muted-foreground: #c2cdd6;
+  --border: rgba(247, 250, 252, 0.12);
+
+  --ink: oklch(19% 0.035 250);
+  --background: oklch(26% 0.045 220);
+  --foreground: oklch(98% 0.005 240);
+  --surface: oklch(22% 0.04 240);
+  --surface-2: oklch(29% 0.045 226);
+  --secondary: oklch(32% 0.05 224);
+  --brand-green: oklch(72% 0.2 148);
+  --brand-green-soft: oklch(82% 0.17 152);
+  --brand-amber: oklch(78% 0.16 72);
+  --brand-yellow: oklch(88% 0.18 96);
+  --primary-foreground: oklch(18% 0.05 160);
+  --accent-foreground: oklch(20% 0.05 60);
+  --muted-foreground: oklch(82% 0.02 230);
+  --border: oklch(98% 0.005 240 / 0.12);
+
+  --gradient-hero: radial-gradient(
+      1200px 700px at 78% 62%,
+      oklch(45% 0.09 205 / 0.9),
+      transparent 65%
+    ),
+    linear-gradient(170deg, oklch(24% 0.045 226), oklch(30% 0.055 214));
+  --gradient-green: linear-gradient(135deg, var(--brand-green), oklch(66% 0.19 158));
+
+  --shadow-elevated: 0 24px 60px -24px oklch(10% 0.04 240 / 0.85);
+  --shadow-glow: 0 0 0 1px oklch(72% 0.2 148 / 0.35),
+    0 18px 40px -18px oklch(72% 0.2 148 / 0.5);
+
+  /* --font-barlow e --font-barlow-condensed vêm do next/font (app/fonts.ts). */
+  --font-sans: var(--font-barlow), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
+
+  --wrap: 80rem;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset e base
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0 solid var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+/* O next/image sempre emite os atributos width/height. Sem `height: auto`
+   esse height venceria qualquer aspect-ratio declarado no CSS e a imagem
+   sairia com a altura original do arquivo. Quem precisa de altura fixa
+   declara na própria classe e vence por especificidade. */
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+::selection {
+  background: var(--brand-green);
+  color: var(--primary-foreground);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-green);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   3. Layout
+   -------------------------------------------------------------------------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+.section {
+  position: relative;
+  padding-block: 6rem;
+}
+
+.section--ink {
+  background-color: var(--ink);
+}
+
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  background: oklch(72% 0.2 148 / 0.1);
+  filter: blur(64px);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. Componentes base
+   -------------------------------------------------------------------------- */
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--brand-amber);
+}
+
+.section-title {
+  margin-top: 0.75rem;
+  font-size: clamp(2.25rem, 5vw, 3rem);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.section-lead {
+  margin-top: 1rem;
+  color: var(--muted-foreground);
+}
+
+.text-gradient {
+  background: var(--gradient-green);
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.surface-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevated);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.btn--primary {
+  background: var(--brand-green);
+  color: var(--primary-foreground);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+}
+
+.btn--ghost {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.btn--ghost:hover {
+  background: var(--secondary);
+}
+
+.btn--sm {
+  padding: 0.75rem 1.5rem;
+}
+
+.pulse-cta {
+  animation: pulse-cta 1.1s ease-in-out infinite;
+}
+
+@keyframes pulse-cta {
+  0%,
+  100% {
+    filter: brightness(1.18);
+    transform: scale(1.03);
+    box-shadow: 0 0 oklch(72% 0.2 148 / 0.9), 0 0 22px 4px oklch(72% 0.2 148 / 0.65);
+  }
+  45% {
+    filter: brightness(0.9);
+    transform: scale(1);
+    box-shadow: 0 0 0 18px oklch(72% 0.2 148 / 0), 0 0 oklch(72% 0.2 148 / 0);
+  }
+}
+
+/* Animação de entrada por scroll. Ver components/ui/Reveal.tsx. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   5. Responsivo (apenas o que é global; o resto vive em cada módulo)
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 640px) {
+  .section {
+    padding-block: 8rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wrap {
+    padding-inline: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,91 @@
+.contact {
+  overflow: hidden;
+  text-align: center;
+}
+
+.glow {
+  bottom: -10rem;
+  left: 50%;
+  width: 40rem;
+  height: 40rem;
+  transform: translateX(-50%);
+}
+
+.contact :global(.wrap) {
+  position: relative;
+  max-width: 64rem;
+}
+
+.lead {
+  max-width: 42rem;
+  margin: 1rem auto 0;
+  color: var(--muted-foreground);
+}
+
+.cards {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 3rem;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 100%;
+  padding: 1.5rem;
+  text-align: left;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-0.25rem);
+  border-color: oklch(72% 0.2 148 / 0.5);
+}
+
+.cardAmber:hover {
+  border-color: oklch(78% 0.16 72 / 0.5);
+}
+
+.cardIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius);
+  background: oklch(72% 0.2 148 / 0.12);
+  color: var(--brand-green);
+}
+
+.cardAmber .cardIcon {
+  background: oklch(78% 0.16 72 / 0.12);
+  color: var(--brand-amber);
+}
+
+.card strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.card span {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
