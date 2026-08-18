@@ -10,6 +10,13 @@
     "dev": "pnpm --filter site dev",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "db:push": "pnpm --filter @campanha/db db:push",
+    "db:seed": "pnpm --filter @campanha/db db:seed",
+    "db:verify": "pnpm --filter @campanha/db db:verify",
+    "media:generate": "node packages/content/scripts/generate-media.mjs"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.12"
   }
 }

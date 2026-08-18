@@ -1,0 +1,28 @@
+{
+  "name": "@campanha/db",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "db:push": "node --env-file=../../.env.local ../../node_modules/drizzle-kit/bin.cjs push",
+    "db:studio": "node --env-file=../../.env.local ../../node_modules/drizzle-kit/bin.cjs studio",
+    "db:seed": "tsx --env-file=../../.env.local scripts/seed.ts",
+    "db:verify": "tsx --env-file=../../.env.local scripts/verify.ts",
+    "db:drill": "tsx --env-file=../../.env.local scripts/drill-resilience.ts"
+  },
+  "dependencies": {
+    "@campanha/content": "workspace:*",
+    "@libsql/client": "^0.15.0",
+    "drizzle-orm": "^0.44.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "drizzle-kit": "^0.31.0",
+    "typescript": "^5.8.3"
+  }
+}

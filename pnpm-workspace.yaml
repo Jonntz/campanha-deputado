@@ -8,3 +8,4 @@ packages:
 allowBuilds:
   unrs-resolver: true
   sharp: true
+  esbuild: true
