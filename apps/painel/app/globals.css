@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/*
+ * Paleta emprestada do site para o painel não parecer outro produto, mas sem
+ * importar os CSS Modules da campanha: são apps separados, com builds
+ * separados, e o painel não precisa carregar o design do site.
+ */
+@theme {
+  --color-ink: #131f2c;
+  --color-deep: #12303c;
+  --color-brand: #1f9d55;
+  --color-amber: #f0a500;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-deep);
+  color: #e8eef2;
+}

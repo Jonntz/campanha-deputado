@@ -1,0 +1,11 @@
+"use client";
+
+import { adminClient } from "better-auth/client/plugins";
+import { twoFactorClient } from "better-auth/client/plugins";
+import { createAuthClient } from "better-auth/react";
+
+export const authClient = createAuthClient({
+  plugins: [twoFactorClient(), adminClient()],
+});
+
+export const { signIn, signOut, useSession, twoFactor } = authClient;

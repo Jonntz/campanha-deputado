@@ -1,5 +1,6 @@
 import { createClient } from "@libsql/client/web";
 import { drizzle } from "drizzle-orm/libsql";
+import * as authSchema from "./auth-schema";
 import * as schema from "./schema";
 
 /**
@@ -23,5 +24,7 @@ export function createDatabase(config?: { url?: string; authToken?: string }) {
     throw new Error("TURSO_DATABASE_URL não definida");
   }
 
-  return drizzle(createClient({ url, authToken }), { schema });
+  return drizzle(createClient({ url, authToken }), {
+    schema: { ...schema, ...authSchema },
+  });
 }

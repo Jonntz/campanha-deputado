@@ -30,6 +30,11 @@ Requer Node.js 20.9 ou superior e pnpm.
 
 ```
 apps/
+  painel/                  o painel administrativo (subdomínio próprio)
+    app/(painel)/          rotas protegidas: exigem sessão e 2FA ativo
+    app/login/             entrada e desafio do segundo fator
+    app/seguranca/2fa/     cadastro do TOTP, fora do grupo protegido
+    proxy.ts               portão de borda (presença de cookie)
   site/                    o site público
     app/                   layout, página e estilos globais
     components/
@@ -46,6 +51,28 @@ packages/
   db/                      schema Drizzle, cliente Turso e consultas
   icons/                   os 19 SVGs e o registro nome → componente
 ```
+
+## Acesso ao painel
+
+Não existe cadastro público, e não deve passar a existir. O primeiro
+administrador nasce de um script, rodado localmente uma única vez:
+
+```bash
+pnpm --filter painel create-admin
+```
+
+O segundo fator é obrigatório e não tem escape. O plugin do Better Auth só
+desafia quem já cadastrou o TOTP, então quem nunca cadastrou entraria direto —
+quem fecha esse buraco é a guarda em `app/(painel)/layout.tsx`, que redireciona
+para o cadastro. Ela precisa estar no layout, e não no `proxy.ts`, porque só ali
+existe a sessão verificada.
+
+O `proxy.ts` é deliberadamente otimista: checa apenas a presença do cookie, sem
+ir ao banco. Um cookie forjado passa por ele e morre no layout. Tratá-lo como
+autorização seria um erro.
+
+O cookie de sessão sai sem atributo `Domain`, então fica preso ao subdomínio do
+painel e nunca é enviado para o domínio do site.
 
 ## Como o conteúdo chega na página
 

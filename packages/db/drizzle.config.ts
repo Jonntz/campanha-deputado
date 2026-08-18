@@ -5,7 +5,9 @@ import { defineConfig } from "drizzle-kit";
  * por conta própria (Node 20.6+ entende --env-file, usado nos scripts).
  */
 export default defineConfig({
-  schema: "./src/schema.ts",
+  // Dois arquivos: o conteúdo é escrito à mão, as tabelas de autenticação
+  // são geradas por `@better-auth/cli generate` e não devem ser editadas.
+  schema: ["./src/schema.ts", "./src/auth-schema.ts"],
   out: "./drizzle",
   dialect: "turso",
   dbCredentials: {
