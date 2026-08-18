@@ -1,25 +1,47 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
-import { navItems, site } from "@/content/site";
+import type { NavLink } from "@/content";
+import type { SplitTitle } from "@/content/types";
 import { MenuIcon } from "@/components/ui/icons";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import styles from "./SiteHeader.module.css";
 
-const SECTION_IDS = navItems.map((item) => item.href.slice(1));
-const FIRST_SECTION = SECTION_IDS[0] ?? "";
+/**
+ * Recebe só o recorte de que precisa, e não o documento inteiro: este é um
+ * client component, então tudo que entra aqui é serializado no payload RSC.
+ * Passar `SiteContent` completo mandaria os textos das propostas para o
+ * navegador sem necessidade.
+ */
+export type SiteHeaderContent = {
+  navAriaLabel: string;
+  links: readonly NavLink[];
+  brand: SplitTitle;
+  ctaLabel: string;
+  donationUrl: string;
+  openMenuLabel: string;
+  closeMenuLabel: string;
+};
 
 type SiteHeaderProps = {
+  content: SiteHeaderContent;
   /** Faixa de doação: renderizada no servidor e ancorada no header fixo. */
   children?: ReactNode;
 };
 
-export function SiteHeader({ children }: SiteHeaderProps) {
+export function SiteHeader({ content, children }: SiteHeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const sectionIds = useMemo(() => SECTION_IDS, []);
-  const activeId = useScrollSpy(sectionIds, FIRST_SECTION);
+  const { links } = content;
+
+  // As âncoras vêm do registro de seções, nunca de texto editável: é o que
+  // impede o scrollspy de apontar para um id que não existe no DOM.
+  const sectionIds = useMemo(
+    () => links.map((link) => link.href.slice(1)),
+    [links],
+  );
+  const activeId = useScrollSpy(sectionIds, sectionIds[0] ?? "");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -43,12 +65,12 @@ export function SiteHeader({ children }: SiteHeaderProps) {
   return (
     <header className={styles.header}>
       <div className={styles.bar} data-scrolled={scrolled ? "true" : "false"}>
-        <nav className={styles.nav} aria-label="Navegação principal">
+        <nav className={styles.nav} aria-label={content.navAriaLabel}>
           <div className={styles.side}>
             <button
               type="button"
               className={styles.toggle}
-              aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+              aria-label={menuOpen ? content.closeMenuLabel : content.openMenuLabel}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
               onClick={() => setMenuOpen((open) => !open)}
@@ -57,15 +79,15 @@ export function SiteHeader({ children }: SiteHeaderProps) {
             </button>
 
             <ul className={styles.links}>
-              {navItems.map((item) => (
-                <li key={item.href}>
+              {links.map((link) => (
+                <li key={link.href}>
                   <a
-                    href={item.href}
+                    href={link.href}
                     aria-current={
-                      item.href === `#${activeId}` ? "true" : undefined
+                      link.href === `#${activeId}` ? "true" : undefined
                     }
                   >
-                    {item.label}
+                    {link.label}
                   </a>
                 </li>
               ))}
@@ -73,17 +95,17 @@ export function SiteHeader({ children }: SiteHeaderProps) {
           </div>
 
           <a href="#inicio" className={styles.brand}>
-            {site.brand.lead} <span>{site.brand.accent}</span>
+            {content.brand.lead} <span>{content.brand.accent}</span>
           </a>
 
           <div className={`${styles.side} ${styles.sideEnd}`}>
             <a
-              href={site.donation.href}
+              href={content.donationUrl}
               target="_blank"
               rel="noreferrer noopener"
               className={`btn btn--primary btn--sm pulse-cta ${styles.cta}`}
             >
-              Faça parte do projeto
+              {content.ctaLabel}
             </a>
           </div>
         </nav>
@@ -94,21 +116,21 @@ export function SiteHeader({ children }: SiteHeaderProps) {
           data-open={menuOpen ? "true" : "false"}
         >
           <ul>
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <a href={item.href} onClick={closeMenu}>
-                  {item.label}
+            {links.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} onClick={closeMenu}>
+                  {link.label}
                 </a>
               </li>
             ))}
             <li>
               <a
-                href={site.donation.href}
+                href={content.donationUrl}
                 target="_blank"
                 rel="noreferrer noopener"
                 onClick={closeMenu}
               >
-                Faça parte do projeto
+                {content.ctaLabel}
               </a>
             </li>
           </ul>

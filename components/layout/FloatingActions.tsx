@@ -1,24 +1,25 @@
-import { site } from "@/content/site";
+import type { SiteContent } from "@/content";
+import { whatsappHref } from "@/content";
 import { InstagramIcon, MessageCircleIcon } from "@/components/ui/icons";
 import styles from "./FloatingActions.module.css";
 
-export function FloatingActions() {
+export function FloatingActions({ content }: { content: SiteContent }) {
   return (
     <div className={styles.floating}>
       <a
-        href={site.instagram.href}
+        href={content.identity.instagram.url}
         target="_blank"
         rel="noreferrer noopener"
-        aria-label="Instagram"
+        aria-label={content.contact.instagramLabel}
         className={`${styles.instagram} pulse-cta`}
       >
         <InstagramIcon size={28} />
       </a>
       <a
-        href={site.whatsapp.href}
+        href={whatsappHref(content)}
         target="_blank"
         rel="noreferrer noopener"
-        aria-label="WhatsApp"
+        aria-label={content.contact.whatsappLabel}
         className={`${styles.whatsapp} pulse-cta`}
       >
         <MessageCircleIcon size={28} />

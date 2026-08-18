@@ -1,11 +1,16 @@
 "use client";
 
 import { useRef } from "react";
-import { videos } from "@/content/videos";
+import type { EventVideo } from "@/content/types";
 import { Reveal } from "@/components/ui/Reveal";
 import styles from "./Gallery.module.css";
 
-export function VideoGrid() {
+export type VideoGridContent = {
+  videos: readonly EventVideo[];
+  fallbackText: string;
+};
+
+export function VideoGrid({ content }: { content: VideoGridContent }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   /** Dar play em um vídeo pausa os demais. */
@@ -20,7 +25,7 @@ export function VideoGrid() {
 
   return (
     <div className={styles.videosGrid} ref={containerRef}>
-      {videos.map((video, index) => (
+      {content.videos.map((video, index) => (
         <Reveal key={video.id} delay={index * 80}>
           <figure className={`${styles.videoCard} surface-card`}>
             <video
@@ -31,7 +36,7 @@ export function VideoGrid() {
               onPlay={(event) => pauseOthers(event.currentTarget)}
             >
               <source src={video.src} type="video/mp4" />
-              Seu navegador não suporta vídeo em HTML5.
+              {content.fallbackText}
             </video>
             <figcaption>{video.caption}</figcaption>
           </figure>

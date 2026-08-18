@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type TouchEvent } from "react";
-import { credentials } from "@/content/credentials";
+import { focalToObjectPosition } from "@/content";
+import type { CredentialItem } from "@/content/types";
 import { Reveal } from "@/components/ui/Reveal";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
 import styles from "./Credentials.module.css";
@@ -10,23 +11,41 @@ import styles from "./Credentials.module.css";
 const AUTOPLAY_MS = 6500;
 const SWIPE_THRESHOLD = 50;
 
-export function Credentials() {
+export type CredentialsContent = {
+  ariaLabel: string;
+  items: readonly CredentialItem[];
+  labels: {
+    previous: string;
+    next: string;
+    dots: string;
+    goTo: string;
+    roleDescription: string;
+  };
+};
+
+export function Credentials({ content }: { content: CredentialsContent }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
-  const go = useCallback((step: number) => {
-    setIndex((current) => (current + step + credentials.length) % credentials.length);
-  }, []);
+  const { items, labels } = content;
+  const count = items.length;
+
+  const go = useCallback(
+    (step: number) => {
+      setIndex((current) => (current + step + count) % count);
+    },
+    [count],
+  );
 
   // Depender de `index` faz o timer reiniciar a cada troca, inclusive nas
   // manuais — o slide recém-escolhido ganha o intervalo inteiro na tela.
   useEffect(() => {
-    if (paused) return;
-    const next = (index + 1) % credentials.length;
+    if (paused || count === 0) return;
+    const next = (index + 1) % count;
     const timer = window.setTimeout(() => setIndex(next), AUTOPLAY_MS);
     return () => window.clearTimeout(timer);
-  }, [paused, index]);
+  }, [paused, index, count]);
 
   const handleTouchStart = (event: TouchEvent) => {
     touchStartX.current = event.touches[0]?.clientX ?? null;
@@ -45,19 +64,19 @@ export function Credentials() {
     if (delta < -SWIPE_THRESHOLD) go(-1);
   };
 
-  const slide = credentials[index];
+  const slide = items[index];
   if (!slide) return null;
 
   return (
     <section
       className={`${styles.section} section--ink`}
-      aria-label="Trajetória e credenciais"
+      aria-label={content.ariaLabel}
     >
       <div className="wrap">
         <Reveal>
           <div
             className={`${styles.carousel} surface-card`}
-            aria-roledescription="carrossel"
+            aria-roledescription={labels.roleDescription}
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
             onTouchStart={handleTouchStart}
@@ -66,7 +85,7 @@ export function Credentials() {
             <button
               type="button"
               className={`${styles.arrow} ${styles.arrowPrev}`}
-              aria-label="Credencial anterior"
+              aria-label={labels.previous}
               onClick={() => go(-1)}
             >
               <ChevronLeftIcon size={20} />
@@ -75,7 +94,7 @@ export function Credentials() {
             <button
               type="button"
               className={`${styles.arrow} ${styles.arrowNext}`}
-              aria-label="Próxima credencial"
+              aria-label={labels.next}
               onClick={() => go(1)}
             >
               <ChevronRightIcon size={20} />
@@ -85,9 +104,11 @@ export function Credentials() {
               {/* A key por slide reexecuta a animação de entrada a cada troca. */}
               <div className={styles.slide} key={slide.id}>
                 <Image
-                  src={slide.image}
-                  alt={slide.alt}
-                  style={{ objectPosition: slide.objectPosition }}
+                  src={slide.image.source}
+                  alt={slide.image.alt}
+                  style={{
+                    objectPosition: focalToObjectPosition(slide.image.focal),
+                  }}
                   sizes="7rem"
                   placeholder="blur"
                 />
@@ -96,13 +117,13 @@ export function Credentials() {
               </div>
             </div>
 
-            <div className={styles.dots} role="tablist" aria-label="Credenciais">
-              {credentials.map((credential, i) => (
+            <div className={styles.dots} role="tablist" aria-label={labels.dots}>
+              {items.map((credential, i) => (
                 <button
                   key={credential.id}
                   type="button"
                   role="tab"
-                  aria-label={`Ir para ${credential.title}`}
+                  aria-label={`${labels.goTo} ${credential.title}`}
                   aria-selected={i === index}
                   onClick={() => setIndex(i)}
                 />

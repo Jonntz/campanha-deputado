@@ -214,3 +214,78 @@ export function LandmarkIcon(props: IconProps) {
     </Icon>
   );
 }
+
+/**
+ * Registro nome → componente.
+ *
+ * O conteúdo não pode guardar uma referência de componente: funções não
+ * sobrevivem a JSON nem atravessam a fronteira servidor→cliente. Guarda-se o
+ * nome, e a resolução acontece aqui.
+ *
+ * A anotação explícita de `Record<IconName, …>` é o que segura o contrato: um
+ * nome adicionado sem o componente correspondente vira erro de build, e não um
+ * espaço em branco em produção. Como é um Record sobre uma união fechada, o
+ * acesso por índice também não fica `| undefined` sob noUncheckedIndexedAccess.
+ */
+export const ICON_NAMES = [
+  "menu",
+  "close",
+  "chevron-left",
+  "chevron-right",
+  "chevron-down",
+  "arrow-down",
+  "heart",
+  "heart-handshake",
+  "phone",
+  "instagram",
+  "message-circle",
+  "play",
+  "briefcase",
+  "graduation-cap",
+  "palette",
+  "sprout",
+  "shield-check",
+  "store",
+  "landmark",
+] as const;
+
+export type IconName = (typeof ICON_NAMES)[number];
+
+export const ICONS: Record<IconName, (props: IconProps) => React.JSX.Element> = {
+  menu: MenuIcon,
+  close: CloseIcon,
+  "chevron-left": ChevronLeftIcon,
+  "chevron-right": ChevronRightIcon,
+  "chevron-down": ChevronDownIcon,
+  "arrow-down": ArrowDownIcon,
+  heart: HeartIcon,
+  "heart-handshake": HeartHandshakeIcon,
+  phone: PhoneIcon,
+  instagram: InstagramIcon,
+  "message-circle": MessageCircleIcon,
+  play: PlayIcon,
+  briefcase: BriefcaseIcon,
+  "graduation-cap": GraduationCapIcon,
+  palette: PaletteIcon,
+  sprout: SproutIcon,
+  "shield-check": ShieldCheckIcon,
+  store: StoreIcon,
+  landmark: LandmarkIcon,
+};
+
+/**
+ * Subconjunto que o painel oferece no seletor de ícone das propostas. Os
+ * demais são cromo da interface (setas, menu, fechar) e não fazem sentido
+ * como escolha editorial.
+ */
+export const PROPOSAL_ICON_NAMES = [
+  "briefcase",
+  "graduation-cap",
+  "palette",
+  "sprout",
+  "shield-check",
+  "store",
+  "landmark",
+] as const satisfies readonly IconName[];
+
+export type ProposalIconName = (typeof PROPOSAL_ICON_NAMES)[number];

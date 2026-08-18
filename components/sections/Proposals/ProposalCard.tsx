@@ -8,22 +8,23 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Proposal } from "@/content/proposals";
+import type { ProposalItem } from "@/content/types";
 import { ChevronDownIcon } from "@/components/ui/icons";
 import styles from "./Proposals.module.css";
 
 const RESIZE_DEBOUNCE_MS = 150;
 
 type ProposalCardProps = {
-  proposal: Omit<Proposal, "Icon">;
+  proposal: ProposalItem;
   /**
    * O ícone chega já renderizado: componentes são funções e não atravessam a
    * fronteira servidor→cliente. Como elemento, o SVG fica fora deste bundle.
    */
   icon: ReactNode;
+  labels: { expand: string; collapse: string; source: string };
 };
 
-export function ProposalCard({ proposal, icon }: ProposalCardProps) {
+export function ProposalCard({ proposal, icon, labels }: ProposalCardProps) {
   const [expanded, setExpanded] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
   const textId = useId();
@@ -75,7 +76,12 @@ export function ProposalCard({ proposal, icon }: ProposalCardProps) {
 
       <div className={styles.text} ref={textRef} id={textId}>
         <p>{proposal.body}</p>
-        <span className={styles.source}>Fonte: {proposal.source}</span>
+        {/* O rótulo carrega o espaço final para o HTML sair idêntico ao
+            texto literal que havia aqui antes. */}
+        <span className={styles.source}>
+          {`${labels.source} `}
+          {proposal.source}
+        </span>
       </div>
 
       <button
@@ -85,7 +91,7 @@ export function ProposalCard({ proposal, icon }: ProposalCardProps) {
         aria-controls={textId}
         onClick={toggle}
       >
-        <span>{expanded ? "Esconder" : "Ver mais"}</span>
+        <span>{expanded ? labels.collapse : labels.expand}</span>
         <ChevronDownIcon size={16} />
       </button>
     </article>

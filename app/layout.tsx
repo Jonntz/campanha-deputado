@@ -5,53 +5,56 @@ import { FloatingActions } from "@/components/layout/FloatingActions";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { VLibras } from "@/components/layout/VLibras";
-import { site } from "@/content/site";
+import { getSiteContent, navLinks } from "@/content";
 import { barlow, barlowCondensed } from "./fonts";
 import "./globals.css";
 
-const title = `${site.name} — ${site.tagline}`;
-const description =
-  "Pré-candidato a Deputado Federal por Minas Gerais. Fim da saidinha, leis mais rígidas e cadeia para quem recruta jovens para o tráfico.";
+export async function generateMetadata(): Promise<Metadata> {
+  const { identity, seo } = await getSiteContent();
+  const title = `${identity.name} — ${identity.tagline}`;
 
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title,
-  description,
-  keywords: [
-    site.name,
-    "Deputado Federal",
-    "Minas Gerais",
-    "Segurança Pública",
-    "Tolerância Zero",
-    "MG 2026",
-  ],
-  authors: [{ name: site.name }],
-  openGraph: {
+  return {
+    metadataBase: new URL(identity.url),
     title,
-    description:
-      "Pré-candidato a Deputado Federal por Minas Gerais. Enquanto a velha política passa pano pro crime, eu defendo Minas.",
-    type: "website",
-    locale: "pt_BR",
-    url: site.url,
-    siteName: site.name,
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: site.name }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: ["/og-image.jpg"],
-  },
-  alternates: { canonical: "/" },
-};
+    description: seo.description,
+    keywords: [...seo.keywords],
+    authors: [{ name: identity.name }],
+    openGraph: {
+      title,
+      description: seo.ogDescription,
+      type: "website",
+      locale: "pt_BR",
+      url: identity.url,
+      siteName: identity.name,
+      images: [
+        {
+          url: seo.ogImage.url,
+          width: seo.ogImage.width,
+          height: seo.ogImage.height,
+          alt: identity.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: seo.description,
+      images: [seo.ogImage.url],
+    },
+    alternates: { canonical: "/" },
+  };
+}
 
-export const viewport: Viewport = {
-  themeColor: "#12303c",
-};
+export async function generateViewport(): Promise<Viewport> {
+  const { seo } = await getSiteContent();
+  return { themeColor: seo.themeColor };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const content = await getSiteContent();
+
   return (
     // data-scroll-behavior: a partir do Next 16 o smooth scroll deixou de ser
     // aplicado automaticamente e precisa ser declarado aqui.
@@ -69,20 +72,30 @@ export default function RootLayout({
       </head>
       <body>
         <a href="#main-content" className="sr-only">
-          Pular para o conteúdo principal
+          {content.ui.skipToContent}
         </a>
 
-        <SiteHeader>
-          <DonationRibbon />
+        <SiteHeader
+          content={{
+            navAriaLabel: content.nav.ariaLabel,
+            links: navLinks(content),
+            brand: content.identity.brand,
+            ctaLabel: content.nav.ctaLabel,
+            donationUrl: content.identity.donation.url,
+            openMenuLabel: content.ui.openMenu,
+            closeMenuLabel: content.ui.closeMenu,
+          }}
+        >
+          <DonationRibbon content={content} />
         </SiteHeader>
 
         <main id="main-content">{children}</main>
 
-        <SiteFooter />
-        <FloatingActions />
+        <SiteFooter content={content} />
+        <FloatingActions content={content} />
         <VLibras />
 
-        <Analytics />
+        <Analytics content={content} />
       </body>
     </html>
   );

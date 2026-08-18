@@ -13,6 +13,7 @@ export type LightboxImage = {
 
 type LightboxProps = {
   item: LightboxImage | null;
+  labels: { dialog: string; close: string };
   onClose: () => void;
 };
 
@@ -20,7 +21,7 @@ type LightboxProps = {
  * Usa <dialog> nativo: o navegador cuida da top-layer, do foco preso dentro do
  * modal, do retorno do foco ao fechar e do Escape.
  */
-export function Lightbox({ item, onClose }: LightboxProps) {
+export function Lightbox({ item, labels, onClose }: LightboxProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export function Lightbox({ item, onClose }: LightboxProps) {
     <dialog
       ref={dialogRef}
       className={styles.lightbox}
-      aria-label="Visualização da imagem"
+      aria-label={labels.dialog}
       onClick={onClose}
     >
       {item ? (
@@ -56,7 +57,7 @@ export function Lightbox({ item, onClose }: LightboxProps) {
           <button
             type="button"
             className={styles.close}
-            aria-label="Fechar"
+            aria-label={labels.close}
             onClick={onClose}
           >
             <CloseIcon size={20} />

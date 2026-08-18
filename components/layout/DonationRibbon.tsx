@@ -1,14 +1,20 @@
-import { site } from "@/content/site";
+import type { SiteContent } from "@/content";
 import { HeartHandshakeIcon } from "@/components/ui/icons";
 import styles from "./DonationRibbon.module.css";
 
-export function DonationRibbon() {
+export function DonationRibbon({ content }: { content: SiteContent }) {
+  const { ribbon } = content.nav;
+
   return (
     <div className={styles.ribbon}>
       <HeartHandshakeIcon size={16} />
-      <span>Considere fazer uma doação!</span>
-      <a href={site.donation.href} target="_blank" rel="noreferrer noopener">
-        Doar
+      <span>{ribbon.text}</span>
+      <a
+        href={content.identity.donation.url}
+        target="_blank"
+        rel="noreferrer noopener"
+      >
+        {ribbon.linkLabel}
       </a>
     </div>
   );

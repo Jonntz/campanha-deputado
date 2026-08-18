@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useState } from "react";
-import { photos, type Photo } from "@/content/gallery";
+import type { GalleryPhoto } from "@/content/types";
 import { Lightbox } from "@/components/ui/Lightbox";
 import { Reveal } from "@/components/ui/Reveal";
 import styles from "./Gallery.module.css";
@@ -10,9 +10,15 @@ import styles from "./Gallery.module.css";
 /** Duas colunas no mobile, três a partir de 768px. */
 const SIZES = "(max-width: 767px) 50vw, (max-width: 1279px) 33vw, 25rem";
 
-export function GalleryGrid() {
-  const [selected, setSelected] = useState<Photo | null>(null);
+export type GalleryGridContent = {
+  photos: readonly GalleryPhoto[];
+  labels: { enlarge: string; lightboxLabel: string; lightboxClose: string };
+};
+
+export function GalleryGrid({ content }: { content: GalleryGridContent }) {
+  const [selected, setSelected] = useState<GalleryPhoto | null>(null);
   const closeLightbox = useCallback(() => setSelected(null), []);
+  const { photos, labels } = content;
 
   return (
     <>
@@ -23,12 +29,12 @@ export function GalleryGrid() {
               <button
                 type="button"
                 className={styles.trigger}
-                aria-label={`Ampliar foto: ${photo.caption}`}
+                aria-label={`${labels.enlarge} ${photo.caption}`}
                 onClick={() => setSelected(photo)}
               >
                 <Image
-                  src={photo.image}
-                  alt={photo.alt}
+                  src={photo.image.source}
+                  alt={photo.image.alt}
                   sizes={SIZES}
                   placeholder="blur"
                 />
@@ -43,12 +49,13 @@ export function GalleryGrid() {
         item={
           selected
             ? {
-                image: selected.image,
-                alt: selected.alt,
+                image: selected.image.source,
+                alt: selected.image.alt,
                 caption: selected.caption,
               }
             : null
         }
+        labels={{ dialog: labels.lightboxLabel, close: labels.lightboxClose }}
         onClose={closeLightbox}
       />
     </>

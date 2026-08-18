@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Fragment } from "react";
-import quemMatheus from "@/assets/images/quem-matheus.jpeg";
-import { bioParagraphs, bioStats } from "@/content/bio";
+import type { SiteContent } from "@/content";
 import { Reveal } from "@/components/ui/Reveal";
 import styles from "./Bio.module.css";
 
@@ -16,7 +15,9 @@ function renderParagraph(text: string) {
   );
 }
 
-export function Bio() {
+export function Bio({ content }: { content: SiteContent }) {
+  const { bio } = content;
+
   return (
     <section id="bio" className="section">
       <div className="wrap">
@@ -24,8 +25,8 @@ export function Bio() {
           <Reveal>
             <div className={styles.figure}>
               <Image
-                src={quemMatheus}
-                alt="Matheus Biancardine discursando ao microfone"
+                src={bio.image.source}
+                alt={bio.image.alt}
                 sizes="(max-width: 1023px) calc(100vw - 2.5rem), 36rem"
                 placeholder="blur"
               />
@@ -33,20 +34,21 @@ export function Bio() {
           </Reveal>
 
           <Reveal delay={100}>
-            <p className="eyebrow">Biografia</p>
+            <p className="eyebrow">{bio.header.eyebrow}</p>
             <h2 className="section-title">
-              Quem é <span className="text-gradient">Matheus Biancardine?</span>
+              {`${bio.header.title.lead} `}
+              <span className="text-gradient">{bio.header.title.accent}</span>
             </h2>
 
             <div className={styles.body}>
-              {bioParagraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 40)}>{renderParagraph(paragraph)}</p>
+              {bio.paragraphs.map((paragraph) => (
+                <p key={paragraph.id}>{renderParagraph(paragraph.text)}</p>
               ))}
             </div>
 
             <dl className={styles.stats}>
-              {bioStats.map((stat) => (
-                <div key={stat.value} className="surface-card">
+              {bio.stats.map((stat) => (
+                <div key={stat.id} className="surface-card">
                   <dt>{stat.value}</dt>
                   <dd>{stat.label}</dd>
                 </div>
