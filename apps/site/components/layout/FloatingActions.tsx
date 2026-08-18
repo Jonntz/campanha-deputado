@@ -1,5 +1,5 @@
-import type { SiteContent } from "@/content";
-import { whatsappHref } from "@/content";
+import type { SiteContent } from "@campanha/content";
+import { whatsappHref } from "@campanha/content";
 import { InstagramIcon, MessageCircleIcon } from "@/components/ui/icons";
 import styles from "./FloatingActions.module.css";
 

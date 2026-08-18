@@ -1,4 +1,4 @@
-import type { SiteContent } from "@/content";
+import type { SiteContent } from "@campanha/content";
 
 /**
  * Dados estruturados schema.org. Montado a partir de um objeto tipado e

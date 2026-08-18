@@ -1,13 +1,14 @@
 "use client";
 
-import Image, { type StaticImageData } from "next/image";
+import type { MediaRef } from "@campanha/content";
+import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { imageProps } from "@/lib/media";
 import { CloseIcon } from "@/components/ui/icons";
 import styles from "./Lightbox.module.css";
 
 export type LightboxImage = {
-  image: StaticImageData;
-  alt: string;
+  image: MediaRef;
   caption?: string;
 };
 
@@ -63,10 +64,9 @@ export function Lightbox({ item, labels, onClose }: LightboxProps) {
             <CloseIcon size={20} />
           </button>
           <Image
-            src={item.image}
-            alt={item.alt}
+            {...imageProps(item.image)}
+            alt={item.image.alt}
             sizes="(max-width: 46rem) 100vw, 46rem"
-            placeholder="blur"
           />
           {item.caption ? <p className={styles.caption}>{item.caption}</p> : null}
         </>

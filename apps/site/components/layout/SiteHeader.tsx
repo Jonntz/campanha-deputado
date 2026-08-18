@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
-import type { NavLink } from "@/content";
-import type { SplitTitle } from "@/content/types";
+import type { NavLink } from "@campanha/content";
+import type { SplitTitle } from "@campanha/content";
 import { MenuIcon } from "@/components/ui/icons";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import styles from "./SiteHeader.module.css";

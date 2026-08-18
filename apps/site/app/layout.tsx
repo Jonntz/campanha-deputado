@@ -5,7 +5,8 @@ import { FloatingActions } from "@/components/layout/FloatingActions";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { VLibras } from "@/components/layout/VLibras";
-import { getSiteContent, navLinks } from "@/content";
+import { navLinks } from "@campanha/content";
+import { getSiteContent } from "@/content";
 import { barlow, barlowCondensed } from "./fonts";
 import "./globals.css";
 

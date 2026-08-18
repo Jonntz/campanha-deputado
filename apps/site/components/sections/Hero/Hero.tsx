@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { Fragment } from "react";
-import type { SiteContent } from "@/content";
-import { sectionHref } from "@/content";
+import type { SiteContent } from "@campanha/content";
+import { sectionHref } from "@campanha/content";
+import { imageProps } from "@/lib/media";
 import { Reveal } from "@/components/ui/Reveal";
 import { ICONS } from "@/components/ui/icons";
 import { HeroCurtain } from "./HeroCurtain";
@@ -62,10 +63,9 @@ export function Hero({ content }: { content: SiteContent }) {
             <div className={styles.portraitGlow} aria-hidden="true" />
             <div className={styles.frame}>
               <Image
-                src={hero.image.source}
+                {...imageProps(hero.image)}
                 alt={hero.image.alt}
                 sizes="(max-width: 1023px) calc(100vw - 2.5rem), 40rem"
-                placeholder="blur"
                 preload
                 loading="eager"
               />

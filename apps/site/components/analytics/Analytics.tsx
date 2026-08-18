@@ -1,5 +1,5 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
-import type { SiteContent } from "@/content";
+import type { SiteContent } from "@campanha/content";
 import { MetaPixel } from "./MetaPixel";
 
 /**

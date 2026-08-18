@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Fragment } from "react";
-import type { SiteContent } from "@/content";
+import type { SiteContent } from "@campanha/content";
+import { imageProps } from "@/lib/media";
 import { Reveal } from "@/components/ui/Reveal";
 import styles from "./Bio.module.css";
 
@@ -25,10 +26,9 @@ export function Bio({ content }: { content: SiteContent }) {
           <Reveal>
             <div className={styles.figure}>
               <Image
-                src={bio.image.source}
+                {...imageProps(bio.image)}
                 alt={bio.image.alt}
                 sizes="(max-width: 1023px) calc(100vw - 2.5rem), 36rem"
-                placeholder="blur"
               />
             </div>
           </Reveal>

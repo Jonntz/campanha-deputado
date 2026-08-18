@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // Sem "dom": este pacote é consumido pelo servidor, pelos scripts de seed e
+    // pelo painel. Tirar a lib do navegador transforma um acesso acidental a
+    // window ou document em erro de compilação, e não em erro de runtime.
+    "lib": ["esnext"],
+    "types": []
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}

@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type TouchEvent } from "react";
-import { focalToObjectPosition } from "@/content";
-import type { CredentialItem } from "@/content/types";
+import { focalToObjectPosition } from "@campanha/content";
+import type { CredentialItem } from "@campanha/content";
+import { imageProps } from "@/lib/media";
 import { Reveal } from "@/components/ui/Reveal";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
 import styles from "./Credentials.module.css";
@@ -104,13 +105,12 @@ export function Credentials({ content }: { content: CredentialsContent }) {
               {/* A key por slide reexecuta a animação de entrada a cada troca. */}
               <div className={styles.slide} key={slide.id}>
                 <Image
-                  src={slide.image.source}
+                  {...imageProps(slide.image)}
                   alt={slide.image.alt}
                   style={{
                     objectPosition: focalToObjectPosition(slide.image.focal),
                   }}
                   sizes="7rem"
-                  placeholder="blur"
                 />
                 <h3>{slide.title}</h3>
                 <p>{slide.text}</p>

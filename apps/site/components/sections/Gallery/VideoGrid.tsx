@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import type { EventVideo } from "@/content/types";
+import type { EventVideo } from "@campanha/content";
 import { Reveal } from "@/components/ui/Reveal";
 import styles from "./Gallery.module.css";
 

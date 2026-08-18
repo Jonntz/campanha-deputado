@@ -1,4 +1,4 @@
-import type { SiteContent } from "@/content";
+import type { SiteContent } from "@campanha/content";
 import { Reveal } from "@/components/ui/Reveal";
 import { ICONS } from "@/components/ui/icons";
 import { ProposalCard } from "./ProposalCard";

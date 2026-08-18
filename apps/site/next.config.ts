@@ -95,6 +95,10 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
+  // Os pacotes do workspace são publicados como TypeScript cru, sem etapa de
+  // build própria: quem compila é o app que os consome.
+  transpilePackages: ["@campanha/content", "@campanha/icons"],
+
   // Num monorepo o Next sobe a árvore procurando a raiz e pode errar o alvo.
   // Apontar explicitamente evita que arquivos do workspace inteiro entrem no
   // rastreamento do bundle serverless.

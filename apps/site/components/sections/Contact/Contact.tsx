@@ -1,5 +1,5 @@
-import type { SiteContent } from "@/content";
-import { whatsappHref } from "@/content";
+import type { SiteContent } from "@campanha/content";
+import { whatsappHref } from "@campanha/content";
 import { Reveal } from "@/components/ui/Reveal";
 import {
   InstagramIcon,

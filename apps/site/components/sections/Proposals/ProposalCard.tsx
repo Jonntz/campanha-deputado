@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { ProposalItem } from "@/content/types";
+import type { ProposalItem } from "@campanha/content";
 import { ChevronDownIcon } from "@/components/ui/icons";
 import styles from "./Proposals.module.css";
 

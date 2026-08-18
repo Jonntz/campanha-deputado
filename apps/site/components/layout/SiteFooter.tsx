@@ -1,4 +1,4 @@
-import type { SiteContent } from "@/content";
+import type { SiteContent } from "@campanha/content";
 import styles from "./SiteFooter.module.css";
 
 export function SiteFooter({ content }: { content: SiteContent }) {

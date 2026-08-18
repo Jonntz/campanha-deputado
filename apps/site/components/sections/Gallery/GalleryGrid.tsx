@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useCallback, useState } from "react";
-import type { GalleryPhoto } from "@/content/types";
+import type { GalleryPhoto } from "@campanha/content";
+import { imageProps } from "@/lib/media";
 import { Lightbox } from "@/components/ui/Lightbox";
 import { Reveal } from "@/components/ui/Reveal";
 import styles from "./Gallery.module.css";
@@ -33,10 +34,9 @@ export function GalleryGrid({ content }: { content: GalleryGridContent }) {
                 onClick={() => setSelected(photo)}
               >
                 <Image
-                  src={photo.image.source}
+                  {...imageProps(photo.image)}
                   alt={photo.image.alt}
                   sizes={SIZES}
-                  placeholder="blur"
                 />
               </button>
               <figcaption>{photo.caption}</figcaption>
@@ -48,11 +48,7 @@ export function GalleryGrid({ content }: { content: GalleryGridContent }) {
       <Lightbox
         item={
           selected
-            ? {
-                image: selected.image.source,
-                alt: selected.image.alt,
-                caption: selected.caption,
-              }
+            ? { image: selected.image, caption: selected.caption }
             : null
         }
         labels={{ dialog: labels.lightboxLabel, close: labels.lightboxClose }}

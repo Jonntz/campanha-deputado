@@ -10,7 +10,8 @@ import evento05 from "@/assets/images/evento-05.jpeg";
 import evento06 from "@/assets/images/evento-06.jpeg";
 import heroPortrait from "@/assets/images/hero-matheus.jpg";
 import quemMatheus from "@/assets/images/quem-matheus.jpeg";
-import type { SiteContent } from "./types";
+import type { SiteContent } from "@campanha/content";
+import { fromStatic } from "@/lib/media";
 
 /**
  * Conteúdo padrão do site, versionado junto do código.
@@ -20,7 +21,7 @@ import type { SiteContent } from "./types";
  * o site continua subindo com este conteúdo em vez de quebrar. Por isso ele
  * precisa continuar completo e válido, e não virar um esqueleto vazio.
  */
-export const fallbackContent: SiteContent = {
+export const fallbackContent = {
   identity: {
     name: "Matheus Biancardine",
     role: "Pré-candidato a Deputado Federal",
@@ -89,12 +90,7 @@ export const fallbackContent: SiteContent = {
         variant: "ghost",
       },
     ],
-    image: {
-      source: heroPortrait,
-      alt: "Matheus Biancardine, pré-candidato a Deputado Federal por Minas Gerais",
-      focal: { x: 50, y: 30 },
-      focalLg: { x: 50, y: 32 },
-    },
+    image: fromStatic(heroPortrait, "Matheus Biancardine, pré-candidato a Deputado Federal por Minas Gerais", { x: 50, y: 30 }, { x: 50, y: 32 }),
   },
 
   credentials: {
@@ -102,41 +98,25 @@ export const fallbackContent: SiteContent = {
     items: [
       {
         id: "assessor",
-        image: {
-          source: credSimoes,
-          alt: "Matheus Biancardine ao lado do governador Mateus Simões",
-          focal: { x: 50, y: 30 },
-        },
+        image: fromStatic(credSimoes, "Matheus Biancardine ao lado do governador Mateus Simões", { x: 50, y: 30 }),
         title: "Assessor do Governador Mateus Simões",
         text: "Atuação no Governo de Minas Gerais. Articulação com prefeituras e Assembleia Legislativa.",
       },
       {
         id: "juventude-novo",
-        image: {
-          source: credPartidoNovo,
-          alt: "Matheus Biancardine discursando em evento do Partido NOVO",
-          focal: { x: 58, y: 22 },
-        },
+        image: fromStatic(credPartidoNovo, "Matheus Biancardine discursando em evento do Partido NOVO", { x: 58, y: 22 }),
         title: "Fundador da Juventude do Partido Novo",
         text: "Criou e liderou o movimento que formou a nova geração liberal de Minas Gerais.",
       },
       {
         id: "diretor-juventude",
-        image: {
-          source: credDiretorJuventude,
-          alt: "Matheus Biancardine ao lado do governador Romeu Zema",
-          focal: { x: 45, y: 20 },
-        },
+        image: fromStatic(credDiretorJuventude, "Matheus Biancardine ao lado do governador Romeu Zema", { x: 45, y: 20 }),
         title: "Diretor de Políticas para Juventude",
         text: "Na gestão Romeu Zema. Responsável por programas que impactam 4,2 milhões de jovens mineiros.",
       },
       {
         id: "medalha-jk",
-        image: {
-          source: credMedalhaJk,
-          alt: "Matheus Biancardine na cerimônia da Medalha Juscelino Kubitschek",
-          focal: { x: 28, y: 32 },
-        },
+        image: fromStatic(credMedalhaJk, "Matheus Biancardine na cerimônia da Medalha Juscelino Kubitschek", { x: 28, y: 32 }),
         title: "Medalha Juscelino Kubitschek",
         text: "Maior honraria do Estado de Minas Gerais. Reconhecimento por serviços prestados a MG.",
       },
@@ -148,11 +128,7 @@ export const fallbackContent: SiteContent = {
       eyebrow: "Biografia",
       title: { lead: "Quem é", accent: "Matheus Biancardine?" },
     },
-    image: {
-      source: quemMatheus,
-      alt: "Matheus Biancardine discursando ao microfone",
-      focal: { x: 50, y: 20 },
-    },
+    image: fromStatic(quemMatheus, "Matheus Biancardine discursando ao microfone", { x: 50, y: 20 }),
     paragraphs: [
       {
         id: "origem",
@@ -253,53 +229,35 @@ export const fallbackContent: SiteContent = {
     photos: [
       {
         id: "evento-01",
-        image: {
-          source: evento01,
-          alt: "Matheus Biancardine ao lado de uma liderança do Partido NOVO durante o lançamento da pré-candidatura",
-        },
+        image: fromStatic(evento01, "Matheus Biancardine ao lado de uma liderança do Partido NOVO durante o lançamento da pré-candidatura"),
         caption:
           "Ao lado de lideranças do Partido NOVO no lançamento da pré-candidatura.",
       },
       {
         id: "evento-02",
-        image: {
-          source: evento02,
-          alt: "Matheus Biancardine concedendo entrevista com bandeiras da campanha ao fundo",
-        },
+        image: fromStatic(evento02, "Matheus Biancardine concedendo entrevista com bandeiras da campanha ao fundo"),
         caption: "Entrevista à imprensa durante o encontro Juntos por Minas.",
       },
       {
         id: "evento-03",
-        image: {
-          source: evento03,
-          alt: "Matheus Biancardine conversando com uma repórter na chegada ao evento",
-        },
+        image: fromStatic(evento03, "Matheus Biancardine conversando com uma repórter na chegada ao evento"),
         caption: "Conversa com a imprensa na chegada ao evento de lançamento.",
       },
       {
         id: "evento-04",
-        image: {
-          source: evento04,
-          alt: "Matheus Biancardine assinando o mapa de Minas Gerais em um painel da campanha",
-        },
+        image: fromStatic(evento04, "Matheus Biancardine assinando o mapa de Minas Gerais em um painel da campanha"),
         caption:
           "Assinatura no mapa de Minas: compromisso com todas as regiões do estado.",
       },
       {
         id: "evento-05",
-        image: {
-          source: evento05,
-          alt: "Matheus Biancardine conversando com jovens durante o evento",
-        },
+        image: fromStatic(evento05, "Matheus Biancardine conversando com jovens durante o evento"),
         caption:
           "Ouvindo a juventude mineira e as pautas de quem quer mudar o estado.",
       },
       {
         id: "evento-06",
-        image: {
-          source: evento06,
-          alt: "Matheus Biancardine abraçado a um apoiador com camiseta do NOVO",
-        },
+        image: fromStatic(evento06, "Matheus Biancardine abraçado a um apoiador com camiseta do NOVO"),
         caption: "O abraço dos apoiadores e da militância no dia do lançamento.",
       },
     ],
@@ -370,4 +328,4 @@ export const fallbackContent: SiteContent = {
     lightboxClose: "Fechar",
     carouselRoleDescription: "carrossel",
   },
-};
+} satisfies SiteContent;

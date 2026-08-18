@@ -1,4 +1,4 @@
-import type { SiteContent } from "@/content";
+import type { SiteContent } from "@campanha/content";
 import { Reveal } from "@/components/ui/Reveal";
 import { PlayIcon } from "@/components/ui/icons";
 import { GalleryGrid } from "./GalleryGrid";

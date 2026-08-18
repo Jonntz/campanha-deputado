@@ -1,4 +1,4 @@
-import type { SiteContent } from "@/content";
+import type { SiteContent } from "@campanha/content";
 import { HeartHandshakeIcon } from "@/components/ui/icons";
 import styles from "./DonationRibbon.module.css";
 

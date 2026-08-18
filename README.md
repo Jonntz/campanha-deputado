@@ -3,47 +3,65 @@
 Site institucional da pré-candidatura, em **Next.js 16** (App Router) com React 19,
 TypeScript e CSS Modules.
 
+O repositório é um monorepo pnpm: o site público e o painel administrativo são
+aplicações separadas que compartilham o schema do conteúdo.
+
 ## Rodando localmente
 
 ```bash
-npm install
-npm run dev      # http://localhost:3000
+pnpm install
+pnpm dev         # site em http://localhost:3000
 ```
 
 | Script | O que faz |
 | --- | --- |
-| `npm run dev` | Servidor de desenvolvimento (Turbopack) |
-| `npm run build` | Build de produção |
-| `npm run start` | Sobe o build de produção |
-| `npm run lint` | ESLint (o comando `next lint` foi removido na v16) |
-| `npm run typecheck` | `tsc --noEmit` |
+| `pnpm dev` | Servidor de desenvolvimento do site (Turbopack) |
+| `pnpm build` | Build de produção de todos os pacotes |
+| `pnpm lint` | ESLint |
+| `pnpm typecheck` | `tsc --noEmit` em todo o workspace |
 
-Requer Node.js 20.9 ou superior.
+Requer Node.js 20.9 ou superior e pnpm.
 
 ## Estrutura
 
 ```
-app/            layout, página e estilos globais (tokens, reset, utilitários)
-components/
-  layout/       header, faixa de doação, rodapé, botões flutuantes, VLibras
-  sections/     uma pasta por seção da página, com seu CSS Module
-  ui/           Reveal, Lightbox e os ícones
-content/        todo o conteúdo editável, tipado
-hooks/          useScrollSpy, usePrefersReducedMotion
-lib/            dados estruturados (JSON-LD)
-assets/images/  imagens importadas estaticamente pelo next/image
-public/videos/  vídeos do evento e seus posters
+apps/
+  site/                    o site público
+    app/                   layout, página e estilos globais
+    components/
+      layout/              header, faixa de doação, rodapé, flutuantes, VLibras
+      sections/            uma pasta por seção da página, com seu CSS Module
+      ui/                  Reveal, Lightbox e o re-export dos ícones
+    content/               documento de conteúdo padrão e o acessor
+    hooks/                 useScrollSpy, usePrefersReducedMotion
+    lib/                   JSON-LD e a ponte de mídia
+    assets/images/         imagens importadas estaticamente pelo next/image
+    public/videos/         vídeos do evento e seus posters
+packages/
+  content/                 schema Zod, tipos, registro de seções e derivações
+  icons/                   os 19 SVGs e o registro nome → componente
 ```
 
 ## Editando o conteúdo
 
-Textos, links e mídias ficam em `content/` — não é preciso mexer em componente:
+Todo o conteúdo do site é um documento único, validado pelo schema Zod de
+`packages/content`. O padrão versionado fica em `apps/site/content/fallback.ts`
+e é lido por `getSiteContent()` — nenhum componente importa conteúdo direto.
 
-- `site.ts` — WhatsApp, Instagram, link de doação, ID do Google Analytics
-- `proposals.ts` — as propostas (título, texto, fonte, ícone)
-- `credentials.ts` — os slides do carrossel
-- `gallery.ts` / `videos.ts` — fotos e vídeos com suas legendas
-- `bio.ts` — os parágrafos da biografia e os números em destaque
+A estrutura do documento é garantida por `satisfies SiteContent` no `pnpm
+typecheck`; as restrições que o tipo não expressa (tamanhos máximos, formato de
+cor, `**negrito**` emparelhado) são validadas pelo Zod em desenvolvimento, com
+o erro no console. Em produção a validação não roda sobre o padrão de
+propósito: ele é a rede de segurança para quando o banco falhar, e não pode ser
+capaz de lançar.
+
+Dois pontos que não são editáveis, por serem estruturais:
+
+- **Âncoras das seções** (`#inicio`, `#bio`, …) vêm de `SECTION_REGISTRY`. O
+  `useScrollSpy` procura esses ids no DOM e os links da navegação são derivados
+  deles, então uma âncora editável quebraria a navegação em silêncio.
+- **Ícones** são guardados por nome e resolvidos por `ICONS`. Uma referência de
+  componente não sobrevive a JSON nem à fronteira servidor→cliente.
 
 ## Tags de rastreamento
 
