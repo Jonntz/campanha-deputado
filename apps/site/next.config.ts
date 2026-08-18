@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import type { NextConfig } from "next";
 
 /**
@@ -93,6 +94,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+
+  // Num monorepo o Next sobe a árvore procurando a raiz e pode errar o alvo.
+  // Apontar explicitamente evita que arquivos do workspace inteiro entrem no
+  // rastreamento do bundle serverless.
+  outputFileTracingRoot: fileURLToPath(new URL("../../", import.meta.url)),
 
   images: {
     // AVIF primeiro: ~20-30% menor que WebP com a mesma qualidade percebida.

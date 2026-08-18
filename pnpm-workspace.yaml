@@ -1,0 +1,10 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# O pnpm não roda scripts de postinstall sem autorização explícita. Sem o sharp
+# liberado aqui, ele instala sem os binários nativos e só falha na hora de
+# processar uma imagem — que é onde o painel vai depender dele.
+allowBuilds:
+  unrs-resolver: true
+  sharp: true
