@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { VLibras } from "@/components/layout/VLibras";
 import { navLinks } from "@campanha/content";
-import { getSiteContent } from "@/content";
+import { getSiteData, getSiteContent } from "@/lib/content";
 import { barlow, barlowCondensed } from "./fonts";
 import "./globals.css";
 
@@ -54,7 +54,14 @@ export async function generateViewport(): Promise<Viewport> {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const content = await getSiteContent();
+  const { content, sections } = await getSiteData();
+
+  // Uma seção oculta não pode continuar no menu: o link apontaria para uma
+  // âncora que não existe no DOM, e o scrollspy pararia de encontrá-la.
+  const visible = new Set(
+    sections.filter((slot) => slot.visible).map((slot) => slot.key),
+  );
+  const links = navLinks(content).filter((link) => visible.has(link.key));
 
   return (
     // data-scroll-behavior: a partir do Next 16 o smooth scroll deixou de ser
@@ -79,7 +86,7 @@ export default async function RootLayout({
         <SiteHeader
           content={{
             navAriaLabel: content.nav.ariaLabel,
-            links: navLinks(content),
+            links,
             brand: content.identity.brand,
             ctaLabel: content.nav.ctaLabel,
             donationUrl: content.identity.donation.url,

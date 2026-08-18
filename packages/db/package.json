@@ -13,7 +13,8 @@
     "db:studio": "node --env-file=../../.env.local ../../node_modules/drizzle-kit/bin.cjs studio",
     "db:seed": "tsx --env-file=../../.env.local scripts/seed.ts",
     "db:verify": "tsx --env-file=../../.env.local scripts/verify.ts",
-    "db:drill": "tsx --env-file=../../.env.local scripts/drill-resilience.ts"
+    "db:drill": "tsx --env-file=../../.env.local scripts/drill-resilience.ts",
+    "db:drill-read": "tsx --env-file=../../.env.local scripts/drill-readpath.ts"
   },
   "dependencies": {
     "@campanha/content": "workspace:*",

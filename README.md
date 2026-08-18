@@ -19,6 +19,10 @@ pnpm dev         # site em http://localhost:3000
 | `pnpm build` | Build de produção de todos os pacotes |
 | `pnpm lint` | ESLint |
 | `pnpm typecheck` | `tsc --noEmit` em todo o workspace |
+| `pnpm db:push` | Aplica o schema no Turso |
+| `pnpm db:seed` | Grava o conteúdo padrão no banco |
+| `pnpm db:verify` | Ida e volta pelo banco, comparada com o padrão |
+| `pnpm media:generate` | Regenera o manifesto de mídia após trocar imagens |
 
 Requer Node.js 20.9 ou superior e pnpm.
 
@@ -38,9 +42,33 @@ apps/
     assets/images/         imagens importadas estaticamente pelo next/image
     public/videos/         vídeos do evento e seus posters
 packages/
-  content/                 schema Zod, tipos, registro de seções e derivações
+  content/                 schema Zod, tipos, registro de seções, conteúdo padrão
+  db/                      schema Drizzle, cliente Turso e consultas
   icons/                   os 19 SVGs e o registro nome → componente
 ```
+
+## Como o conteúdo chega na página
+
+O Turso **nunca entra no caminho da requisição**. A página é estática com ISR,
+então o banco é consultado no build e nas revalidações — se ele cair, o CDN
+segue servindo o último HTML bom. A queda afeta a capacidade de publicar, não o
+site no ar.
+
+Publicar não é rebuildar: o painel chama `POST /api/revalidate` com o
+`REVALIDATE_SECRET` no header `x-revalidate-secret`, e a página é regerada
+lendo o banco. O `revalidate = 3600` da página é só rede de segurança para o
+caso de essa chamada se perder.
+
+São três camadas de proteção, nesta ordem:
+
+1. **ISR** — o banco não é consultado por requisição, então não há o que falhar.
+2. **Stale-on-error** — se uma regeneração falha, o Next mantém o resultado anterior.
+3. **Fallback por parte** — `mergeWithDefaults` valida cada seção em separado; um
+   payload quebrado cai para o padrão commitado só naquela seção, e as outras
+   publicam normalmente.
+
+Isso é verificável: `pnpm --filter @campanha/db db:drill` corrompe uma seção no
+banco e mostra a contenção.
 
 ## Editando o conteúdo
 
