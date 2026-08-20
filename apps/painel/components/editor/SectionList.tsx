@@ -63,19 +63,24 @@ export function SectionList({
   }
 
   return (
-    <div className="space-y-6 pb-24">
-      <div className="flex items-baseline justify-between gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight">Conteúdo</h1>
-        <p className="text-sm text-white/50">
+    <div className="space-y-6 pb-28">
+      <header className="flex flex-wrap items-baseline justify-between gap-3">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-semibold tracking-tight">Conteúdo</h1>
+          <p className="text-sm text-[--muted]">
+            Salvar guarda o rascunho; publicar leva ao site.
+          </p>
+        </div>
+        <span className={`chip ${pendingCount ? "chip--warn" : "chip--ok"}`}>
           {pendingCount === 0
             ? "Tudo publicado"
-            : `${pendingCount} alteração(ões) aguardando publicação`}
-        </p>
-      </div>
+            : `${pendingCount} não publicada(s)`}
+        </span>
+      </header>
 
-      <ol className="divide-y divide-white/10 overflow-hidden rounded-lg border border-white/10">
+      <ol className="card divide-y divide-[--line]">
         {slots.map((slot, index) => (
-          <li key={slot.key} className="flex items-center gap-3 px-4 py-3">
+          <li key={slot.key} className="flex items-center gap-3 px-4 py-3 transition hover:bg-white/[0.02]">
             <div className="flex shrink-0 flex-col">
               <Arrow
                 label={`Mover ${slot.label} para cima`}
@@ -95,17 +100,15 @@ export function SectionList({
 
             <Link
               href={`/conteudo/${slot.key}`}
-              className="flex-1 text-sm font-medium transition hover:text-[var(--color-brand)]"
+              className="flex-1 text-sm font-medium transition hover:text-[--brand]"
             >
               {slot.label}
               {slot.pending ? (
-                <span className="ml-2 rounded bg-[var(--color-amber)]/20 px-1.5 py-0.5 text-xs text-[var(--color-amber)]">
-                  não publicado
-                </span>
+<span className="chip chip--warn ml-2">não publicado</span>
               ) : null}
             </Link>
 
-            <label className="flex shrink-0 items-center gap-2 text-xs text-white/50">
+            <label className="flex shrink-0 items-center gap-2 text-xs text-[--muted]">
               <input
                 type="checkbox"
                 checked={slot.visible}
@@ -129,20 +132,20 @@ export function SectionList({
       {result ? (
         <p
           role="status"
-          className={`text-sm ${result.ok ? "text-[var(--color-brand)]" : "text-red-300"}`}
+          className={`text-sm ${result.ok ? "text-[--brand]" : "text-red-300"}`}
         >
           {result.message}
         </p>
       ) : null}
 
-      <div className="fixed inset-x-0 bottom-0 border-t border-white/10 bg-[var(--color-deep)]/95 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-end gap-3 px-6 py-3">
+      <div className="save-bar">
+        <div className="save-bar__inner justify-end">
           {layoutChanged ? (
             <button
               type="button"
               onClick={saveLayout}
               disabled={busy}
-              className="rounded border border-white/20 px-4 py-2 text-sm transition hover:border-white/40 disabled:opacity-40"
+              className="btn btn--ghost"
             >
               Salvar ordem
             </button>
@@ -151,7 +154,7 @@ export function SectionList({
             type="button"
             onClick={() => run(publish)}
             disabled={busy || pendingCount === 0}
-            className="rounded bg-[var(--color-brand)] px-4 py-2 text-sm font-medium transition hover:brightness-110 disabled:opacity-40"
+            className="btn btn--primary"
           >
             {busy ? "Publicando…" : `Publicar${pendingCount ? ` (${pendingCount})` : ""}`}
           </button>
@@ -179,7 +182,7 @@ function Arrow({
       title={label}
       disabled={disabled}
       onClick={onClick}
-      className="px-1 text-xs leading-tight text-white/40 transition hover:text-white disabled:opacity-20"
+      className="px-1 text-xs leading-tight text-[--muted] transition hover:text-[--fg] disabled:opacity-25"
     >
       {children}
     </button>

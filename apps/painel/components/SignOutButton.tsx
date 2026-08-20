@@ -18,7 +18,7 @@ export function SignOutButton() {
         router.replace("/login");
         router.refresh();
       }}
-      className="rounded border border-white/15 px-3 py-1.5 text-white/70 transition hover:border-white/30 hover:text-white disabled:opacity-50"
+      className="btn btn--ghost btn--sm"
     >
       Sair
     </button>

@@ -2,9 +2,6 @@
 
 import type { ReactNode } from "react";
 
-const inputClass =
-  "w-full rounded border border-white/15 bg-black/30 px-3 py-2 text-sm outline-none transition focus:border-[var(--color-brand)]";
-
 export function Text({
   label,
   value,
@@ -19,23 +16,23 @@ export function Text({
   rows?: number;
 }) {
   return (
-    <label className="block space-y-1.5">
-      <span className="text-sm text-white/70">{label}</span>
+    <label className="field">
+      <span className="field__label">{label}</span>
       {rows ? (
         <textarea
           rows={rows}
           value={value}
           onChange={(event) => onChange(event.target.value)}
-          className={`${inputClass} resize-y leading-relaxed`}
+          className="input"
         />
       ) : (
         <input
           value={value}
           onChange={(event) => onChange(event.target.value)}
-          className={inputClass}
+          className="input"
         />
       )}
-      {hint ? <span className="block text-xs text-white/40">{hint}</span> : null}
+      {hint ? <span className="field__hint">{hint}</span> : null}
     </label>
   );
 }
@@ -50,11 +47,11 @@ export function Group({
   children: ReactNode;
 }) {
   return (
-    <section className="space-y-4 rounded-lg border border-white/10 bg-black/20 p-5">
+    <section className="panel space-y-5">
       <div className="space-y-1">
-        <h2 className="font-medium tracking-tight">{title}</h2>
+        <h2 className="font-semibold tracking-tight">{title}</h2>
         {description ? (
-          <p className="text-sm text-white/50">{description}</p>
+          <p className="text-sm leading-relaxed text-[--muted]">{description}</p>
         ) : null}
       </div>
       <div className="space-y-4">{children}</div>
@@ -96,14 +93,14 @@ export function Repeater<T>({
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-white/70">
-          {label} <span className="text-white/40">({items.length})</span>
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm font-medium text-[--muted]">
+          {label} <span className="opacity-60">({items.length})</span>
         </span>
         <button
           type="button"
           onClick={() => onChange([...items, createItem()])}
-          className="rounded border border-white/15 px-2.5 py-1 text-xs transition hover:border-white/35"
+          className="btn btn--ghost btn--sm"
         >
           Adicionar
         </button>
@@ -111,38 +108,42 @@ export function Repeater<T>({
 
       <ol className="space-y-3">
         {items.map((item, index) => (
-          <li
-            key={index}
-            className="space-y-3 rounded border border-white/10 bg-black/20 p-4"
-          >
+          <li key={index} className="card space-y-3 p-4">
             <div className="flex items-center justify-between gap-3">
-              <span className="truncate text-xs font-medium text-white/50">
+              <span className="truncate text-xs font-medium text-[--muted]">
                 {itemLabel(item, index)}
               </span>
               <div className="flex shrink-0 gap-1">
-                <IconButton
-                  label={`Mover ${itemLabel(item, index)} para cima`}
+                <button
+                  type="button"
+                  aria-label={`Mover ${itemLabel(item, index)} para cima`}
+                  title="Mover para cima"
                   disabled={index === 0}
                   onClick={() => move(index, index - 1)}
+                  className="btn btn--icon"
                 >
                   ↑
-                </IconButton>
-                <IconButton
-                  label={`Mover ${itemLabel(item, index)} para baixo`}
+                </button>
+                <button
+                  type="button"
+                  aria-label={`Mover ${itemLabel(item, index)} para baixo`}
+                  title="Mover para baixo"
                   disabled={index === items.length - 1}
                   onClick={() => move(index, index + 1)}
+                  className="btn btn--icon"
                 >
                   ↓
-                </IconButton>
-                <IconButton
-                  label={`Remover ${itemLabel(item, index)}`}
+                </button>
+                <button
+                  type="button"
+                  aria-label={`Remover ${itemLabel(item, index)}`}
+                  title="Remover"
                   disabled={items.length <= min}
-                  onClick={() =>
-                    onChange(items.filter((_, i) => i !== index))
-                  }
+                  onClick={() => onChange(items.filter((_, i) => i !== index))}
+                  className="btn btn--icon"
                 >
                   ✕
-                </IconButton>
+                </button>
               </div>
             </div>
             {renderItem(item, (next) =>
@@ -153,30 +154,5 @@ export function Repeater<T>({
         ))}
       </ol>
     </div>
-  );
-}
-
-function IconButton({
-  label,
-  disabled,
-  onClick,
-  children,
-}: {
-  label: string;
-  disabled?: boolean;
-  onClick: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      title={label}
-      disabled={disabled}
-      onClick={onClick}
-      className="rounded border border-white/15 px-2 py-0.5 text-xs transition hover:border-white/35 disabled:opacity-25"
-    >
-      {children}
-    </button>
   );
 }

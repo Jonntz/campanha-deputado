@@ -1,15 +1,31 @@
 @import "tailwindcss";
 
 /*
- * Paleta emprestada do site para o painel não parecer outro produto, mas sem
- * importar os CSS Modules da campanha: são apps separados, com builds
- * separados, e o painel não precisa carregar o design do site.
+ * Sistema visual do painel.
+ *
+ * A paleta vem do site para não parecer outro produto, mas o cromo é neutro de
+ * propósito: quem passa o dia aqui precisa de uma interface que sai da frente,
+ * não da identidade da campanha repetida em cada botão. O verde fica reservado
+ * para ação e confirmação; o âmbar, para "ainda não publicado".
  */
+
 @theme {
-  --color-ink: #131f2c;
-  --color-deep: #12303c;
-  --color-brand: #1f9d55;
+  --color-brand: #22a45d;
   --color-amber: #f0a500;
+}
+
+:root {
+  --bg: #0d1a20;
+  --surface: #12242c;
+  --surface-2: #162c36;
+  --line: rgb(255 255 255 / 0.09);
+  --line-strong: rgb(255 255 255 / 0.18);
+  --fg: #e9eff2;
+  --muted: #90a4ae;
+  --brand: #22a45d;
+  --brand-soft: rgb(34 164 93 / 0.14);
+  --amber: #f0a500;
+  --radius: 0.75rem;
 }
 
 html {
@@ -17,6 +33,205 @@ html {
 }
 
 body {
-  background: var(--color-deep);
-  color: #e8eef2;
+  font-family: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  background:
+    radial-gradient(60rem 40rem at 15% -10%, rgb(34 164 93 / 0.07), transparent 60%),
+    radial-gradient(50rem 35rem at 100% 0%, rgb(240 165 0 / 0.05), transparent 55%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco visível em tudo que recebe teclado — a navegação por Tab precisa ser
+   utilizável, não só possível. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 0.375rem;
+}
+
+::selection {
+  background: var(--brand-soft);
+}
+
+/* ---------- superfícies ---------- */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .panel { padding: 1.5rem; }
+}
+
+/* ---------- formulários ---------- */
+
+.field { display: block; }
+
+.field__label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+.field__hint {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  opacity: 0.75;
+  margin-top: 0.4rem;
+  line-height: 1.5;
+}
+
+.input {
+  width: 100%;
+  background: rgb(0 0 0 / 0.22);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--fg);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.input:hover { border-color: var(--line-strong); }
+
+.input:focus {
+  outline: none;
+  border-color: var(--brand);
+  background: rgb(0 0 0 / 0.35);
+}
+
+.input::placeholder { color: var(--muted); opacity: 0.6; }
+
+textarea.input { resize: vertical; line-height: 1.6; min-height: 4.5rem; }
+select.input { cursor: pointer; }
+
+/* ---------- botões ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn--primary { background: var(--brand); color: #06120b; }
+.btn--primary:not(:disabled):hover { background: #26b869; }
+
+.btn--ghost { border-color: var(--line); color: var(--fg); }
+.btn--ghost:not(:disabled):hover { border-color: var(--line-strong); background: rgb(255 255 255 / 0.04); }
+
+.btn--sm { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+
+.btn--icon {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  border-color: var(--line);
+  color: var(--muted);
+  border-radius: 0.375rem;
+}
+.btn--icon:not(:disabled):hover { border-color: var(--line-strong); color: var(--fg); }
+
+/* ---------- etiquetas ---------- */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.chip--brand { background: var(--brand-soft); border-color: rgb(34 164 93 / 0.3); color: #7fd8a5; }
+.chip--ok { background: rgb(34 164 93 / 0.1); border-color: rgb(34 164 93 / 0.25); color: #7fd8a5; }
+.chip--warn { background: rgb(240 165 0 / 0.1); border-color: rgb(240 165 0 / 0.3); color: #f5c451; }
+
+/* ---------- navegação ---------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid var(--line);
+  background: rgb(13 26 32 / 0.8);
+  backdrop-filter: blur(12px);
+}
+
+.navlink {
+  position: relative;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.navlink:hover { color: var(--fg); background: rgb(255 255 255 / 0.05); }
+
+.navlink[aria-current="page"] {
+  color: var(--fg);
+  background: rgb(255 255 255 / 0.07);
+}
+
+/* ---------- barra de salvar ---------- */
+
+.save-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 20;
+  border-top: 1px solid var(--line);
+  background: rgb(13 26 32 / 0.9);
+  backdrop-filter: blur(12px);
+}
+
+.save-bar__inner {
+  margin-inline: auto;
+  max-width: 64rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+}
+
+/* ---------- animação de entrada ---------- */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.rise { animation: rise 0.25s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation: none; }
+  * { transition-duration: 0.01ms !important; }
 }

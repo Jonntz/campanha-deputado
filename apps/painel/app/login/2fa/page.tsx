@@ -64,7 +64,7 @@ export default function TwoFactorPage() {
           setUseBackup((v) => !v);
           setError(null);
         }}
-        className="text-sm text-white/50 underline-offset-4 hover:text-white/80 hover:underline"
+        className="text-sm text-[--muted] underline-offset-4 transition hover:text-[--fg] hover:underline"
       >
         {useBackup
           ? "Usar o aplicativo autenticador"

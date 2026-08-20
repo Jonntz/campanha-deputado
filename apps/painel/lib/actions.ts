@@ -4,6 +4,7 @@ import {
   SECTION_KEYS,
   SECTION_PAYLOAD_SCHEMAS,
   SECTION_REGISTRY,
+  settingsSchema,
   type SectionKey,
 } from "@campanha/content";
 import {
@@ -15,6 +16,7 @@ import {
   recordRevalidation,
   saveLayout,
   saveSectionDraft,
+  saveSettingsDraft,
   updateMediaAlt,
 } from "@campanha/db";
 import { revalidatePath } from "next/cache";
@@ -79,6 +81,43 @@ export async function saveSection(
 
   revalidatePath("/conteudo");
   revalidatePath(`/conteudo/${key}`);
+
+  return { ok: true, message: "Rascunho salvo." };
+}
+
+/**
+ * Grava o rascunho das configurações: links, SEO, analytics e rótulos.
+ *
+ * Fica numa linha própria, separada das seções, porque nada aqui pertence a uma
+ * seção específica — o link do WhatsApp aparece no contato, nos botões
+ * flutuantes e no cabeçalho ao mesmo tempo.
+ */
+export async function saveSettings(
+  _previous: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  const user = await requireUser();
+
+  let parsedJson: unknown;
+  try {
+    parsedJson = JSON.parse(String(formData.get("payload")));
+  } catch {
+    return { ok: false, message: "Não foi possível ler o formulário." };
+  }
+
+  const result = settingsSchema.safeParse(parsedJson);
+  if (!result.success) {
+    return {
+      ok: false,
+      message: "Há campos com problema.",
+      fieldErrors: z.prettifyError(result.error),
+    };
+  }
+
+  await saveSettingsDraft(createDatabase(), result.data, user.id);
+
+  revalidatePath("/conteudo");
+  revalidatePath("/configuracoes");
 
   return { ok: true, message: "Rascunho salvo." };
 }

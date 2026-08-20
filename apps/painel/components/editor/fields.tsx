@@ -85,17 +85,17 @@ export function MediaField({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-3">
-        <span className="text-sm text-white/70">{label}</span>
+        <span className="text-sm font-medium text-[--muted]">{label}</span>
         <button
           type="button"
           onClick={() => setPicking(true)}
-          className="rounded border border-white/15 px-2.5 py-1 text-xs transition hover:border-white/35"
+          className="btn btn--ghost btn--sm"
         >
           Trocar imagem
         </button>
       </div>
       <div className="flex gap-4">
-        <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded border border-white/10 bg-black/40">
+        <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-lg border border-[--line] bg-black/40">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={value.url}
@@ -147,7 +147,7 @@ function FocalInput({
 }) {
   return (
     <label className="block space-y-1.5">
-      <span className="text-xs text-white/50">
+      <span className="field__label">
         {label} — {value}%
       </span>
       <input
@@ -156,7 +156,7 @@ function FocalInput({
         max={100}
         value={value}
         onChange={(event) => onChange(Number(event.target.value))}
-        className="w-full accent-[var(--color-brand)]"
+        className="w-full accent-[--brand]"
       />
     </label>
   );
@@ -172,7 +172,7 @@ export function IconPicker({
 }) {
   return (
     <fieldset className="space-y-2">
-      <legend className="text-sm text-white/70">Ícone</legend>
+      <legend className="field__label">Ícone</legend>
       <div className="flex flex-wrap gap-2">
         {PROPOSAL_ICON_NAMES.map((name) => {
           const Icon = PROPOSAL_ICONS[name];
@@ -185,10 +185,10 @@ export function IconPicker({
               aria-label={name}
               title={name}
               onClick={() => onChange(name)}
-              className={`rounded border p-2 transition ${
+              className={`rounded-lg border p-2.5 transition ${
                 active
-                  ? "border-[var(--color-brand)] bg-[var(--color-brand)]/15 text-white"
-                  : "border-white/15 text-white/60 hover:border-white/35"
+                  ? "border-[--brand] bg-[--brand-soft] text-[--fg]"
+                  : "border-[--line] text-[--muted] hover:border-[--line-strong] hover:text-[--fg]"
               }`}
             >
               <Icon size={20} />

@@ -28,7 +28,7 @@ export default async function EditarSecaoPage({
     <div className="space-y-6">
       <Link
         href="/conteudo"
-        className="text-sm text-white/50 transition hover:text-white/80"
+        className="text-sm text-[--muted] transition hover:text-[--fg]"
       >
         ← Conteúdo
       </Link>

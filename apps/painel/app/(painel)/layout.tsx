@@ -1,7 +1,8 @@
-import { getSession } from "@/lib/session";
-import { redirect } from "next/navigation";
-import Link from "next/link";
+import { NavLinks } from "@/components/NavLinks";
 import { SignOutButton } from "@/components/SignOutButton";
+import { getSession } from "@/lib/session";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 /**
  * Verificação real de acesso. Roda em toda rota do painel.
@@ -21,26 +22,33 @@ export default async function PainelLayout({
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-white/10 bg-black/20">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/conteudo" className="font-semibold tracking-tight">
-            Painel <span className="text-[var(--color-amber)]">Biancardine</span>
+      <header className="topbar">
+        <div className="mx-auto flex max-w-5xl items-center gap-6 px-6 py-3">
+          <Link href="/conteudo" className="shrink-0 font-semibold tracking-tight">
+            Painel <span className="text-[--amber]">Biancardine</span>
           </Link>
-          <div className="flex items-center gap-4 text-sm">
-            <nav className="flex gap-4">
-              <Link href="/conteudo" className="text-white/70 transition hover:text-white">
-                Conteúdo
-              </Link>
-              <Link href="/midias" className="text-white/70 transition hover:text-white">
-                Mídias
-              </Link>
-            </nav>
-            <span className="text-white/60">{session.user.email}</span>
+
+          <div className="hidden flex-1 md:block">
+            <NavLinks />
+          </div>
+
+          <div className="ml-auto flex shrink-0 items-center gap-3">
+            <span className="hidden text-sm text-[--muted] lg:inline">
+              {session.user.email}
+            </span>
             <SignOutButton />
           </div>
         </div>
+
+        {/* No celular a navegação desce para a própria linha em vez de sumir. */}
+        <div className="border-t border-[--line] px-4 py-2 md:hidden">
+          <NavLinks />
+        </div>
       </header>
-      <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
+
+      <main className="mx-auto max-w-5xl px-6 py-8 sm:py-10">
+        <div className="rise">{children}</div>
+      </main>
     </div>
   );
 }

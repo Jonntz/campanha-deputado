@@ -54,14 +54,14 @@ export function MediaPicker({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
-      <div className="flex max-h-[85vh] w-full max-w-3xl flex-col gap-4 rounded-lg border border-white/15 bg-[var(--color-deep)] p-5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
+      <div className="rise flex max-h-[85vh] w-full max-w-3xl flex-col gap-4 rounded-xl border border-[--line] bg-[--surface] p-5 shadow-2xl">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="font-medium">Escolher imagem</h2>
+          <h2 className="font-semibold tracking-tight">Escolher imagem</h2>
           <button
             type="button"
             onClick={onClose}
-            className="rounded border border-white/15 px-3 py-1 text-sm transition hover:border-white/35"
+            className="btn btn--ghost btn--sm"
           >
             Fechar
           </button>
@@ -71,9 +71,9 @@ export function MediaPicker({
 
         <div className="min-h-0 flex-1 overflow-y-auto">
           {items === null ? (
-            <p className="text-sm text-white/40">Carregando…</p>
+            <p className="text-sm text-[--muted]">Carregando…</p>
           ) : items.length === 0 ? (
-            <p className="text-sm text-white/40">
+            <p className="text-sm text-[--muted]">
               Nenhuma imagem na biblioteca. Envie a primeira acima.
             </p>
           ) : (
@@ -85,8 +85,8 @@ export function MediaPicker({
                     onClick={() => pick(media)}
                     className={`w-full overflow-hidden rounded border transition ${
                       media.url === current.url
-                        ? "border-[var(--color-brand)]"
-                        : "border-white/10 hover:border-white/40"
+                        ? "border-[--brand]"
+                        : "border-[--line] hover:border-[--line-strong]"
                     }`}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -97,6 +97,26 @@ payload nenhum. `inicio` não pode ser ocultada, e isso é garantido em três
 lugares: a caixa vem desabilitada, a server action força o valor, e o site força
 de novo na leitura — só a última protege contra uma escrita direta no banco.
 
+## Configurações e editores
+
+`/configuracoes` reúne o que não pertence a uma seção só: links de WhatsApp,
+Instagram e doação, identidade, textos do menu, descrições para buscadores,
+IDs de rastreamento e os rótulos de interface. O número do WhatsApp é gravado
+uma vez e alimenta os três lugares onde aparece — card de contato, botão de
+ação e botão flutuante.
+
+`/usuarios` controla quem entra. Não existe cadastro aberto: todo acesso nasce
+ali ou pelo `create-admin`. Dois papéis:
+
+| Papel | Edita conteúdo | Gerencia acessos |
+| --- | --- | --- |
+| Editor | sim | não |
+| Administrador | sim | sim |
+
+Ninguém pode remover a própria conta — sem essa guarda o único administrador
+consegue se trancar do lado de fora. Quem é criado ali entra com senha e é
+obrigado a cadastrar o segundo fator antes de ver qualquer tela.
+
 ## Biblioteca de mídia
 
 Em `/midias`. O envio passa por três etapas que não são otimização:

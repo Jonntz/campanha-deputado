@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { barlow } from "./fonts";
 import "./globals.css";
 
 /**
@@ -21,7 +22,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={barlow.variable}>
       <body className="min-h-screen antialiased">{children}</body>
     </html>
   );

@@ -49,7 +49,7 @@ export function Uploader({
 
   return (
     <div className="space-y-2">
-      <label className="inline-flex cursor-pointer items-center gap-2 rounded border border-white/20 px-4 py-2 text-sm transition hover:border-white/40">
+      <label className="btn btn--ghost cursor-pointer">
         <input
           ref={input}
           type="file"
@@ -64,12 +64,12 @@ export function Uploader({
       {message ? (
         <p
           role="status"
-          className={`text-sm ${error ? "text-red-300" : "text-white/60"}`}
+          className={`text-sm ${error ? "text-red-300" : "text-[--muted]"}`}
         >
           {message}
         </p>
       ) : null}
-      <p className="text-xs text-white/40">
+      <p className="max-w-sm text-xs leading-relaxed text-[--muted] opacity-75">
         JPEG, PNG, WebP ou AVIF. Fotos grandes são reduzidas no navegador antes
         do envio; HEIC precisa ser exportado como JPEG antes.
       </p>

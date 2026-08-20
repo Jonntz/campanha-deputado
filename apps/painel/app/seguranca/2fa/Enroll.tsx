@@ -81,12 +81,12 @@ export function Enroll() {
   }
 
   return (
-    <div className="mx-auto mt-16 w-full max-w-md space-y-6 rounded-lg border border-white/10 bg-black/20 p-6">
+    <div className="panel rise mx-auto mt-16 w-full max-w-md space-y-6">
       <div className="space-y-1">
         <h1 className="text-xl font-semibold tracking-tight">
           Escaneie o código
         </h1>
-        <p className="text-sm text-white/60">
+        <p className="text-sm leading-relaxed text-[--muted]">
           Use o Google Authenticator, o Authy ou o gerenciador de senhas do seu
           celular.
         </p>
@@ -98,16 +98,16 @@ export function Enroll() {
 
       <div className="space-y-2">
         <p className="text-sm font-medium">Códigos de backup</p>
-        <p className="text-sm text-white/60">
+        <p className="text-sm leading-relaxed text-[--muted]">
           Guarde agora, fora deste computador. Eles são a única forma de entrar
           se você perder o celular, e não voltam a ser exibidos.
         </p>
-        <ul className="grid grid-cols-2 gap-1.5 rounded border border-white/10 bg-black/30 p-3 font-mono text-sm">
+        <ul className="grid grid-cols-2 gap-1.5 rounded-lg border border-[--line] bg-black/30 p-3 font-mono text-sm">
           {backupCodes.map((code) => (
             <li key={code}>{code}</li>
           ))}
         </ul>
-        <label className="flex items-center gap-2 text-sm text-white/70">
+        <label className="flex items-start gap-2 text-sm text-[--muted]">
           <input
             type="checkbox"
             checked={saved}
