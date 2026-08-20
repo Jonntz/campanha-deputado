@@ -74,6 +74,13 @@ autorização seria um erro.
 O cookie de sessão sai sem atributo `Domain`, então fica preso ao subdomínio do
 painel e nunca é enviado para o domínio do site.
 
+A CSP do painel é montada por requisição em `proxy.ts`, com um nonce novo a cada
+resposta — não em `next.config.ts`, que só aceita valor estático. O motivo é que
+o Next injeta o payload RSC num `<script>` inline: sem nonce, `script-src 'self'`
+o bloqueia, o React não hidrata e a página renderiza sem responder a nada. Por
+isso também nada no painel é estático (`dynamic = "force-dynamic"` no layout
+raiz): uma página gerada no build sairia com scripts sem nonce.
+
 ## Editando pelo painel
 
 Cada seção tem sua tela em `/conteudo/<secao>`. **Salvar** grava no rascunho e
