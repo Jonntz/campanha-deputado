@@ -14,6 +14,7 @@ import {
   listMedia,
   publishAll,
   recordRevalidation,
+  restoreRevision,
   saveLayout,
   saveSectionDraft,
   saveSettingsDraft,
@@ -263,4 +264,24 @@ export async function removeMedia(id: string): Promise<ActionResult> {
   await deleteMedia(db, id);
   revalidatePath("/midias");
   return { ok: true, message: "Mídia removida." };
+}
+
+/**
+ * Devolve uma versão anterior ao rascunho.
+ *
+ * Não publica: restaurar traz o texto de volta para o editor, e levar ao site
+ * continua exigindo apertar Publicar. É o que permite conferir o que voltou
+ * antes de a campanha inteira ver.
+ */
+export async function restoreVersion(revisionId: string): Promise<ActionResult> {
+  const user = await requireUser();
+
+  const result = await restoreRevision(createDatabase(), revisionId, user.id);
+
+  revalidatePath("/historico");
+  revalidatePath("/conteudo");
+  if (result.sectionKey) revalidatePath(`/conteudo/${result.sectionKey}`);
+  revalidatePath("/configuracoes");
+
+  return { ok: result.ok, message: result.message };
 }

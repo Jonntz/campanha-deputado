@@ -7,6 +7,7 @@ const LINKS = [
   { href: "/conteudo", label: "Conteúdo" },
   { href: "/midias", label: "Mídias" },
   { href: "/configuracoes", label: "Configurações" },
+  { href: "/historico", label: "Histórico" },
   { href: "/usuarios", label: "Editores" },
 ];
 

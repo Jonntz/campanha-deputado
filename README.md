@@ -97,6 +97,22 @@ payload nenhum. `inicio` não pode ser ocultada, e isso é garantido em três
 lugares: a caixa vem desabilitada, a server action força o valor, e o site força
 de novo na leitura — só a última protege contra uma escrita direta no banco.
 
+## Histórico
+
+`/historico` mostra duas coisas: as versões de cada parte do conteúdo e o
+registro das publicações — quem publicou, quando, o que entrou, e se o site
+chegou a ser avisado. Publicar e revalidar são passos separados, então uma
+publicação pode constar como gravada com o aviso ao site tendo falhado.
+
+Restaurar devolve a versão ao **rascunho**, nunca direto ao publicado: dá para
+conferir o que voltou antes de a campanha inteira ver. A própria restauração
+vira uma versão, então desfazer um desfazer também funciona.
+
+Uma revisão antiga é validada contra o schema atual antes de ser gravada. Sem
+isso, uma versão de meses atrás — de quando um campo ainda não era obrigatório —
+entraria como rascunho quebrado, e o erro só apareceria na hora de publicar,
+longe da causa.
+
 ## Configurações e editores
 
 `/configuracoes` reúne o que não pertence a uma seção só: links de WhatsApp,
