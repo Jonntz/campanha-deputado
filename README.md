@@ -90,6 +90,30 @@ payload nenhum. `inicio` não pode ser ocultada, e isso é garantido em três
 lugares: a caixa vem desabilitada, a server action força o valor, e o site força
 de novo na leitura — só a última protege contra uma escrita direta no banco.
 
+## Biblioteca de mídia
+
+Em `/midias`. O envio passa por três etapas que não são otimização:
+
+- **Redução no navegador antes de subir.** O corpo de uma função serverless da
+  Vercel para em 4,5 MB e as fotos originais chegam a 12 MB.
+- **`rotate()` antes de ler as dimensões.** Fotos de iPhone trazem a orientação
+  no EXIF; sem isso largura e altura saem trocadas.
+- **EXIF descartado no reencode.** As fotos de evento costumam carregar
+  coordenadas de GPS — publicá-las vazaria a localização de quem estava lá.
+
+O blur sai com 8px no lado maior e qualidade 70, que é o que o Next gera para
+imports estáticos: ele dimensiona o viewBox do placeholder como `blurWidth * 40`,
+então outro tamanho mudaria a intensidade do desfoque em relação ao resto do site.
+
+O arquivo é nomeado pelo hash do conteúdo, então enviar a mesma imagem duas
+vezes reaproveita a primeira. Apagar é bloqueado enquanto alguma seção
+referenciar a mídia: o `MediaRef` gravado na seção é desnormalizado e não há
+chave estrangeira, então nada avisaria antes da página renderizar quebrada.
+
+Em produção o destino é o Vercel Blob (`BLOB_READ_WRITE_TOKEN`); sem o token,
+grava em `apps/site/public/uploads/` para desenvolvimento. Trocar de provedor é
+trocar um driver em `lib/storage.ts`.
+
 ## Como o conteúdo chega na página
 
 O Turso **nunca entra no caminho da requisição**. A página é estática com ISR,

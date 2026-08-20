@@ -8,14 +8,19 @@ import {
 } from "@campanha/content";
 import {
   createDatabase,
+  deleteMedia,
+  findMediaUsage,
+  listMedia,
   publishAll,
   recordRevalidation,
   saveLayout,
   saveSectionDraft,
+  updateMediaAlt,
 } from "@campanha/db";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { getSession } from "./session";
+import { getStorage } from "./storage";
 
 export type ActionResult =
   | { ok: true; message: string }
@@ -182,4 +187,41 @@ export async function publish(): Promise<ActionResult> {
         ok: false,
         message: `Publicado no banco, mas o site não confirmou a atualização (${error}).`,
       };
+}
+
+export async function updateMediaDescription(
+  id: string,
+  alt: string,
+): Promise<ActionResult> {
+  await requireUser();
+  await updateMediaAlt(createDatabase(), id, alt.trim());
+  revalidatePath("/midias");
+  return { ok: true, message: "Descrição salva." };
+}
+
+/**
+ * Só apaga o que não está em uso.
+ *
+ * Uma mídia removida enquanto ainda referenciada deixaria uma imagem quebrada
+ * no site — e o `MediaRef` gravado na seção é desnormalizado, então nada
+ * avisaria antes de a página renderizar.
+ */
+export async function removeMedia(id: string): Promise<ActionResult> {
+  await requireUser();
+  const db = createDatabase();
+
+  const usage = await findMediaUsage(db, id);
+  if (usage.length > 0) {
+    return {
+      ok: false,
+      message: `Em uso em: ${usage.join(", ")}. Troque a imagem nessas seções antes de apagar.`,
+    };
+  }
+
+  const record = (await listMedia(db)).find((item) => item.id === id);
+  if (record) await getStorage().remove(record.pathname);
+
+  await deleteMedia(db, id);
+  revalidatePath("/midias");
+  return { ok: true, message: "Mídia removida." };
 }

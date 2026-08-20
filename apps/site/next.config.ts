@@ -107,6 +107,17 @@ const nextConfig: NextConfig = {
   images: {
     // AVIF primeiro: ~20-30% menor que WebP com a mesma qualidade percebida.
     formats: ["image/avif", "image/webp"],
+
+    // Imagens enviadas pelo painel em produção. Não é preciso mexer na CSP por
+    // causa disto: o next/image serve o resultado otimizado a partir de
+    // /_next/image, na mesma origem, então `img-src 'self'` já cobre.
+    remotePatterns: [
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+    ],
+
+    // As imagens têm o hash do conteúdo no nome, então nunca mudam sob a mesma
+    // URL — o cache pode ser longo.
+    minimumCacheTTL: 60 * 60 * 24 * 31,
   },
 
   // O site não tem rotas dinâmicas nem headers por rota: uma regra global basta.

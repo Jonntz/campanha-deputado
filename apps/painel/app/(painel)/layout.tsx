@@ -27,6 +27,14 @@ export default async function PainelLayout({
             Painel <span className="text-[var(--color-amber)]">Biancardine</span>
           </Link>
           <div className="flex items-center gap-4 text-sm">
+            <nav className="flex gap-4">
+              <Link href="/conteudo" className="text-white/70 transition hover:text-white">
+                Conteúdo
+              </Link>
+              <Link href="/midias" className="text-white/70 transition hover:text-white">
+                Mídias
+              </Link>
+            </nav>
             <span className="text-white/60">{session.user.email}</span>
             <SignOutButton />
           </div>

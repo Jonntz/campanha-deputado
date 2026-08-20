@@ -3,6 +3,8 @@
 import type { MediaRef, SectionHeader, SplitTitle } from "@campanha/content";
 import { PROPOSAL_ICON_NAMES, type ProposalIconName } from "@campanha/content";
 import { PROPOSAL_ICONS } from "@campanha/icons";
+import { MediaPicker } from "@/components/media/MediaPicker";
+import { useState } from "react";
 import { Text } from "./primitives";
 
 /** Título partido: a segunda metade recebe o gradiente no site. */
@@ -62,11 +64,10 @@ export function SectionHeaderField({
 }
 
 /**
- * Imagem: alt e enquadramento são editáveis; trocar o arquivo depende da
- * biblioteca de mídia, que ainda não existe.
+ * Imagem de uma seção: arquivo, descrição e enquadramento.
  *
  * O enquadramento existe porque as imagens são cortadas por `object-fit: cover`
- * dentro de proporções fixas. Quem troca uma foto não controla o corte —
+ * dentro de proporções fixas no CSS. Quem troca uma foto não controla o corte —
  * controla para onde ele puxa.
  */
 export function MediaField({
@@ -79,10 +80,20 @@ export function MediaField({
   onChange: (value: MediaRef) => void;
 }) {
   const focal = value.focal ?? { x: 50, y: 50 };
+  const [picking, setPicking] = useState(false);
 
   return (
     <div className="space-y-3">
-      <span className="text-sm text-white/70">{label}</span>
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm text-white/70">{label}</span>
+        <button
+          type="button"
+          onClick={() => setPicking(true)}
+          className="rounded border border-white/15 px-2.5 py-1 text-xs transition hover:border-white/35"
+        >
+          Trocar imagem
+        </button>
+      </div>
       <div className="flex gap-4">
         <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded border border-white/10 bg-black/40">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -114,9 +125,13 @@ export function MediaField({
           </div>
         </div>
       </div>
-      <p className="text-xs text-white/40">
-        Trocar o arquivo depende da biblioteca de mídia, ainda em construção.
-      </p>
+      {picking ? (
+        <MediaPicker
+          current={value}
+          onPick={onChange}
+          onClose={() => setPicking(false)}
+        />
+      ) : null}
     </div>
   );
 }

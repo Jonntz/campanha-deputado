@@ -17,6 +17,12 @@ import { NextResponse, type NextRequest } from "next/server";
 export function proxy(request: NextRequest) {
   if (getSessionCookie(request)) return NextResponse.next();
 
+  // Rotas de API respondem em JSON. Redirecioná-las faria um POST cair numa
+  // página, que então falha ao ler o corpo e devolve 500 no lugar de 401.
+  if (request.nextUrl.pathname.startsWith("/api/")) {
+    return NextResponse.json({ error: "não autorizado" }, { status: 401 });
+  }
+
   return NextResponse.redirect(new URL("/login", request.url));
 }
 
