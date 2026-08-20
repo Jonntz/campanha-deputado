@@ -1,5 +1,6 @@
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { SignOutButton } from "@/components/SignOutButton";
 
 /**
@@ -22,9 +23,9 @@ export default async function PainelLayout({
     <div className="min-h-screen">
       <header className="border-b border-white/10 bg-black/20">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <span className="font-semibold tracking-tight">
+          <Link href="/conteudo" className="font-semibold tracking-tight">
             Painel <span className="text-[var(--color-amber)]">Biancardine</span>
-          </span>
+          </Link>
           <div className="flex items-center gap-4 text-sm">
             <span className="text-white/60">{session.user.email}</span>
             <SignOutButton />

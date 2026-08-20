@@ -74,6 +74,22 @@ autorização seria um erro.
 O cookie de sessão sai sem atributo `Domain`, então fica preso ao subdomínio do
 painel e nunca é enviado para o domínio do site.
 
+## Editando pelo painel
+
+Cada seção tem sua tela em `/conteudo/<secao>`. **Salvar** grava no rascunho e
+não tem efeito nenhum no site; **Publicar** copia o rascunho para o publicado,
+numa transação, e chama a revalidação do site. A separação é deliberada: uma
+publicação regenera a página da campanha, e isso merece um gesto explícito.
+
+Listas (propostas, credenciais, fotos, vídeos, parágrafos) têm adicionar,
+remover e reordenar por botões ↑↓ — acessíveis por teclado, funcionais no
+celular, e sem dependência de arrastar.
+
+A ordem e a visibilidade das seções são colunas, então reordenar não reescreve
+payload nenhum. `inicio` não pode ser ocultada, e isso é garantido em três
+lugares: a caixa vem desabilitada, a server action força o valor, e o site força
+de novo na leitura — só a última protege contra uma escrita direta no banco.
+
 ## Como o conteúdo chega na página
 
 O Turso **nunca entra no caminho da requisição**. A página é estática com ISR,
