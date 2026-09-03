@@ -82,11 +82,28 @@ export async function POST(request: Request) {
     return Response.json({ media: existing, reused: true });
   }
 
-  const stored = await getStorage().put(
-    storageKey(file.name, processed.checksum, processed.extension),
-    processed.buffer,
-    processed.contentType,
-  );
+  let stored;
+  try {
+    stored = await getStorage().put(
+      storageKey(file.name, processed.checksum, processed.extension),
+      processed.buffer,
+      processed.contentType,
+    );
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("[media] falha ao gravar no armazenamento:", message);
+
+    // Um store privado recusa escrita pública, e a mensagem crua do SDK fala em
+    // token inválido — o que manda quem lê investigar a credencial errada.
+    return Response.json(
+      {
+        error: /private store|private access/i.test(message)
+          ? "O armazenamento de imagens está configurado como privado. Fale com o responsável técnico: o store precisa ser público."
+          : "Não foi possível guardar a imagem. Tente de novo em alguns instantes.",
+      },
+      { status: 502 },
+    );
+  }
 
   const record = await insertMedia(db, {
     id: crypto.randomUUID(),

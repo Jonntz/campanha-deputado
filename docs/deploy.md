@@ -37,10 +37,18 @@ turso db tokens invalidate database-biancardine-vercel
 Isso revoga **todos** os tokens do banco, inclusive o read-only. Crie os dois
 novos logo em seguida e atualize as variáveis nos dois projetos.
 
-### 1.3 Criar o Blob store
+### 1.3 Criar o Blob store — marque **público**
 
 Na Vercel: **Storage → Create → Blob**, e conecte ao projeto do painel. O
 `BLOB_READ_WRITE_TOKEN` é injetado automaticamente nele.
+
+Na criação, escolha **acesso público**. As fotos do site precisam ser lidas por
+qualquer navegador; um store privado exige autenticação a cada leitura e entrega
+os arquivos através de uma função, o que anula o cache do CDN e o otimizador de
+imagens do Next.
+
+O modo de acesso **não pode ser alterado depois**. Se o store já tiver sido
+criado como privado, crie outro — não há como converter.
 
 ### 1.4 Migrar a imagem que está em disco local
 

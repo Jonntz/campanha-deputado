@@ -17,6 +17,41 @@ import { put } from "@vercel/blob";
 
 const LOCAL_ROOT = path.resolve(process.cwd(), "../site/public/uploads");
 
+/**
+ * Traduz as falhas conhecidas do Blob para instruções acionáveis.
+ *
+ * A mensagem crua do SDK para um store privado fala em token inválido, o que
+ * manda quem lê investigar a credencial — que está certa. O problema é outro.
+ */
+function explicar(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+
+  if (/private store|private access/i.test(message)) {
+    return [
+      "O Blob store está configurado como PRIVADO.",
+      "",
+      "As fotos de um site público precisam ser lidas por qualquer navegador, e",
+      "um store privado exige autenticação a cada leitura — o que também anula o",
+      "cache do CDN e o otimizador de imagens do Next.",
+      "",
+      "O modo de acesso não pode ser alterado depois da criação. Crie um novo",
+      "store marcando PUBLIC, troque o BLOB_READ_WRITE_TOKEN em",
+      "apps/painel/.env.local e rode este script de novo.",
+    ].join("\n");
+  }
+
+  if (/Access denied|valid token/i.test(message)) {
+    return [
+      "O Blob recusou o token.",
+      "",
+      "Confira se o BLOB_READ_WRITE_TOKEN em apps/painel/.env.local pertence ao",
+      "store que você pretende usar, e se não foi revogado desde que você copiou.",
+    ].join("\n");
+  }
+
+  return message;
+}
+
 async function main() {
   const dryRun = process.argv.includes("--dry");
 
@@ -67,13 +102,21 @@ async function main() {
       continue;
     }
 
-    const uploaded = await put(item.pathname, bytes, {
-      access: "public",
-      contentType: item.mimeType,
-      // O nome já carrega o hash do conteúdo; sufixo aleatório atrapalharia a
-      // deduplicação de envios futuros.
-      addRandomSuffix: false,
-    });
+    let uploaded;
+    try {
+      uploaded = await put(item.pathname, bytes, {
+        access: "public",
+        contentType: item.mimeType,
+        // O nome já carrega o hash do conteúdo; sufixo aleatório atrapalharia a
+        // deduplicação de envios futuros.
+        addRandomSuffix: false,
+      });
+    } catch (error) {
+      // Falha de configuração atinge todos os arquivos igualmente: insistir nos
+      // demais só repetiria o mesmo erro.
+      console.error("\n" + explicar(error) + "\n");
+      process.exit(1);
+    }
 
     const touched = await rewriteMediaUrl(db, {
       id: item.id,
