@@ -13,7 +13,13 @@ export type LibraryItem = {
   defaultAlt: string;
 };
 
-export function MediaLibrary({ items }: { items: LibraryItem[] }) {
+export function MediaLibrary({
+  items,
+  localStorage = false,
+}: {
+  items: LibraryItem[];
+  localStorage?: boolean;
+}) {
   const [message, setMessage] = useState<{ text: string; ok: boolean } | null>(null);
   const [busy, startTransition] = useTransition();
 
@@ -28,6 +34,25 @@ export function MediaLibrary({ items }: { items: LibraryItem[] }) {
         </div>
         <Uploader />
       </div>
+
+      {localStorage ? (
+        <div
+          role="alert"
+          className="rounded-xl border border-[--amber]/40 bg-[--amber]/10 p-4 text-sm leading-relaxed"
+        >
+          <p className="font-medium text-[--amber]">
+            Armazenamento local em uso
+          </p>
+          <p className="mt-1 text-[--muted]">
+            As imagens enviadas agora ficam apenas nesta máquina e vão aparecer
+            quebradas no site publicado. Configure{" "}
+            <code className="text-[--fg]">BLOB_READ_WRITE_TOKEN</code> antes de
+            enviar mídia definitiva — ou rode{" "}
+            <code className="text-[--fg]">pnpm --filter painel migrar-midias</code>{" "}
+            depois, para mover o que já foi enviado.
+          </p>
+        </div>
+      ) : null}
 
       {message ? (
         <p

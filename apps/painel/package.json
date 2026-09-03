@@ -8,7 +8,8 @@
     "start": "next start --port 3001",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "create-admin": "tsx --env-file=.env.local scripts/create-admin.ts"
+    "create-admin": "tsx --env-file=.env.local scripts/create-admin.ts",
+    "migrar-midias": "tsx --env-file=.env.local scripts/migrar-midias-locais.ts"
   },
   "dependencies": {
     "@campanha/content": "workspace:*",
