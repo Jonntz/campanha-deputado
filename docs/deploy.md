@@ -123,8 +123,21 @@ Se preferir gerar novos, gere e troque nos dois lugares.
 ### Três detalhes que causam problema
 
 - **`REVALIDATE_SECRET` diferente entre os projetos** faz o painel publicar no
-  banco e o site nunca atualizar. O painel avisa quando isso acontece, no
-  histórico, mas é chato de descobrir.
+  banco e o site nunca atualizar.
+- **`SITE_URL` é só do painel** e é a mais fácil de esquecer, porque não tem
+  par do outro lado. Sem ela o painel publica e não avisa ninguém. A tela de
+  Conteúdo mostra um aviso amarelo quando ela falta, antes de você publicar.
+
+  Para conferir os dois de uma vez, do seu terminal:
+
+  ```bash
+  curl -i -X POST https://www.matheusbiancardine.com.br/api/revalidate \
+    -H "x-revalidate-secret: SEU_SEGREDO"
+  ```
+
+  `200 {"revalidated":true}` significa que o segredo está certo. `401` significa
+  que ele não bate com o do projeto do site. `503` significa que o projeto do
+  site está sem a variável.
 - **`BETTER_AUTH_URL` precisa bater exatamente** com o domínio que serve o
   painel, com `https://` e sem barra no fim.
 

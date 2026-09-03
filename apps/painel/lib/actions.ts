@@ -188,18 +188,30 @@ export async function publish(): Promise<ActionResult> {
   const siteUrl = process.env.SITE_URL;
   const secret = process.env.REVALIDATE_SECRET;
 
+  // A guarda fica na forma que o TypeScript consegue estreitar; a lista serve
+  // só para a mensagem. "SITE_URL/REVALIDATE_SECRET" mandava conferir as duas,
+  // e quem já tinha configurado uma concluía que o problema era outro.
   if (!siteUrl || !secret) {
+    const lista = [
+      !siteUrl ? "SITE_URL" : null,
+      !secret ? "REVALIDATE_SECRET" : null,
+    ]
+      .filter((name): name is string => name !== null)
+      .join(" e ");
+
     if (eventId) {
       await recordRevalidation(db, eventId, {
         ok: false,
-        error: "SITE_URL ou REVALIDATE_SECRET ausente",
+        error: `${lista} ausente no painel`,
       });
     }
     revalidatePath("/conteudo");
     return {
       ok: false,
       message:
-        "Publicado no banco, mas o site não foi avisado: falta configurar SITE_URL/REVALIDATE_SECRET.",
+        `Publicado no banco, mas o site não foi avisado: falta ${lista} ` +
+        `nas variáveis de ambiente do painel. As alterações entram no ar ` +
+        `sozinhas em até uma hora, ou imediatamente após configurar e publicar de novo.`,
     };
   }
 

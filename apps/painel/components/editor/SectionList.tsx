@@ -17,9 +17,12 @@ export type Slot = {
 export function SectionList({
   slots: initial,
   pendingCount,
+  missingEnv = [],
 }: {
   slots: Slot[];
   pendingCount: number;
+  /** Variáveis sem as quais publicar não consegue avisar o site. */
+  missingEnv?: string[];
 }) {
   const router = useRouter();
   const [slots, setSlots] = useState(initial);
@@ -77,6 +80,25 @@ export function SectionList({
             : `${pendingCount} não publicada(s)`}
         </span>
       </header>
+
+      {missingEnv.length > 0 ? (
+        <div
+          role="alert"
+          className="rounded-xl border border-[--amber]/40 bg-[--amber]/10 p-4 text-sm leading-relaxed"
+        >
+          <p className="font-medium text-[--amber]">
+            Publicação não vai avisar o site
+          </p>
+          <p className="mt-1 text-[--muted]">
+            Falta {missingEnv.map((name) => (
+              <code key={name} className="text-[--fg]">{name}</code>
+            )).reduce((a, b) => <>{a} e {b}</>)}{" "}
+            nas variáveis de ambiente deste projeto na Vercel. O conteúdo é
+            gravado normalmente, mas o site só recolhe as alterações na
+            revalidação automática, em até uma hora.
+          </p>
+        </div>
+      ) : null}
 
       <ol className="card divide-y divide-[--line]">
         {slots.map((slot, index) => (

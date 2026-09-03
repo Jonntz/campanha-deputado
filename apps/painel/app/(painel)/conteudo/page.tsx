@@ -30,5 +30,17 @@ export default async function ConteudoPage() {
     pending: pendingKeys.has(slot.key),
   }));
 
-  return <SectionList slots={slots} pendingCount={pending.length} />;
+  // Avisar antes de a pessoa publicar e ver a mensagem de falha.
+  const faltando = [
+    !process.env.SITE_URL && "SITE_URL",
+    !process.env.REVALIDATE_SECRET && "REVALIDATE_SECRET",
+  ].filter(Boolean) as string[];
+
+  return (
+    <SectionList
+      slots={slots}
+      pendingCount={pending.length}
+      missingEnv={faltando}
+    />
+  );
 }
