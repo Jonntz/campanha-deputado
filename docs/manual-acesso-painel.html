@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Painel Biancardine — Manual de acesso</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm 16mm; }
+
+  :root {
+    --ink: #16232b;
+    --muted: #5b6b76;
+    --line: #d9e1e5;
+    --green: #1c8c4f;
+    --green-bg: #eef7f1;
+    --amber: #b57500;
+    --amber-bg: #fdf5e4;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.62;
+    color: var(--ink);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3 { line-height: 1.25; margin: 0; }
+
+  /* ---------- capa ---------- */
+
+  .cover {
+    height: 247mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+    border-top: 6px solid var(--green);
+    padding-top: 52mm;
+  }
+  .cover .eyebrow {
+    font-size: 9pt;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10mm;
+  }
+  .cover h1 { font-size: 30pt; letter-spacing: -.02em; }
+  .cover h1 span { color: var(--green); }
+  .cover .sub {
+    font-size: 13pt;
+    color: var(--muted);
+    margin-top: 5mm;
+    max-width: 115mm;
+    line-height: 1.5;
+  }
+  .cover .foot {
+    margin-top: auto;
+    font-size: 9pt;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 4mm;
+  }
+
+  /* ---------- sumário ---------- */
+
+  .toc { page-break-after: always; }
+  .toc ol { list-style: none; padding: 0; margin: 6mm 0 0; counter-reset: t; }
+  .toc li {
+    counter-increment: t;
+    padding: 2.6mm 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    gap: 5mm;
+    font-size: 11pt;
+  }
+  .toc li::before {
+    content: counter(t);
+    color: var(--green);
+    font-weight: 700;
+    width: 6mm;
+    flex: none;
+  }
+
+  /* ---------- seções ---------- */
+
+  section { page-break-inside: avoid; margin-bottom: 9mm; }
+  section.break { page-break-before: always; }
+
+  h2 {
+    font-size: 15pt;
+    letter-spacing: -.01em;
+    padding-bottom: 2mm;
+    border-bottom: 2px solid var(--green);
+    margin-bottom: 4mm;
+  }
+  h2 .num { color: var(--green); margin-right: 2.5mm; }
+
+  h3 { font-size: 11pt; margin: 5mm 0 2mm; }
+
+  p { margin: 0 0 3mm; }
+  p.lead { color: var(--muted); font-size: 11pt; margin-bottom: 4mm; }
+
+  strong { font-weight: 700; }
+
+  /* ---------- passos ---------- */
+
+  ol.steps { list-style: none; counter-reset: s; padding: 0; margin: 0; }
+  ol.steps > li {
+    counter-increment: s;
+    position: relative;
+    padding-left: 11mm;
+    margin-bottom: 4mm;
+    page-break-inside: avoid;
+  }
+  ol.steps > li::before {
+    content: counter(s);
+    position: absolute;
+    left: 0; top: -0.3mm;
+    width: 7mm; height: 7mm;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-size: 9pt;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Só o primeiro <strong> é o título do passo; os do meio do texto
+     continuam correndo na linha. */
+  ol.steps > li > strong:first-child { display: block; margin-bottom: .8mm; }
+
+  /* ---------- avisos ---------- */
+
+  .note {
+    border-left: 3px solid var(--green);
+    background: var(--green-bg);
+    padding: 3.5mm 5mm;
+    margin: 4mm 0;
+    page-break-inside: avoid;
+  }
+  .note.warn { border-left-color: var(--amber); background: var(--amber-bg); }
+  .note p:last-child { margin-bottom: 0; }
+  .note .label {
+    display: block;
+    font-size: 8.5pt;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 1mm;
+  }
+  .note.warn .label { color: var(--amber); }
+
+  /* ---------- interface citada ---------- */
+
+  .ui {
+    font-weight: 600;
+    background: #eef2f4;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: .3mm 1.6mm;
+    font-size: 9.5pt;
+    white-space: nowrap;
+  }
+
+  /* ---------- tabelas ---------- */
+
+  table { width: 100%; border-collapse: collapse; margin: 3mm 0; font-size: 10pt; }
+  th, td { text-align: left; padding: 2.4mm 3mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 8.5pt; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); border-bottom: 2px solid var(--line); }
+  td:first-child { font-weight: 600; width: 34mm; }
+
+  /* ---------- fluxo ---------- */
+
+  .flow { display: flex; align-items: stretch; gap: 0; margin: 5mm 0; }
+  .flow .box {
+    flex: 1;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 3mm;
+    text-align: center;
+    font-size: 9pt;
+  }
+  .flow .box b { display: block; font-size: 9.5pt; margin-bottom: .8mm; }
+  .flow .box span { color: var(--muted); }
+  .flow .arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 2.5mm;
+    color: var(--green);
+    font-size: 13pt;
+  }
+
+  /* ---------- anotar códigos ---------- */
+
+  .codes {
+    border: 1px dashed #9fb0ba;
+    border-radius: 4px;
+    padding: 5mm;
+    margin: 4mm 0;
+    page-break-inside: avoid;
+  }
+  .codes .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3mm 8mm; margin-top: 4mm; }
+  .codes .slot { border-bottom: 1px solid #b9c6cd; height: 7mm; display: flex; align-items: flex-end; }
+  .codes .slot i { font-style: normal; color: #9fb0ba; font-size: 8.5pt; padding-bottom: .8mm; }
+
+  ul.plain { margin: 0 0 3mm; padding-left: 5mm; }
+  ul.plain li { margin-bottom: 1.6mm; }
+
+  .footer-note {
+    margin-top: 10mm;
+    padding-top: 3mm;
+    border-top: 1px solid var(--line);
+    font-size: 9pt;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <p class="eyebrow">Campanha Matheus Biancardine · Minas Gerais 2026</p>
+  <h1>Painel de conteúdo<br><span>Manual de acesso</span></h1>
+  <p class="sub">
+    Como entrar no painel, ativar a verificação em duas etapas e publicar
+    alterações no site da campanha.
+  </p>
+  <p class="foot">
+    Guarde este documento. A parte sobre códigos de backup tem espaço para você
+    anotar os seus.
+  </p>
+</div>
+
+<div class="toc">
+  <h2 style="border:none;padding:0;margin-bottom:2mm">Neste manual</h2>
+  <ol>
+    <li>O que é o painel</li>
+    <li>Você recebeu um acesso</li>
+    <li>Primeiro acesso: entrar</li>
+    <li>A verificação em duas etapas</li>
+    <li>Instalar o aplicativo no celular</li>
+    <li>Escanear o código</li>
+    <li>Guardar os códigos de backup</li>
+    <li>Ativar e concluir</li>
+    <li>O dia a dia: entrando no painel</li>
+    <li>Quando alguma coisa dá errado</li>
+    <li>Salvar não é publicar</li>
+    <li>As telas do painel</li>
+    <li>Para administradores: criar e remover acessos</li>
+    <li>Regras de segurança</li>
+  </ol>
+</div>
+
+<section>
+  <h2><span class="num">1</span>O que é o painel</h2>
+  <p class="lead">
+    O painel é onde a equipe edita o site da campanha sem depender de um
+    programador.
+  </p>
+  <p>
+    Textos, fotos, propostas, números de contato e links — tudo que aparece no
+    site pode ser alterado por ali. As mudanças entram no ar em segundos, sem
+    precisar de nova publicação técnica do site.
+  </p>
+  <p>
+    O painel fica em um endereço separado do site. Quem tem acesso a ele não
+    é visitante do site: é responsável pelo que a campanha comunica.
+  </p>
+</section>
+
+<section>
+  <h2><span class="num">2</span>Você recebeu um acesso</h2>
+  <p>
+    Não existe cadastro aberto. Ninguém cria a própria conta: um administrador
+    da campanha cria o acesso e passa duas informações para você.
+  </p>
+  <ul class="plain">
+    <li><strong>Seu e-mail</strong> — é o mesmo que você usa para falar com a equipe.</li>
+    <li><strong>Uma senha inicial</strong> — combinada por um canal seguro, nunca em grupo de mensagens.</li>
+  </ul>
+  <div class="note warn">
+    <span class="label">Atenção</span>
+    <p>
+      Se alguém enviar sua senha em um grupo, peça para trocar. Uma senha que
+      passou por grupo deve ser considerada conhecida por terceiros.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">3</span>Primeiro acesso: entrar</h2>
+  <ol class="steps">
+    <li>
+      <strong>Abra o endereço do painel no navegador</strong>
+      Peça o endereço a quem criou seu acesso. Salve nos favoritos.
+    </li>
+    <li>
+      <strong>Digite seu e-mail e a senha inicial</strong>
+      Clique em <span class="ui">Entrar</span>.
+    </li>
+    <li>
+      <strong>O painel vai levar você direto para a verificação em duas etapas</strong>
+      Isso é esperado. Não é possível usar o painel sem concluir esse passo.
+    </li>
+  </ol>
+  <div class="note">
+    <span class="label">Por que não dá para pular</span>
+    <p>
+      Enquanto a verificação não estiver ativa, todas as telas do painel levam
+      de volta para essa configuração. É proposital: uma conta protegida só por
+      senha é um risco que a campanha não corre.
+    </p>
+  </div>
+</section>
+
+<section class="break">
+  <h2><span class="num">4</span>A verificação em duas etapas</h2>
+  <p class="lead">
+    Além da senha, entrar passa a exigir um código de seis dígitos que muda a
+    cada trinta segundos e só existe no seu celular.
+  </p>
+  <p>
+    A ideia é simples: a senha é algo que você <strong>sabe</strong>; o celular
+    é algo que você <strong>tem</strong>. Quem descobrir sua senha — por
+    vazamento, por um e-mail falso, por um computador comprometido — ainda
+    assim não entra, porque não está com o seu aparelho.
+  </p>
+  <p>
+    Isso importa mais em campanha do que na maioria dos lugares. Um site de
+    candidatura é alvo, e uma conta invadida não significa só constrangimento:
+    significa alguém publicando em nome do candidato.
+  </p>
+
+  <div class="flow">
+    <div class="box"><b>Você sabe</b><span>a senha</span></div>
+    <div class="arrow">+</div>
+    <div class="box"><b>Você tem</b><span>o celular com o código</span></div>
+    <div class="arrow">=</div>
+    <div class="box"><b>Acesso liberado</b><span>só com os dois</span></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">5</span>Instalar o aplicativo no celular</h2>
+  <p>
+    O código de seis dígitos é gerado por um aplicativo autenticador. Qualquer
+    um destes serve — escolha um só:
+  </p>
+  <table>
+    <tr><td>Google Authenticator</td><td>Gratuito, simples, disponível para Android e iPhone.</td></tr>
+    <tr><td>Microsoft Authenticator</td><td>Gratuito, com cópia de segurança na nuvem.</td></tr>
+    <tr><td>Authy</td><td>Gratuito, sincroniza entre celular e computador.</td></tr>
+    <tr><td>O gerenciador de senhas que você já usa</td><td>1Password, Bitwarden e o Chaves do iPhone também geram esses códigos.</td></tr>
+  </table>
+  <p>
+    Instale antes de continuar. A próxima tela do painel só faz sentido com o
+    aplicativo já aberto.
+  </p>
+</section>
+
+<section>
+  <h2><span class="num">6</span>Escanear o código</h2>
+  <p>
+    A tela <span class="ui">Escaneie o código</span> mostra um quadrado preto e
+    branco — um QR code.
+  </p>
+  <ol class="steps">
+    <li>
+      <strong>Abra o aplicativo autenticador no celular</strong>
+      Procure o botão de adicionar uma conta: costuma ser um <strong>+</strong>
+      no canto da tela.
+    </li>
+    <li>
+      <strong>Escolha a opção de ler um QR code</strong>
+      Também aparece como “Escanear código” ou “Ler código”.
+    </li>
+    <li>
+      <strong>Aponte a câmera para o quadrado na tela do computador</strong>
+      O aplicativo reconhece sozinho e passa a mostrar um código de seis
+      dígitos com um contador ao lado.
+    </li>
+  </ol>
+  <div class="note">
+    <span class="label">O que acabou de acontecer</span>
+    <p>
+      O QR code passou um segredo do painel para o seu celular. A partir daí os
+      dois calculam o mesmo código de seis dígitos, cada um por conta própria,
+      usando esse segredo e o horário. Nada é enviado por mensagem — por isso
+      funciona mesmo sem sinal.
+    </p>
+  </div>
+</section>
+
+<section class="break">
+  <h2><span class="num">7</span>Guardar os códigos de backup</h2>
+  <p class="lead">
+    Abaixo do QR code aparecem dez códigos. Eles são a única forma de entrar se
+    você perder o celular — e não voltam a ser exibidos.
+  </p>
+  <p>
+    Cada código funciona <strong>uma única vez</strong>. Anote todos antes de
+    continuar, em um lugar que não seja este computador nem o próprio celular:
+    de nada adianta guardar a chave reserva dentro da casa trancada.
+  </p>
+  <ul class="plain">
+    <li><strong>Bom:</strong> anotados no papel deste manual, guardado com seus documentos.</li>
+    <li><strong>Bom:</strong> salvos no seu gerenciador de senhas.</li>
+    <li><strong>Ruim:</strong> foto na galeria do celular, mensagem para si mesmo, arquivo na área de trabalho.</li>
+  </ul>
+
+  <div class="codes">
+    <strong>Meus códigos de backup</strong>
+    <p style="margin:1mm 0 0;font-size:9pt;color:#5b6b76">
+      Anote aqui e risque cada um conforme usar.
+    </p>
+    <div class="grid">
+      <div class="slot"><i>1</i></div><div class="slot"><i>6</i></div>
+      <div class="slot"><i>2</i></div><div class="slot"><i>7</i></div>
+      <div class="slot"><i>3</i></div><div class="slot"><i>8</i></div>
+      <div class="slot"><i>4</i></div><div class="slot"><i>9</i></div>
+      <div class="slot"><i>5</i></div><div class="slot"><i>10</i></div>
+    </div>
+  </div>
+
+  <p>
+    Depois de anotar, marque a caixa
+    <span class="ui">Guardei os códigos em lugar seguro</span>. O campo do
+    código só é liberado depois disso — de propósito, para ninguém passar
+    correndo por esta etapa.
+  </p>
+</section>
+
+<section>
+  <h2><span class="num">8</span>Ativar e concluir</h2>
+  <ol class="steps">
+    <li>
+      <strong>Olhe o código de seis dígitos no aplicativo</strong>
+      Se o contador estiver quase no fim, espere o próximo para não digitar um
+      código que expira no meio.
+    </li>
+    <li>
+      <strong>Digite no campo <span class="ui">Código do aplicativo</span></strong>
+      Sem espaços.
+    </li>
+    <li>
+      <strong>Clique em <span class="ui">Ativar</span></strong>
+      Pronto: o painel se abre e a verificação está ativa na sua conta.
+    </li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="num">9</span>O dia a dia: entrando no painel</h2>
+  <p>A partir daqui, entrar tem sempre dois passos:</p>
+  <div class="flow">
+    <div class="box"><b>1. E-mail e senha</b><span>como em qualquer site</span></div>
+    <div class="arrow">→</div>
+    <div class="box"><b>2. Código de 6 dígitos</b><span>do aplicativo, na hora</span></div>
+    <div class="arrow">→</div>
+    <div class="box"><b>Painel aberto</b><span>por sete dias</span></div>
+  </div>
+  <p>
+    A sessão dura cerca de uma semana no mesmo navegador. Depois disso, o painel
+    pede tudo de novo.
+  </p>
+</section>
+
+<section class="break">
+  <h2><span class="num">10</span>Quando alguma coisa dá errado</h2>
+
+  <h3>O código é recusado, mas eu digitei certo</h3>
+  <p>
+    Quase sempre é o <strong>relógio do celular</strong>. O código depende do
+    horário, e alguns minutos de diferença bastam para invalidar. Nos ajustes do
+    aparelho, ative a data e hora automáticas e tente de novo.
+  </p>
+
+  <h3>Perdi o celular, ou troquei de aparelho</h3>
+  <p>
+    Na tela do código, clique em
+    <span class="ui">Perdi o acesso — usar código de backup</span> e digite um
+    dos dez que você anotou. Ele vale só uma vez: risque da lista depois de usar.
+  </p>
+  <p>
+    Depois de entrar, peça a um administrador que remova e recrie seu acesso —
+    assim você refaz a leitura do QR code no aparelho novo e recebe códigos de
+    backup novos.
+  </p>
+
+  <h3>Acabaram meus códigos de backup</h3>
+  <p>
+    Fale com um administrador da campanha. Ele remove e recria seu acesso, e
+    você configura tudo outra vez. Não há como recuperar os códigos usados.
+  </p>
+
+  <h3>Esqueci a senha</h3>
+  <p>
+    Peça a um administrador. Por segurança, o painel não envia recuperação de
+    senha por e-mail.
+  </p>
+
+  <div class="note warn">
+    <span class="label">Nunca faça isso</span>
+    <p>
+      Não passe seu código de seis dígitos para ninguém, por telefone ou
+      mensagem, mesmo que a pessoa diga ser da equipe técnica. Nenhum
+      administrador precisa desse código para ajudar você.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">11</span>Salvar não é publicar</h2>
+  <p class="lead">
+    Esta é a regra que mais gera confusão nos primeiros dias.
+  </p>
+  <div class="flow">
+    <div class="box"><b>Salvar rascunho</b><span>guarda seu texto<br>o site não muda</span></div>
+    <div class="arrow">→</div>
+    <div class="box"><b>Publicar</b><span>leva ao ar<br>todo mundo vê</span></div>
+  </div>
+  <p>
+    <strong>Salvar</strong> guarda o que você escreveu, e só. O site continua
+    exatamente como estava — dá para deixar pela metade, sair, e voltar depois.
+  </p>
+  <p>
+    <strong>Publicar</strong> fica na tela <span class="ui">Conteúdo</span>, e
+    envia de uma vez tudo que estiver salvo em rascunho. O site atualiza em
+    segundos.
+  </p>
+  <p>
+    Seções com alterações não publicadas aparecem marcadas como
+    <span class="ui">não publicado</span> na lista. Publicar é sempre um gesto
+    seu — nada vai ao ar sozinho.
+  </p>
+</section>
+
+<section>
+  <h2><span class="num">12</span>As telas do painel</h2>
+  <table>
+    <tr><th>Tela</th><th>Para que serve</th></tr>
+    <tr><td>Conteúdo</td><td>Os textos e imagens de cada parte do site. É também onde fica o botão de publicar, e onde se muda a ordem das seções ou se esconde uma delas.</td></tr>
+    <tr><td>Mídias</td><td>As imagens. Envie fotos novas, escreva a descrição de cada uma e ajuste o enquadramento.</td></tr>
+    <tr><td>Configurações</td><td>O que vale para o site inteiro: WhatsApp, Instagram, link de doação, textos do menu e o que aparece no Google e ao compartilhar o link.</td></tr>
+    <tr><td>Histórico</td><td>Todas as versões salvas e todas as publicações. Dá para voltar a uma versão anterior.</td></tr>
+    <tr><td>Editores</td><td>Quem tem acesso ao painel. Só administradores.</td></tr>
+  </table>
+
+  <h3>Sobre as fotos</h3>
+  <ul class="plain">
+    <li>Envie JPEG ou PNG. Fotos de iPhone em <strong>HEIC</strong> não são aceitas — exporte como JPEG antes.</li>
+    <li>Fotos grandes são reduzidas automaticamente ao enviar. Não precisa preparar nada.</li>
+    <li>A <strong>descrição</strong> de cada foto é lida em voz alta por quem usa leitor de tela. Escreva o que aparece na imagem, em uma frase.</li>
+    <li>O <strong>enquadramento</strong> decide para onde o corte puxa quando a foto não cabe inteira no espaço. Use quando um rosto ficar cortado.</li>
+  </ul>
+</section>
+
+<section class="break">
+  <h2><span class="num">13</span>Para administradores: criar e remover acessos</h2>
+  <p>
+    A tela <span class="ui">Editores</span> só aparece completa para quem é
+    administrador. Nela estão todos os acessos, com a permissão de cada um e se
+    a verificação em duas etapas já foi configurada.
+  </p>
+  <table>
+    <tr><th>Permissão</th><th>Edita conteúdo</th><th>Gerencia acessos</th></tr>
+    <tr><td>Editor</td><td>Sim</td><td>Não</td></tr>
+    <tr><td>Administrador</td><td>Sim</td><td>Sim</td></tr>
+  </table>
+  <h3>Criando um acesso</h3>
+  <p>
+    Preencha nome, e-mail, uma senha inicial de pelo menos doze caracteres e a
+    permissão. Combine a senha com a pessoa por um canal seguro — chamada,
+    presencialmente ou pelo gerenciador de senhas da equipe.
+  </p>
+  <p>
+    A pessoa entra com essa senha e é obrigada a configurar a verificação em
+    duas etapas antes de ver qualquer tela. Enquanto isso não acontecer, o
+    acesso dela aparece como <span class="ui">2FA pendente</span> na lista.
+  </p>
+  <h3>Removendo</h3>
+  <p>
+    Clique em <span class="ui">Remover</span> e confirme. O acesso é cortado na
+    hora. Ninguém pode remover a própria conta — se fosse possível, o único
+    administrador conseguiria se trancar do lado de fora.
+  </p>
+  <div class="note warn">
+    <span class="label">Ao desligar alguém da equipe</span>
+    <p>
+      Remova o acesso no mesmo dia. Uma conta esquecida continua valendo, e o
+      histórico do painel vai registrar as alterações no nome de quem já saiu.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">14</span>Regras de segurança</h2>
+  <ul class="plain">
+    <li><strong>Cada pessoa tem a sua conta.</strong> Não empreste login. O histórico registra quem alterou o quê, e uma conta compartilhada apaga essa informação justamente quando ela é necessária.</li>
+    <li><strong>Não reaproveite a senha.</strong> Se ela já é usada em outro site, um vazamento de lá vira um problema aqui.</li>
+    <li><strong>Saia ao usar computador de terceiros.</strong> O botão <span class="ui">Sair</span> fica no topo da tela.</li>
+    <li><strong>Desconfie de pedidos urgentes.</strong> Nenhum administrador vai pedir sua senha ou seu código de seis dígitos por mensagem.</li>
+    <li><strong>Confira o endereço antes de digitar a senha.</strong> Páginas falsas imitam a tela de login para capturar acessos.</li>
+  </ul>
+
+  <p class="footer-note">
+    Em caso de dúvida ou suspeita de acesso indevido, fale imediatamente com o
+    responsável técnico da campanha. Um acesso removido a tempo evita um
+    problema público.
+  </p>
+</section>
+
+</body>
+</html>

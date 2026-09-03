@@ -97,6 +97,12 @@ payload nenhum. `inicio` não pode ser ocultada, e isso é garantido em três
 lugares: a caixa vem desabilitada, a server action força o valor, e o site força
 de novo na leitura — só a última protege contra uma escrita direta no banco.
 
+## Manual para a equipe
+
+`docs/manual-acesso-painel.pdf` explica o primeiro acesso e a verificação em
+duas etapas para quem vai usar o painel, sem jargão. Vale imprimir: tem espaço
+para a pessoa anotar os códigos de backup.
+
 ## Histórico
 
 `/historico` mostra duas coisas: as versões de cada parte do conteúdo e o
