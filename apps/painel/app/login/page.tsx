@@ -5,6 +5,27 @@ import { signIn } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+/**
+ * Falha de credencial e falha de configuração precisam soar diferente.
+ *
+ * Distinguir "e-mail não existe" de "senha errada" entregaria uma lista de
+ * usuários válidos a quem estiver tentando — por isso as duas continuam com a
+ * mesma resposta. Mas tratar um erro de configuração como senha errada manda a
+ * pessoa trocar a senha várias vezes enquanto o problema está no servidor.
+ */
+function mensagemDeErro(error: { code?: string; status?: number }): string {
+  if (error.code === "INVALID_ORIGIN") {
+    return "O painel está mal configurado no servidor (origem não confiável). Fale com o responsável técnico — não adianta tentar outra senha.";
+  }
+  if (error.status === 429) {
+    return "Muitas tentativas seguidas. Espere alguns minutos antes de tentar de novo.";
+  }
+  if (error.status && error.status >= 500) {
+    return "O servidor não conseguiu responder. Tente de novo em instantes.";
+  }
+  return "E-mail ou senha incorretos.";
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -24,9 +45,7 @@ export default function LoginPage() {
     setPending(false);
 
     if (result.error) {
-      // Mensagem genérica: distinguir "email não existe" de "senha errada"
-      // entrega uma lista de usuários válidos a quem estiver tentando.
-      setError("E-mail ou senha incorretos.");
+      setError(mensagemDeErro(result.error));
       return;
     }
 

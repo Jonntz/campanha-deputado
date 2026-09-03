@@ -126,7 +126,14 @@ Se preferir gerar novos, gere e troque nos dois lugares.
   banco e o site nunca atualizar. O painel avisa quando isso acontece, no
   histórico, mas é chato de descobrir.
 - **`BETTER_AUTH_URL` precisa bater exatamente** com o domínio que serve o
-  painel, com `https://` e sem barra no fim. Errado, o login não completa.
+  painel, com `https://` e sem barra no fim.
+
+  Essa variável define a lista de origens confiáveis. Errada ou ausente, o
+  login é recusado com `INVALID_ORIGIN` **antes** de qualquer consulta ao
+  banco — a pessoa vê uma mensagem sobre o servidor e nenhuma senha funciona,
+  embora o usuário exista e o banco esteja certo. Desde a versão atual, faltar
+  essa variável faz o build falhar com a mensagem explícita, em vez de publicar
+  um painel inutilizável.
 - **`NEXT_PUBLIC_*` são embutidas no build.** Mudar exige novo deploy; não basta
   salvar na Vercel. E elas têm precedência sobre o que estiver em Configurações
   no painel — deixe-as em branco se quiser controlar os IDs pelo painel.

@@ -23,6 +23,32 @@ import { twoFactor } from "better-auth/plugins/two-factor";
  *    sai sem atributo `Domain` e nunca é enviado para o domínio do site. Um
  *    vazamento de sessão aqui não alcança a campanha.
  */
+/**
+ * Variáveis sem as quais o painel não tem como funcionar.
+ *
+ * Falta delas precisa ser um erro alto na subida, e não um 403 confuso mais
+ * tarde: sem `BETTER_AUTH_URL` a lista de origens confiáveis fica vazia, toda
+ * requisição de login é recusada com "Invalid origin", e a tela mostra
+ * "e-mail ou senha incorretos" — mandando quem lê investigar a credencial, que
+ * está certa.
+ */
+function required(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(
+      `${name} não está definida. O painel não sobe sem ela — confira as ` +
+        `variáveis de ambiente do projeto na Vercel.`,
+    );
+  }
+  return value;
+}
+
+// Em desenvolvimento o valor padrão evita atrito; em produção, exigimos.
+const baseURL =
+  process.env.NODE_ENV === "production"
+    ? required("BETTER_AUTH_URL").replace(/\/+$/, "")
+    : (process.env.BETTER_AUTH_URL ?? "http://localhost:3001");
+
 export const auth = betterAuth({
   // O schema precisa ser passado explicitamente: sem ele o adapter não
   // encontra os modelos e falha só na primeira operação, em runtime.
@@ -31,9 +57,13 @@ export const auth = betterAuth({
     schema: authSchema,
   }),
 
-  baseURL: process.env.BETTER_AUTH_URL,
-  secret: process.env.BETTER_AUTH_SECRET,
-  trustedOrigins: process.env.BETTER_AUTH_URL ? [process.env.BETTER_AUTH_URL] : [],
+  baseURL,
+  secret:
+    process.env.NODE_ENV === "production"
+      ? required("BETTER_AUTH_SECRET")
+      : process.env.BETTER_AUTH_SECRET,
+  // Uma barra no fim já basta para a origem não bater, então normalizamos.
+  trustedOrigins: [baseURL],
 
   emailAndPassword: {
     enabled: true,
