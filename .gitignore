@@ -33,3 +33,6 @@ apps/site/public/uploads/
 
 # Vercel
 .vercel
+
+# capturas do verificador de navegador
+.verificacao/

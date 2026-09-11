@@ -1,6 +1,6 @@
 # Campanha Matheus Biancardine — Federal MG 2026
 
-Site institucional da pré-candidatura, em **Next.js 16** (App Router) com React 19,
+Site institucional da candidatura, em **Next.js 16** (App Router) com React 19,
 TypeScript e CSS Modules.
 
 O repositório é um monorepo pnpm: o site público e o painel administrativo são
@@ -38,19 +38,76 @@ apps/
   site/                    o site público
     app/                   layout, página e estilos globais
     components/
-      layout/              header, faixa de doação, rodapé, flutuantes, VLibras
+      layout/              header, rodapé, botão do WhatsApp, VLibras
       sections/            uma pasta por seção da página, com seu CSS Module
-      ui/                  Reveal, Lightbox e o re-export dos ícones
+      ui/                  Reveal, Lightbox, SectionIntro e o re-export dos ícones
     content/               documento de conteúdo padrão e o acessor
     hooks/                 useScrollSpy, usePrefersReducedMotion
     lib/                   JSON-LD e a ponte de mídia
-    assets/images/         imagens importadas estaticamente pelo next/image
+    assets/fonts/          Amsi Pro em WOFF2, servida pelo next/font/local
+    public/assets/         logos, faixa de Minas e retrato recortado
+    public/images/         fotos usadas pelo conteúdo padrão
     public/videos/         vídeos do evento e seus posters
 packages/
   content/                 schema Zod, tipos, registro de seções, conteúdo padrão
   db/                      schema Drizzle, cliente Turso e consultas
-  icons/                   os 19 SVGs e o registro nome → componente
+  icons/                   os SVGs e o registro nome → componente
+scripts/
+  verificar-site/          verificação no Chrome via DevTools Protocol
 ```
+
+## Layout (setembro de 2026)
+
+O visual segue uma implementação de referência entregue pela equipe de design
+("LDP reformulada"): paleta e fonte do manual de marca, faixa de símbolos de
+Minas, retrato recortado na abertura. O conteúdo continua vindo do painel — só
+a apresentação mudou.
+
+- **Fonte**: Amsi Pro, em `apps/site/assets/fonts/`, convertida para WOFF2 e
+  servida pelo `next/font/local`. É comercial (Stawix Foundry): o uso em site
+  depende da licença de webfont da campanha.
+- **Marca**: logos, faixa de Minas e retrato ficam em `apps/site/public/assets/`.
+  São identidade, não conteúdo, e não passam pelo painel.
+- **Mantidos por decisão da equipe**: carrossel de credenciais e
+  etiqueta/fonte das propostas, redesenhados no estilo novo.
+- **Removidos**: números em destaque da bio e faixa de doação — o apoio virou o
+  botão do cabeçalho. Continuam no schema e no banco; somem só do site e do painel.
+- **Campos novos no painel**: número de urna, resumo de cada proposta, destino
+  dos botões da abertura, frase e aviso legal do rodapé, CNPJ, rótulos do menu
+  do celular.
+
+### O schema só cresce
+
+O banco é compartilhado com o site e o painel que estão no ar, que validam com o
+schema anterior. Por isso todo campo novo é opcional, e nenhum campo sai nem
+fica mais estrito: o Zod antigo descarta o que não conhece, sem erro. Campos
+novos que ainda não existem no banco são completados com o padrão na leitura
+(`fillMissing`) — é assim que o rodapé sobe com o CNPJ antes de alguém salvar as
+configurações.
+
+### Textos novos
+
+Os textos da referência (em primeira pessoa, "candidato", com resumo em cada
+proposta) entram como **rascunho**:
+
+```bash
+pnpm --filter painel importar-textos             # só mostra o que mudaria
+pnpm --filter painel importar-textos --aplicar   # grava os rascunhos
+```
+
+Aplica apenas os campos que o layout novo redefiniu, casando itens por id; o que
+a equipe mexeu fora disso fica como está. Rode **depois** do deploy do layout:
+antes, o painel em produção mostraria esses rascunhos como pendentes, e
+publicá-los poria o texto novo no layout antigo.
+
+### Testando sem publicar
+
+O banco local é o mesmo da produção, então publicar para testar muda o site no
+ar. Para ver rascunhos no site local, use `CONTENT_SOURCE=draft` no
+`apps/site/.env.local` — nunca tem efeito na Vercel.
+
+`pnpm verificar:site` abre o site num Chrome de verdade e confere o que um teste
+por HTTP não vê. Detalhes em `scripts/verificar-site/`.
 
 ## Acesso ao painel
 

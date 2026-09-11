@@ -14,7 +14,8 @@
     "db:push": "pnpm --filter @campanha/db db:push",
     "db:seed": "pnpm --filter @campanha/db db:seed",
     "db:verify": "pnpm --filter @campanha/db db:verify",
-    "media:generate": "node packages/content/scripts/generate-media.mjs"
+    "media:generate": "node packages/content/scripts/generate-media.mjs",
+    "verificar:site": "node scripts/verificar-site/site-check.mjs .verificacao"
   },
   "devDependencies": {
     "tsx": "^4.23.12"
