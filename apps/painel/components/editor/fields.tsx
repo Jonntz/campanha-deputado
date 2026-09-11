@@ -1,13 +1,19 @@
 "use client";
 
-import type { MediaRef, SectionHeader, SplitTitle } from "@campanha/content";
+import type {
+  HeroCta,
+  MediaRef,
+  SectionHeader,
+  SectionKey,
+  SplitTitle,
+} from "@campanha/content";
 import { PROPOSAL_ICON_NAMES, type ProposalIconName } from "@campanha/content";
 import { PROPOSAL_ICONS } from "@campanha/icons";
 import { MediaPicker } from "@/components/media/MediaPicker";
 import { useState } from "react";
 import { Text } from "./primitives";
 
-/** Título partido: a segunda metade recebe o gradiente no site. */
+/** Título em duas partes. No site elas aparecem em linhas separadas. */
 export function SplitTitleField({
   value,
   onChange,
@@ -18,15 +24,15 @@ export function SplitTitleField({
   return (
     <div className="grid gap-3 sm:grid-cols-2">
       <Text
-        label="Título"
+        label="Título — primeira parte"
         value={value.lead}
         onChange={(lead) => onChange({ ...value, lead })}
       />
       <Text
-        label="Destaque (em verde)"
+        label="Título — segunda parte"
         value={value.accent}
         onChange={(accent) => onChange({ ...value, accent })}
-        hint="Aparece com o gradiente da campanha."
+        hint="Vai para a linha de baixo. No contato, fica na mesma linha."
       />
     </div>
   );
@@ -41,12 +47,6 @@ export function SectionHeaderField({
 }) {
   return (
     <div className="space-y-4">
-      <Text
-        label="Chapéu"
-        value={value.eyebrow}
-        onChange={(eyebrow) => onChange({ ...value, eyebrow })}
-        hint="Texto pequeno acima do título."
-      />
       <SplitTitleField
         value={value.title}
         onChange={(title) => onChange({ ...value, title })}
@@ -162,7 +162,7 @@ function FocalInput({
   );
 }
 
-/** Só os 7 ícones temáticos: o resto é cromo da interface do site. */
+/** Só os ícones temáticos: o resto é cromo da interface do site. */
 export function IconPicker({
   value,
   onChange,
@@ -197,5 +197,58 @@ export function IconPicker({
         })}
       </div>
     </fieldset>
+  );
+}
+
+const SECTION_OPTIONS: [SectionKey, string][] = [
+  ["inicio", "o início"],
+  ["credenciais", "as credenciais"],
+  ["bio", "Quem sou"],
+  ["propostas", "as propostas"],
+  ["galeria", "Por Minas"],
+  ["contato", "o contato"],
+];
+
+/**
+ * Para onde um botão da abertura leva. O ícone acompanha o destino — o
+ * WhatsApp leva a marca dele, seção leva seta para baixo — em vez de ser mais
+ * uma escolha para quem edita.
+ */
+export function CtaDestination({
+  value,
+  onChange,
+}: {
+  value: HeroCta;
+  onChange: (value: HeroCta) => void;
+}) {
+  const current = value.link ?? `secao:${value.target}`;
+  const base = { id: value.id, label: value.label, variant: value.variant, target: value.target };
+
+  return (
+    <label className="field">
+      <span className="field__label">Destino</span>
+      <select
+        className="input"
+        value={current}
+        onChange={(event) => {
+          const next = event.target.value;
+          if (next === "whatsapp") {
+            onChange({ ...base, link: "whatsapp", icon: "whatsapp" });
+          } else if (next === "donation") {
+            onChange({ ...base, link: "donation", icon: "arrow-up-right" });
+          } else {
+            onChange({ ...base, target: next.slice(6) as SectionKey, icon: "arrow-down" });
+          }
+        }}
+      >
+        <option value="whatsapp">Abrir o WhatsApp</option>
+        <option value="donation">Abrir a página de doação</option>
+        {SECTION_OPTIONS.map(([key, label]) => (
+          <option key={key} value={`secao:${key}`}>
+            Rolar até {label}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }

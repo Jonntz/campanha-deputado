@@ -1,7 +1,7 @@
 "use client";
 
 import type { SectionKey, SectionPayloads } from "@campanha/content";
-import { IconPicker, MediaField, SectionHeaderField } from "./fields";
+import { CtaDestination, IconPicker, MediaField, SectionHeaderField } from "./fields";
 import { Group, Repeater, Text } from "./primitives";
 import { SectionForm } from "./SectionForm";
 
@@ -30,8 +30,10 @@ export function SectionEditor({
         <SectionForm sectionKey={sectionKey} title={title} initial={initial}>
           {(v, set) => (
             <>
-              <Group title="Chamada principal">
-                <Text label="Selo" value={v.badge} onChange={(badge) => set({ ...v, badge })} />
+              <Group
+                title="Chamada principal"
+                description="O número de urna fica em Configurações, junto da identidade."
+              >
                 <Repeater
                   label="Linhas do título"
                   items={[...v.title.lines]}
@@ -44,11 +46,11 @@ export function SectionEditor({
                   )}
                 />
                 <Text
-                  label="Destaque (em verde, no fim da última linha)"
+                  label="Última linha, em destaque"
                   value={v.title.accent}
                   onChange={(accent) => set({ ...v, title: { ...v.title, accent } })}
+                  hint="Aparece em branco sobre fundo azul, abaixo das outras linhas."
                 />
-                <Text label="Subtítulo" value={v.subtitle} onChange={(subtitle) => set({ ...v, subtitle })} />
                 <Text
                   label="Texto"
                   value={v.body}
@@ -67,17 +69,24 @@ export function SectionEditor({
                     id: crypto.randomUUID().slice(0, 8),
                     label: "Novo botão",
                     target: "contato" as const,
-                    icon: "heart" as const,
+                    icon: "arrow-down" as const,
                     variant: "ghost" as const,
                   })}
                   itemLabel={(cta) => cta.label}
                   renderItem={(cta, update) => (
-                    <Text label="Texto do botão" value={cta.label} onChange={(label) => update({ ...cta, label })} />
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      <Text label="Texto do botão" value={cta.label} onChange={(label) => update({ ...cta, label })} />
+                      <CtaDestination value={cta} onChange={update} />
+                    </div>
                   )}
                 />
               </Group>
 
               <Group title="Foto">
+                <p className="text-sm text-[--muted]">
+                  O layout foi desenhado para um recorte com fundo transparente.
+                  Uma foto retangular também funciona, com cantos arredondados.
+                </p>
                 <MediaField label="Retrato" value={v.image} onChange={(image) => set({ ...v, image })} />
               </Group>
             </>
@@ -149,21 +158,6 @@ export function SectionEditor({
                   )}
                 />
               </Group>
-              <Group title="Números em destaque">
-                <Repeater
-                  label="Destaques"
-                  items={[...v.stats]}
-                  onChange={(stats) => set({ ...v, stats })}
-                  createItem={() => ({ id: crypto.randomUUID().slice(0, 8), value: "", label: "" })}
-                  itemLabel={(s, i) => s.value || `Destaque ${i + 1}`}
-                  renderItem={(s, update) => (
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <Text label="Número" value={s.value} onChange={(value) => update({ ...s, value })} />
-                      <Text label="Legenda" value={s.label} onChange={(label) => update({ ...s, label })} />
-                    </div>
-                  )}
-                />
-              </Group>
               <Group title="Foto">
                 <MediaField label="Retrato" value={v.image} onChange={(image) => set({ ...v, image })} />
               </Group>
@@ -191,6 +185,7 @@ export function SectionEditor({
                     id: crypto.randomUUID().slice(0, 8),
                     tag: "Nova",
                     title: "Nova proposta",
+                    summary: "",
                     body: "",
                     source: "",
                     icon: "briefcase" as const,
@@ -203,7 +198,14 @@ export function SectionEditor({
                         <Text label="Fonte" value={item.source} onChange={(source) => update({ ...item, source })} />
                       </div>
                       <Text label="Título" value={item.title} onChange={(t) => update({ ...item, title: t })} />
-                      <Text label="Texto" value={item.body} rows={8} onChange={(body) => update({ ...item, body })} />
+                      <Text
+                        label="Resumo"
+                        value={item.summary ?? ""}
+                        rows={2}
+                        hint="Uma frase. Aparece com a proposta fechada, antes de expandir."
+                        onChange={(summary) => update({ ...item, summary })}
+                      />
+                      <Text label="Texto completo" value={item.body} rows={8} onChange={(body) => update({ ...item, body })} />
                       <IconPicker value={item.icon} onChange={(icon) => update({ ...item, icon })} />
                     </div>
                   )}

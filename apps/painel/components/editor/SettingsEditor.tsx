@@ -3,7 +3,6 @@
 import type { Settings } from "@campanha/content";
 import { saveSettings, type ActionResult } from "@/lib/actions";
 import { useActionState, useState } from "react";
-import { SplitTitleField } from "./fields";
 import { Group, Repeater, Text } from "./primitives";
 import { SaveBar } from "./SaveBar";
 
@@ -40,7 +39,7 @@ export function SettingsEditor({ initial }: { initial: Settings }) {
 
       <Group
         title="Links e contato"
-        description="Um só lugar: o WhatsApp aparece no contato, nos botões flutuantes e no cabeçalho."
+        description="Um só lugar: o WhatsApp aparece na abertura, no contato, no menu do celular e no botão flutuante."
       >
         <div className="grid gap-4 sm:grid-cols-2">
           <Text
@@ -91,7 +90,7 @@ export function SettingsEditor({ initial }: { initial: Settings }) {
           label="Link de doação"
           value={v.identity.donation.url}
           onChange={(url) => set("identity", { ...v.identity, donation: { url } })}
-          hint='Destino do botão "Faça parte do projeto" e da faixa de doação.'
+          hint='Destino do botão de apoio do cabeçalho e do menu.'
         />
       </Group>
 
@@ -108,16 +107,36 @@ export function SettingsEditor({ initial }: { initial: Settings }) {
           onChange={(url) => set("identity", { ...v.identity, url })}
           hint="Base dos links canônicos e das imagens de compartilhamento."
         />
-        <div className="space-y-2">
-          <span className="text-sm text-[--muted]">Marca no cabeçalho</span>
-          <SplitTitleField
-            value={v.identity.brand}
-            onChange={(brand) => set("identity", { ...v.identity, brand })}
+        <Text
+          label="Número de urna"
+          value={v.identity.number ?? ""}
+          onChange={(number) => set("identity", { ...v.identity, number })}
+          hint="Só os dígitos. Aparece grande na abertura e junto do nome no rodapé."
+        />
+      </Group>
+
+      <Group
+        title="Rodapé"
+        description="Aviso e CNPJ são exigência da legislação eleitoral para propaganda de campanha."
+      >
+        <Text
+          label="Frase de encerramento"
+          value={v.footer.tagline ?? ""}
+          onChange={(tagline) => set("footer", { ...v.footer, tagline })}
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Text
+            label="Aviso legal"
+            value={v.footer.legal ?? ""}
+            onChange={(legal) => set("footer", { ...v.footer, legal })}
+            hint='Ex.: "Propaganda eleitoral"'
           />
-        </div>
-        <div className="space-y-2">
-          <span className="text-sm text-[--muted]">Marca no rodapé</span>
-          <SplitTitleField value={v.footer.brand} onChange={(brand) => set("footer", { brand })} />
+          <Text
+            label="CNPJ da campanha"
+            value={v.footer.cnpj ?? ""}
+            onChange={(cnpj) => set("footer", { ...v.footer, cnpj })}
+            hint="Formato 00.000.000/0000-00"
+          />
         </div>
       </Group>
 
@@ -144,8 +163,6 @@ export function SettingsEditor({ initial }: { initial: Settings }) {
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <Text label="Botão do cabeçalho" value={v.nav.ctaLabel} onChange={(ctaLabel) => set("nav", { ...v.nav, ctaLabel })} />
-          <Text label="Texto da faixa de doação" value={v.nav.ribbon.text} onChange={(text) => set("nav", { ...v.nav, ribbon: { ...v.nav.ribbon, text } })} />
-          <Text label="Link da faixa de doação" value={v.nav.ribbon.linkLabel} onChange={(linkLabel) => set("nav", { ...v.nav, ribbon: { ...v.nav.ribbon, linkLabel } })} />
         </div>
       </Group>
 
@@ -164,7 +181,7 @@ export function SettingsEditor({ initial }: { initial: Settings }) {
           itemLabel={(word, i) => word || `Palavra ${i + 1}`}
           renderItem={(word, update) => <Text label="Palavra" value={word} onChange={update} />}
         />
-        <Text label="Cor da barra do navegador" value={v.seo.themeColor} onChange={(themeColor) => set("seo", { ...v.seo, themeColor })} hint="Hexadecimal, ex.: #12303c" />
+        <Text label="Cor da barra do navegador" value={v.seo.themeColor} onChange={(themeColor) => set("seo", { ...v.seo, themeColor })} hint="Hexadecimal, ex.: #f7f4ea" />
       </Group>
 
       <Group
@@ -195,12 +212,17 @@ export function SettingsEditor({ initial }: { initial: Settings }) {
               ["nextCredential", "Próxima credencial"],
               ["enlargePhoto", "Prefixo de ampliar foto"],
               ["lightboxClose", "Fechar imagem ampliada"],
+              ["menuTitle", "Título do menu no celular"],
+              ["menuWhatsapp", "Botão do WhatsApp no menu"],
+              ["menuDonate", "Link de apoio no menu"],
+              ["backToTop", "Voltar ao início, no rodapé"],
+              ["videosKicker", "Rótulo ao lado dos vídeos"],
             ] as const
           ).map(([key, label]) => (
             <Text
               key={key}
               label={label}
-              value={v.ui[key]}
+              value={v.ui[key] ?? ""}
               onChange={(next) => set("ui", { ...v.ui, [key]: next })}
             />
           ))}

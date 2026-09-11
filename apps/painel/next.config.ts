@@ -19,6 +19,20 @@ const securityHeaders = [
   { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
 ];
 
+/**
+ * De onde vêm as mídias com caminho relativo.
+ *
+ * O conteúdo guarda caminhos do site — `/images/…`, `/assets/…`, `/videos/…` —
+ * que não existem no domínio do painel: sem isto, a miniatura de toda imagem que
+ * não veio do Blob aparece quebrada no editor. O rewrite busca no site e entrega
+ * pela origem do próprio painel, então a CSP segue `img-src 'self'`. Como o proxy
+ * roda antes dos rewrites, só quem está logado chega a buscar.
+ *
+ * Localmente, `MEDIA_ORIGIN=http://localhost:3000` mostra arquivos que ainda não
+ * subiram para o site publicado.
+ */
+const MEDIA_ORIGIN = (process.env.MEDIA_ORIGIN ?? process.env.SITE_URL)?.replace(/\/+$/, "");
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: fileURLToPath(new URL("../../", import.meta.url)),
@@ -26,6 +40,14 @@ const nextConfig: NextConfig = {
 
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
+  },
+
+  async rewrites() {
+    if (!MEDIA_ORIGIN) return [];
+    return ["images", "assets", "videos", "uploads"].map((dir) => ({
+      source: `/${dir}/:path*`,
+      destination: `${MEDIA_ORIGIN}/${dir}/:path*`,
+    }));
   },
 };
 
