@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "create-admin": "tsx --env-file=.env.local scripts/create-admin.ts",
     "migrar-midias": "tsx --env-file=.env.local scripts/migrar-midias-locais.ts",
-    "importar-textos": "tsx --env-file=.env.local scripts/importar-textos-novos.ts"
+    "importar-textos": "tsx --env-file=.env.local scripts/importar-textos-novos.ts",
+    "testar:imagem": "NODE_OPTIONS=--conditions=react-server tsx scripts/testar-imagem.ts"
   },
   "dependencies": {
     "@campanha/content": "workspace:*",

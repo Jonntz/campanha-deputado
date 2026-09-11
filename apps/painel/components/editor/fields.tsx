@@ -95,7 +95,7 @@ export function MediaField({
         </button>
       </div>
       <div className="flex gap-4">
-        <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-lg border border-[--line] bg-black/40">
+        <div className="relative h-28 w-24 shrink-0 overflow-hidden rounded-lg border border-[--line] checker">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={value.url}

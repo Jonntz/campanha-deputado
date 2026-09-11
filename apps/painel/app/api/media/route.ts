@@ -114,9 +114,10 @@ export async function POST(request: Request) {
     bytes: processed.buffer.byteLength,
     width: processed.width,
     height: processed.height,
-    blurDataUrl: processed.blurDataURL,
-    blurWidth: processed.blurWidth,
-    blurHeight: processed.blurHeight,
+    // Imagem transparente não tem blur — ver lib/image.ts.
+    blurDataUrl: processed.blurDataURL ?? null,
+    blurWidth: processed.blurWidth ?? null,
+    blurHeight: processed.blurHeight ?? null,
     checksum: processed.checksum,
     defaultAlt: "",
     createdBy: session.user.id,

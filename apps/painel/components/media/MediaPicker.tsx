@@ -2,6 +2,7 @@
 
 import type { MediaRef } from "@campanha/content";
 import { useEffect, useState } from "react";
+import { withMedia } from "./pick";
 import { Uploader } from "./Uploader";
 import type { UploadedMedia } from "./upload";
 
@@ -38,18 +39,7 @@ export function MediaPicker({
 
   function pick(media: UploadedMedia) {
     if (!media.width || !media.height) return;
-    onPick({
-      ...current,
-      mediaId: media.id,
-      url: media.url,
-      width: media.width,
-      height: media.height,
-      ...(media.blurDataUrl ? { blurDataURL: media.blurDataUrl } : {}),
-      ...(media.blurWidth ? { blurWidth: media.blurWidth } : {}),
-      ...(media.blurHeight ? { blurHeight: media.blurHeight } : {}),
-      // Mantém a descrição da seção; só usa a padrão se ainda não houver uma.
-      alt: current.alt || media.defaultAlt,
-    });
+    onPick(withMedia(current, { ...media, width: media.width, height: media.height }));
     onClose();
   }
 
@@ -93,7 +83,7 @@ export function MediaPicker({
                     <img
                       src={media.url}
                       alt={media.defaultAlt}
-                      className="aspect-square w-full object-cover"
+                      className="checker aspect-square w-full object-cover"
                     />
                   </button>
                 </li>

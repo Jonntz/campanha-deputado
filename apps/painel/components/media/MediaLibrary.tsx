@@ -78,7 +78,7 @@ export function MediaLibrary({
               <img
                 src={item.url}
                 alt={item.defaultAlt}
-                className="aspect-[4/3] w-full rounded-lg object-cover"
+                className="checker aspect-[4/3] w-full rounded-lg object-cover"
               />
               <AltEditor
                 id={item.id}

@@ -10,6 +10,13 @@
  */
 const MAX_DIMENSION = 2400;
 
+const EXTENSIONS: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/webp": "webp",
+  "image/png": "png",
+  "image/avif": "avif",
+};
+
 export async function downscale(file: File): Promise<Blob> {
   if (!file.type.startsWith("image/")) return file;
 
@@ -29,8 +36,13 @@ export async function downscale(file: File): Promise<Blob> {
   context.drawImage(bitmap, 0, 0, width, height);
   bitmap.close();
 
+  // Só JPEG sai como JPEG. JPEG não tem canal alfa: um PNG ou WebP
+  // transparente reduzido assim chegava ao servidor com o fundo já preto. O
+  // resto sai como WebP, que guarda transparência — e, onde o navegador não
+  // codifica WebP, o canvas cai para PNG, que também guarda.
+  const outputType = file.type === "image/jpeg" ? "image/jpeg" : "image/webp";
   const blob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob(resolve, "image/jpeg", 0.9),
+    canvas.toBlob(resolve, outputType, 0.9),
   );
 
   // Se por algum motivo a redução ficou maior, o original serve.
@@ -54,7 +66,10 @@ export async function uploadFile(
   file: File,
 ): Promise<{ media: UploadedMedia; reused: boolean } | { error: string }> {
   const body = new FormData();
-  body.append("file", await downscale(file), file.name.replace(/\.[^.]+$/, ".jpg"));
+  const blob = await downscale(file);
+  // A extensão acompanha o tipo que de fato vai: o reduzido ou o original.
+  const extension = EXTENSIONS[blob.type] ?? file.name.split(".").pop() ?? "img";
+  body.append("file", blob, `${file.name.replace(/\.[^.]+$/, "")}.${extension}`);
 
   const response = await fetch("/api/media", { method: "POST", body });
   const json = await response.json().catch(() => null);
