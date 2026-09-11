@@ -164,11 +164,39 @@ export function mergeWithDefaults(
     }
   }
 
+  const settings = settingsResult.success
+    ? {
+        ...settingsResult.data,
+        identity: fillMissing(fallback.settings.identity, settingsResult.data.identity),
+        footer: fillMissing(fallback.settings.footer, settingsResult.data.footer),
+        ui: fillMissing(fallback.settings.ui, settingsResult.data.ui),
+      }
+    : fallback.settings;
+
   return {
     content: composeContent({
-      settings: settingsResult.success ? settingsResult.data : fallback.settings,
+      settings,
       sections: sections as SectionPayloads,
     }),
     issues,
   };
+}
+
+/**
+ * Completa, com o valor padrão, as chaves que ainda não existem no banco.
+ *
+ * Existe para os campos acrescentados depois do primeiro deploy — número de
+ * urna, CNPJ, rótulos novos. O conteúdo publicado é anterior a eles, e sem este
+ * preenchimento o layout novo subiria sem o CNPJ que a lei exige no rodapé até
+ * alguém salvar as configurações pelo painel.
+ *
+ * Só chaves ausentes: um campo que a equipe esvaziou chega como "" e continua
+ * vazio. Um nível só, porque é o que os campos novos precisam.
+ */
+function fillMissing<T extends object>(defaults: T, value: T): T {
+  const filled = { ...value } as Record<string, unknown>;
+  for (const [key, fallbackValue] of Object.entries(defaults)) {
+    if (filled[key] === undefined) filled[key] = fallbackValue;
+  }
+  return filled as T;
 }

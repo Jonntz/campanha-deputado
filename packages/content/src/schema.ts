@@ -52,7 +52,7 @@ export const mediaRefSchema = z.object({
   focalLg: focalSchema.optional(),
 });
 
-/** Título partido: a segunda metade recebe `.text-gradient`. */
+/** Título partido em duas partes, que o layout pode destacar ou separar. */
 export const splitTitleSchema = z.object({
   lead: trimmed(120),
   accent: trimmed(120),
@@ -86,6 +86,17 @@ export const identitySchema = z.object({
   }),
   instagram: z.object({ handle: trimmed(60), url: z.url() }),
   donation: z.object({ url: z.url() }),
+  /**
+   * Número de urna.
+   *
+   * Opcional, como todo campo acrescentado depois do deploy inicial: o banco é
+   * compartilhado com o site no ar, que valida com o schema anterior. Campo novo
+   * obrigatório invalidaria o conteúdo publicado hoje; campo novo opcional é
+   * descartado pelo Zod antigo sem erro.
+   */
+  number: z
+    .union([z.literal(""), z.string().trim().regex(/^\d{2,6}$/, "Use só os dígitos")])
+    .optional(),
 });
 
 export const seoSchema = z.object({
@@ -133,6 +144,11 @@ export const heroSchema = z.object({
         target: z.enum(SECTION_KEYS),
         icon: z.enum(ICON_NAMES),
         variant: z.enum(["primary", "ghost"]),
+        /**
+         * Destino externo. Quando presente, vence o `target`: o botão abre o
+         * WhatsApp ou a página de doação em vez de rolar até uma seção.
+         */
+        link: z.enum(["whatsapp", "donation"]).optional(),
       }),
     )
     .max(3),
@@ -177,6 +193,8 @@ export const proposalsSchema = z.object({
       // O card renderiza o corpo num <p> só e mede scrollHeight para expandir.
       body: z.string().trim().min(1).max(4000),
       source: trimmed(80),
+      /** Frase curta visível com a proposta fechada, antes de expandir. */
+      summary: z.string().trim().max(200).optional(),
       icon: z.enum(PROPOSAL_ICON_NAMES),
     }),
   ),
@@ -206,7 +224,18 @@ export const contactSchema = z.object({
   whatsappActionLabel: trimmed(60),
 });
 
-export const footerSchema = z.object({ brand: splitTitleSchema });
+const CNPJ = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
+
+export const footerSchema = z.object({
+  /** Mantido por compatibilidade; o layout atual usa a logo no rodapé. */
+  brand: splitTitleSchema,
+  tagline: z.string().trim().max(80).optional(),
+  /** Aviso obrigatório em propaganda eleitoral, acima do CNPJ. */
+  legal: z.string().trim().max(120).optional(),
+  cnpj: z
+    .union([z.literal(""), z.string().trim().regex(CNPJ, "Formato 00.000.000/0000-00")])
+    .optional(),
+});
 
 export const analyticsSchema = z.object({
   googleTagId: z.string().trim().max(40),
@@ -235,6 +264,12 @@ export const uiLabelsSchema = z.object({
   lightboxLabel: trimmed(60),
   lightboxClose: trimmed(30),
   carouselRoleDescription: trimmed(30),
+  menuTitle: z.string().trim().max(60).optional(),
+  menuWhatsapp: z.string().trim().max(60).optional(),
+  menuDonate: z.string().trim().max(60).optional(),
+  backToTop: z.string().trim().max(40).optional(),
+  /** Rótulo pequeno ao lado do título dos vídeos. */
+  videosKicker: z.string().trim().max(30).optional(),
 });
 
 export const siteContentSchema = z.object({

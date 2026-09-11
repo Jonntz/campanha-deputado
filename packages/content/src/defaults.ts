@@ -23,18 +23,37 @@ function media(
 }
 
 /**
+ * Retrato recortado da abertura, fora do manifesto de propósito.
+ *
+ * Não tem placeholder de blur: o fundo é transparente, e um blur achataria o
+ * recorte num retângulo borrado sobre o amarelo até a imagem carregar — pior
+ * do que simplesmente aparecer.
+ */
+const PORTRAIT: MediaRef = {
+  mediaId: null,
+  url: "/assets/matheus-foto-interno.webp",
+  width: 1408,
+  height: 3058,
+  alt: "Matheus Biancardine, de camiseta verde Minas Gerais, sorrindo",
+};
+
+/**
  * Conteúdo padrão do site, versionado junto do código.
  *
- * Cumpre dois papéis: é o que o seed grava no banco na primeira carga, e é a
+ * Cumpre três papéis: é o que o seed grava no banco numa carga inicial, é a
  * rede de segurança do site — se o Turso estiver fora do ar, a página sobe com
- * este conteúdo em vez de quebrar. Por isso precisa continuar completo e
- * válido, e não virar um esqueleto vazio.
+ * este conteúdo em vez de quebrar — e é a fonte do script que importa os
+ * textos do layout novo como rascunho. Precisa continuar completo e válido.
+ *
+ * Os campos que o layout atual não exibe (selo e subtítulo do hero, números
+ * da bio, faixa de doação, marca em texto do rodapé) continuam aqui porque o
+ * schema os mantém por compatibilidade com o conteúdo já publicado.
  */
 export const defaultContent = {
   identity: {
     name: "Matheus Biancardine",
-    role: "Pré-candidato a Deputado Federal",
-    tagline: "Tolerância zero por Minas",
+    role: "Candidato a Deputado Federal",
+    tagline: "Juventude e coragem. Por Minas.",
     state: "Minas Gerais",
     url: "https://www.matheusbiancardine.com.br",
     brand: { lead: "Minas", accent: "é o mundo" },
@@ -44,51 +63,54 @@ export const defaultContent = {
       url: "https://instagram.com/matheus.biancardine",
     },
     donation: { url: "https://queroapoiar.com.br/matheusbiancardine" },
+    number: "3055",
   },
 
   seo: {
     description:
-      "Pré-candidato a Deputado Federal por Minas Gerais. Fim da saidinha, leis mais rígidas e cadeia para quem recruta jovens para o tráfico.",
+      "Juventude, preparo e coragem a serviço de Minas. Conheça Matheus Biancardine 3055, sua trajetória e suas propostas para deputado federal.",
     ogDescription:
-      "Pré-candidato a Deputado Federal por Minas Gerais. Enquanto a velha política passa pano pro crime, eu defendo Minas.",
+      "Juventude e coragem. Por Minas. Conheça Matheus Biancardine 3055, candidato a deputado federal.",
     jsonLdDescription:
-      "Matheus Biancardine é pré-candidato a Deputado Federal por Minas Gerais, com foco em segurança pública, oportunidades para a juventude e menos impostos.",
+      "Matheus Biancardine é candidato a deputado federal por Minas Gerais, número 3055, com foco em segurança, liberdade e oportunidades para a juventude.",
     keywords: [
       "Matheus Biancardine",
+      "3055",
       "Deputado Federal",
       "Minas Gerais",
+      "Juventude",
       "Segurança Pública",
-      "Tolerância Zero",
-      "MG 2026",
     ],
-    themeColor: "#12303c",
+    themeColor: "#f7f4ea",
     ogImage: { url: "/og-image.jpg", width: 1200, height: 630 },
   },
 
   nav: {
     ariaLabel: "Navegação principal",
     items: [
-      { sectionKey: "inicio", label: "Início", visible: true },
-      { sectionKey: "bio", label: "Biografia", visible: true },
+      // A marca no cabeçalho já leva ao início; o item fica oculto no menu.
+      { sectionKey: "inicio", label: "Início", visible: false },
+      { sectionKey: "bio", label: "Quem sou", visible: true },
       { sectionKey: "propostas", label: "Propostas", visible: true },
-      { sectionKey: "galeria", label: "Galeria", visible: true },
+      { sectionKey: "galeria", label: "Por Minas", visible: true },
       { sectionKey: "contato", label: "Contato", visible: true },
     ],
-    ctaLabel: "Faça parte do projeto",
+    ctaLabel: "Quero apoiar",
     ribbon: { text: "Considere fazer uma doação!", linkLabel: "Doar" },
   },
 
   hero: {
     badge: "Minas Gerais · 2026",
-    title: { lines: ["Tolerância zero", "por"], accent: "Minas." },
-    subtitle: "Pré-candidato a Deputado Federal por Minas Gerais",
-    body: "Enquanto a velha política passa pano pro crime, eu defendo o fim da saidinha, leis mais rígidas e cadeia para quem recruta jovens para o tráfico. Minas sempre foi terra de gente trabalhadora e de bem. Vai continuar sendo.",
+    title: { lines: ["Juventude e", "coragem."], accent: "Por Minas." },
+    subtitle: "Candidato a Deputado Federal por Minas Gerais",
+    body: "Sou Matheus Biancardine. Com fé, preparo e coragem, quero levar a força de Minas para Brasília.",
     ctas: [
       {
-        id: "apoio",
-        label: "Apoio essa luta",
+        id: "whatsapp",
+        label: "Vamos juntos",
         target: "contato",
-        icon: "heart",
+        link: "whatsapp",
+        icon: "whatsapp",
         variant: "primary",
       },
       {
@@ -99,7 +121,7 @@ export const defaultContent = {
         variant: "ghost",
       },
     ],
-    image: media("hero-matheus", "Matheus Biancardine, pré-candidato a Deputado Federal por Minas Gerais", { x: 50, y: 30 }, { x: 50, y: 32 }),
+    image: PORTRAIT,
   },
 
   credentials: {
@@ -134,26 +156,22 @@ export const defaultContent = {
 
   bio: {
     header: {
-      eyebrow: "Biografia",
-      title: { lead: "Quem é", accent: "Matheus Biancardine?" },
+      eyebrow: "Quem sou",
+      title: { lead: "Minas é a minha casa.", accent: "E o meu propósito." },
     },
-    image: media("quem-matheus", "Matheus Biancardine discursando ao microfone", { x: 50, y: 20 }),
+    image: media("quem-matheus", "Matheus conversando com o público em um encontro", { x: 50, y: 10 }),
     paragraphs: [
       {
         id: "origem",
-        text: "**Matheus Biancardine** encontrou em Minas Gerais sua casa e seu propósito. Mudou-se para o estado com a família em busca de segurança e oportunidades, e desde então construiu uma relação de amor incondicional com Minas, sua gente, sua história, seus valores e sua juventude.",
+        text: "Vim para Minas com a minha família em busca de segurança e oportunidades. Aqui, construí minha história e encontrei o que me move: **trabalhar pela nossa gente.**",
       },
       {
         id: "trajetoria",
-        text: "Católico, estudante de Direito e de Ciências Políticas, iniciou sua trajetória pública na juventude, fundando a Juventude do Partido NOVO e atuando como presidente estadual e nacional do movimento. Também presidiu o Conselho Estadual da Juventude de Minas Gerais, foi conselheiro estadual, delegado nacional de juventude e Diretor Estadual de Políticas para as Juventudes no Governo de Minas, pela Sedese.",
-      },
-      {
-        id: "atuacao",
-        text: "Atualmente, atua como assessor do Governo de Minas, levando sua experiência na gestão pública, na articulação política e na defesa da juventude para uma missão maior: representar uma nova geração na política.",
+        text: "Sou católico, estudante de Direito e Ciência Política. Fundei a Juventude do NOVO, presidi o Conselho Estadual da Juventude e trabalhei com políticas públicas no Governo de Minas.",
       },
       {
         id: "objetivo",
-        text: "Em 2026, seu objetivo é chegar à Câmara dos Deputados como uma voz jovem, liberal e corajosa a serviço de Minas Gerais, defendendo segurança, liberdade, menos impostos, oportunidades para a juventude e uma política feita com propósito, responsabilidade e coragem.",
+        text: "Agora, como candidato a deputado federal, quero levar essa experiência para Brasília. **Mais segurança, liberdade e oportunidades para quem está começando.**",
       },
     ],
     stats: [
@@ -166,15 +184,16 @@ export const defaultContent = {
   proposals: {
     header: {
       eyebrow: "Propostas",
-      title: { lead: "Nossas", accent: "Propostas" },
-      lead: "Foco no que Minas precisa para crescer.",
+      title: { lead: "O futuro de Minas", accent: "se faz agora." },
+      lead: "Sete propostas para abrir caminhos e cuidar do que importa. Toque em cada uma para conhecer melhor.",
     },
     items: [
       {
         id: "juventude",
         tag: "Juventude",
         title: "Rota Nacional do Primeiro Trabalho",
-        body: "A proposta consiste em criar uma rota nacional conectando escolas públicas, institutos federais, Sistema S, empresas e serviços locais de juventude. Uma plataforma única faria o diagnóstico de habilidades, ofereceria cursos curtos e gratuitos, reuniria vagas de aprendizagem, estágio e primeiro emprego e emitiria um portfólio digital de competências. Empresas participantes receberiam apoio para formar tutores e incentivos vinculados à permanência do jovem por pelo menos 12 meses. A prioridade seria atender quem está fora da escola e do trabalho, com metas públicas de inserção, formação e continuidade dos estudos.",
+        summary: "Uma ponte entre aprender uma profissão e conseguir a primeira oportunidade.",
+        body: "Quero conectar escolas, cursos técnicos, Sistema S e empresas para facilitar o acesso a cursos gratuitos, estágios, aprendizagem e ao primeiro emprego. A proposta reúne orientação profissional, formação digital e acompanhamento de quem entra no mercado, com prioridade para jovens que estão fora da escola e do trabalho.",
         source: "Planalto",
         icon: "briefcase",
       },
@@ -182,7 +201,8 @@ export const defaultContent = {
         id: "educacao",
         tag: "Educação",
         title: "Ensino Médio com Futuro",
-        body: "A proposta consiste em ampliar a formação técnica integrada ao ensino médio sem reduzir o aprendizado de português, matemática, ciências e humanidades. Cada rede escolheria cursos ligados à economia regional, em parceria com institutos federais, Sistema S, universidades e empresas, utilizando laboratórios já existentes. A formação incluiria educação financeira, competências digitais, inteligência artificial, comunicação e orientação profissional. Os recursos federais seriam vinculados a metas de aprendizagem, redução do abandono, formação dos professores, conectividade adequada e divulgação transparente dos resultados de cada escola.",
+        summary: "Formação técnica, escola de qualidade e mais caminhos para escolher.",
+        body: "Defendo ampliar o ensino técnico integrado ao ensino médio, sem abrir mão das matérias básicas. Com laboratórios, professores preparados, educação financeira e competências digitais, a escola pode se aproximar das oportunidades de cada região e ajudar o estudante a construir seu futuro.",
         source: "Serviços e Informações do Brasil",
         icon: "graduation-cap",
       },
@@ -190,7 +210,8 @@ export const defaultContent = {
         id: "cultura",
         tag: "Cultura",
         title: "Rede de Economia Criativa",
-        body: "A proposta consiste em criar polos regionais de economia criativa em bibliotecas, centros culturais, escolas técnicas e outros equipamentos públicos já existentes. Os espaços ofereceriam formação em gestão, direitos autorais, produção digital, vendas, exportação e acesso a crédito para música, audiovisual, design, games, artesanato, moda e atividades culturais. Um balcão único ajudaria na formalização e conectaria profissionais a empresas, plataformas, editais e compras públicas. O apoio teria seleção transparente e metas de faturamento, formalização e geração de trabalho, evitando dependência permanente de subsídios.",
+        summary: "Transformar talento em renda, negócio e oportunidade perto de casa.",
+        body: "A ideia é usar espaços que já existem, como bibliotecas, centros culturais e escolas técnicas, para apoiar quem vive de arte, música, audiovisual, design, games, moda e artesanato. Formação em gestão, acesso a crédito e menos dificuldade para formalizar e vender, com seleção transparente e resultados acompanhados.",
         source: "Serviços e Informações do Brasil",
         icon: "palette",
       },
@@ -198,7 +219,8 @@ export const defaultContent = {
         id: "jovem-do-campo",
         tag: "Jovem do Campo",
         title: "Sucessão Rural 4.0",
-        body: "A proposta consiste em transformar a Política Nacional de Juventude e Sucessão Rural em atendimento simples e acessível. Em um único canal, o jovem poderia obter o Cadastro da Agricultura Familiar, assistência técnica, capacitação, orientação para o Pronaf Jovem e apoio para elaborar seu plano produtivo. O programa apoiaria conectividade, irrigação eficiente, mecanização leve, energia renovável e tecnologias de gestão, priorizando atividades que agreguem valor à produção. Também incluiria orientação para sucessão familiar, cooperativismo e acesso a mercados, com acompanhamento técnico por três anos e indicadores de renda e permanência no campo.",
+        summary: "Tecnologia e apoio para quem quer construir seu futuro no campo.",
+        body: "Quero simplificar o caminho para o jovem acessar assistência técnica, capacitação e crédito rural, incluindo o Pronaf Jovem. Conectividade, pequenas máquinas e tecnologia de gestão ajudam a produzir melhor. A proposta também apoia a sucessão familiar, o cooperativismo e o acesso a mercados.",
         source: "Planalto",
         icon: "sprout",
       },
@@ -206,7 +228,8 @@ export const defaultContent = {
         id: "seguranca",
         tag: "Segurança",
         title: "Estratégia Nacional contra Facções",
-        body: "A proposta consiste em fortalecer a aplicação da Lei Antifacção por meio de uma estratégia permanente de asfixia financeira e desarticulação das lideranças criminosas. Polícia Federal, polícias estaduais, Receita, Coaf, Ministério Público e sistema prisional atuariam em forças-tarefa com metas e compartilhamento seguro de dados. A medida incluiria rastreamento e administração profissional de bens apreendidos, combate a empresas de fachada e controle das comunicações criminosas nos presídios. Penas e agravantes alcançariam especialmente líderes, financiadores, recrutadores de menores e agentes públicos envolvidos, preservando controle judicial e direito de defesa.",
+        summary: "Combater o crime organizado, atingir seu dinheiro e proteger as famílias.",
+        body: "Defendo integrar as forças de segurança e os órgãos de investigação para desarticular lideranças, rastrear o dinheiro do crime e combater empresas de fachada. Também quero controle das comunicações nos presídios e penas mais duras para chefes, financiadores e recrutadores de menores, com investigação e controle judicial.",
         source: "Senado Federal",
         icon: "shield-check",
       },
@@ -214,7 +237,8 @@ export const defaultContent = {
         id: "empreendedorismo",
         tag: "Empreendedorismo",
         title: "Empresa Pequena, Caminho Livre",
-        body: "A proposta consiste em estabelecer um padrão nacional de simplificação para micro e pequenas empresas. Atividades de baixo risco teriam licenciamento automático, cadastro único e calendário integrado de obrigações, reduzindo formulários repetidos entre União, estados e municípios. Nos primeiros 12 meses, erros formais corrigíveis receberiam orientação antes da aplicação de multa, sem tolerância para fraude, risco sanitário, dano ambiental ou violação trabalhista. O programa ampliaria o acesso a compras públicas, capacitação e crédito com garantia de recebíveis, além de publicar o tempo, o custo e as etapas exigidas para manter cada negócio.",
+        summary: "Menos burocracia para abrir, manter e fazer um pequeno negócio crescer.",
+        body: "Minha proposta é simplificar licenças de atividades de baixo risco, reunir cadastros e acabar com exigências repetidas. Nos primeiros 12 meses, erros formais que podem ser corrigidos devem receber orientação antes da multa, sem tolerância a fraude ou riscos. Crédito, capacitação e acesso às compras públicas completam esse caminho.",
         source: "Serviços e Informações do Brasil",
         icon: "store",
       },
@@ -222,79 +246,77 @@ export const defaultContent = {
         id: "projeto-nacional",
         tag: "Projeto Nacional",
         title: "Plano de Desenvolvimento da Juventude",
-        body: "A proposta consiste em instituir um plano nacional de dez anos, com metas mensuráveis para educação, trabalho, segurança, cultura, empreendedorismo, saúde e participação social. Em vez de criar uma nova estrutura, o plano utilizaria o Sistema Nacional de Juventude para integrar ministérios, estados, municípios, conselhos e organizações locais. Os repasses federais seriam vinculados a diagnóstico territorial, metas e prestação de contas em painel público. Cada jovem teria uma porta de entrada digital e presencial para oportunidades e serviços, enquanto avaliações independentes identificariam iniciativas eficazes e encerrariam programas sem resultado comprovado.",
+        summary: "Metas claras para a juventude, com resultado que dá para acompanhar.",
+        body: "Um plano de dez anos para conectar educação, trabalho, segurança, cultura, saúde e participação. Usando a estrutura que já existe, quero facilitar o acesso aos serviços e vincular recursos a metas públicas, prestação de contas e avaliação independente. Política para a juventude precisa chegar à vida real.",
         source: "Serviços e Informações do Brasil",
-        icon: "landmark",
+        icon: "users-round",
       },
     ],
   },
 
   gallery: {
     header: {
-      eyebrow: "Galeria",
-      title: { lead: "Galeria de", accent: "Fotos" },
-      lead: "Momentos do lançamento da pré-candidatura e das agendas por Minas.",
+      eyebrow: "Por Minas",
+      title: { lead: "É junto da gente", accent: "que tudo começa." },
+      lead: "Conversas, encontros e histórias que fazem parte da minha caminhada por Minas.",
     },
     photos: [
       {
         id: "evento-01",
-        image: media("evento-01", "Matheus Biancardine ao lado de uma liderança do Partido NOVO durante o lançamento da pré-candidatura"),
-        caption:
-          "Ao lado de lideranças do Partido NOVO no lançamento da pré-candidatura.",
+        image: media("evento-01", "Matheus e Mateus Simões juntos em um encontro do NOVO"),
+        caption: "Encontro com Mateus Simões",
       },
       {
         id: "evento-02",
-        image: media("evento-02", "Matheus Biancardine concedendo entrevista com bandeiras da campanha ao fundo"),
-        caption: "Entrevista à imprensa durante o encontro Juntos por Minas.",
+        image: media("evento-02", "Matheus e Mateus Simões conversando com uma entrevistadora"),
+        caption: "Conversa com a imprensa",
       },
       {
         id: "evento-03",
-        image: media("evento-03", "Matheus Biancardine conversando com uma repórter na chegada ao evento"),
-        caption: "Conversa com a imprensa na chegada ao evento de lançamento.",
+        image: media("evento-03", "Matheus sendo entrevistado durante um encontro"),
+        caption: "Ideias em conversa",
       },
       {
         id: "evento-04",
-        image: media("evento-04", "Matheus Biancardine assinando o mapa de Minas Gerais em um painel da campanha"),
-        caption:
-          "Assinatura no mapa de Minas: compromisso com todas as regiões do estado.",
+        image: media("evento-04", "Matheus escrevendo seu nome em um mapa de Minas Gerais"),
+        caption: "Uma caminhada por Minas",
       },
       {
         id: "evento-05",
-        image: media("evento-05", "Matheus Biancardine conversando com jovens durante o evento"),
-        caption:
-          "Ouvindo a juventude mineira e as pautas de quem quer mudar o estado.",
+        image: media("evento-05", "Matheus ouvindo dois jovens durante um encontro"),
+        caption: "Ouvindo a juventude",
       },
       {
         id: "evento-06",
-        image: media("evento-06", "Matheus Biancardine abraçado a um apoiador com camiseta do NOVO"),
-        caption: "O abraço dos apoiadores e da militância no dia do lançamento.",
+        image: media("evento-06", "Matheus abraçando e conversando com um participante de um encontro"),
+        caption: "Perto da nossa gente",
       },
     ],
-    videosTitle: "Vídeos do evento",
+    videosTitle: "Um pouco desses encontros",
     videos: [
       {
         id: "video-1",
         src: "/videos/evento-video-1.mp4",
         poster: "/videos/evento-video-1.jpg",
-        caption: "Lideranças falam sobre a mobilização por Minas Gerais.",
+        caption: "Conversa com Mateus Simões",
       },
       {
         id: "video-2",
         src: "/videos/evento-video-2.mp4",
         poster: "/videos/evento-video-2.jpg",
-        caption: "Apoiadoras dão seu depoimento durante o encontro.",
+        caption: "Vozes dos nossos encontros",
       },
       {
         id: "video-3",
         src: "/videos/evento-video-3.mp4",
         poster: "/videos/evento-video-3.jpg",
-        caption: "A nova geração que caminha junto com o projeto por Minas.",
+        caption: "Ideias para Minas",
       },
       {
         id: "video-4",
         src: "/videos/evento-video-4.mp4",
         poster: "/videos/evento-video-4.jpg",
-        caption: "Quem esteve presente conta o que espera da nova política.",
+        caption: "Quem caminha com a gente",
       },
     ],
   },
@@ -302,17 +324,20 @@ export const defaultContent = {
   contact: {
     header: {
       eyebrow: "Contato",
-      title: { lead: "Fale", accent: "Conosco" },
-      lead: "Sua voz é fundamental para construirmos uma Minas melhor. Entre em contato e acompanhe nossas redes sociais.",
+      title: { lead: "Bora", accent: "conversar?" },
+      lead: "Tem uma ideia, uma pergunta ou quer caminhar com a gente? Me chama. Quero ouvir você.",
     },
     whatsappLabel: "WhatsApp",
     instagramLabel: "Instagram",
-    instagramActionLabel: "Seguir no Instagram",
-    whatsappActionLabel: "Conversar no WhatsApp",
+    instagramActionLabel: "Acompanhe no Instagram",
+    whatsappActionLabel: "Fale comigo no WhatsApp",
   },
 
   footer: {
     brand: { lead: "Matheus", accent: "Biancardine" },
+    tagline: "Juntos por Minas.",
+    legal: "Propaganda eleitoral",
+    cnpj: "68.306.593/0001-52",
   },
 
   analytics: {
@@ -332,9 +357,14 @@ export const defaultContent = {
     collapseProposal: "Esconder",
     proposalSource: "Fonte:",
     enlargePhoto: "Ampliar foto:",
-    videoFallback: "Seu navegador não suporta vídeo em HTML5.",
+    videoFallback: "Seu navegador não reproduz este vídeo.",
     lightboxLabel: "Visualização da imagem",
     lightboxClose: "Fechar",
     carouselRoleDescription: "carrossel",
+    menuTitle: "Vamos por Minas.",
+    menuWhatsapp: "Fale comigo",
+    menuDonate: "Quero apoiar o projeto",
+    backToTop: "Voltar ao início",
+    videosKicker: "Em vídeo",
   },
 } satisfies SiteContent;

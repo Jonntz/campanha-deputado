@@ -26,6 +26,10 @@ export const ICON_NAMES = [
   "shield-check",
   "store",
   "landmark",
+  "users-round",
+  "arrow-up-right",
+  "expand",
+  "whatsapp",
 ] as const;
 
 export type IconName = (typeof ICON_NAMES)[number];
@@ -43,6 +47,7 @@ export const PROPOSAL_ICON_NAMES = [
   "shield-check",
   "store",
   "landmark",
+  "users-round",
 ] as const satisfies readonly IconName[];
 
 export type ProposalIconName = (typeof PROPOSAL_ICON_NAMES)[number];
