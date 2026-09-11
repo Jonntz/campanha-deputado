@@ -1,161 +1,236 @@
 .hero {
-  position: relative;
   overflow: hidden;
-  padding-top: 9rem;
-  padding-bottom: 6rem;
-  background: var(--gradient-hero);
+  background: var(--yellow);
 }
 
-.glow {
-  top: -10rem;
-  left: -8rem;
-  width: 36rem;
-  height: 36rem;
-}
-
-.grid {
+.inner {
+  position: relative;
   display: grid;
-  align-items: center;
-  gap: 3.5rem;
+  grid-template-columns: 1fr 1fr;
+  min-height: 698px;
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.375rem 1rem;
-  border: 1px solid oklch(72% 0.2 148 / 0.4);
-  border-radius: 999px;
-  background: oklch(72% 0.2 148 / 0.1);
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--brand-green-soft);
+.copy {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+  padding-block: 50px 46px;
 }
 
 .title {
-  margin-top: 1.5rem;
-  font-size: clamp(2.75rem, 6.5vw, 5rem);
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+  font-size: clamp(3.4rem, 5.5vw, 5.15rem);
+  font-style: italic;
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
 }
 
-.subtitle {
-  margin-top: 1.5rem;
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.5vw, 1.875rem);
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--brand-green);
+.accent {
+  display: inline-block;
+  margin-top: 0.05em;
+  padding: 0 0.13em 0.035em;
+  background: var(--navy);
+  color: #fff;
 }
 
-.text {
-  max-width: 36rem;
-  margin-top: 1rem;
-  color: var(--muted-foreground);
+.body {
+  max-width: 435px;
+  margin: 0 0 16px;
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+.number {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-block: 0 18px;
+}
+
+.number strong {
+  font-size: 100px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.055em;
 }
 
 .actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-top: 2.25rem;
+  align-items: center;
+  gap: 22px;
 }
 
-/* Retrato + efeito cortina */
 .portrait {
   position: relative;
+  min-width: 0;
+  align-self: stretch;
 }
 
-.portraitGlow {
+/* Arredondar é inofensivo num recorte com fundo transparente e dá acabamento
+   quando o painel usa uma foto retangular no lugar. */
+.portrait img {
   position: absolute;
-  inset: -1rem;
-  border-radius: 2rem;
-  background: linear-gradient(
-    to top right,
-    oklch(72% 0.2 148 / 0.25),
-    oklch(78% 0.16 72 / 0.15)
-  );
-  filter: blur(32px);
-  pointer-events: none;
+  top: 26px;
+  left: 5px;
+  width: 580px;
+  max-width: none;
+  height: auto;
+  border-radius: 12px 12px 0 0;
+  filter: drop-shadow(-15px 10px 25px #906b0615);
 }
 
-.frame {
-  position: relative;
+.strip {
   overflow: hidden;
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-elevated);
+  background: var(--navy);
 }
 
-/* No mobile a foto aparece inteira; no desktop vira retrato vertical.
-   `height: auto` é obrigatório: sem ele o atributo height do <img> venceria
-   o aspect-ratio e a moldura ficaria com a altura original da imagem. */
-.frame img {
+.strip img {
   width: 100%;
   height: auto;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-  object-position: 50% 30%;
 }
 
-.curtain {
-  position: absolute;
-  inset-block: 0;
-  z-index: 20;
-  width: 52%;
-  overflow: hidden;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.45);
-  will-change: transform;
-  animation-duration: 2s;
-  animation-timing-function: cubic-bezier(0.83, 0, 0.17, 1);
-  animation-delay: 1.2s;
-  animation-fill-mode: forwards;
-}
-
-.curtain svg {
-  width: 100%;
-  height: 100%;
-}
-
-.curtainLeft {
-  left: 0;
-  animation-name: curtain-left;
-}
-
-.curtainRight {
-  right: 0;
-  animation-name: curtain-right;
-}
-
-@keyframes curtain-left {
-  to {
-    transform: translateX(-102%);
+@media (max-width: 1100px) {
+  .inner {
+    min-height: 660px;
+  }
+  .title {
+    font-size: clamp(48px, 5.8vw, 65px);
+  }
+  .portrait img {
+    top: 46px;
+    left: -5px;
+    width: 520px;
+  }
+  .actions {
+    flex-wrap: wrap;
+    gap: 16px;
   }
 }
 
-@keyframes curtain-right {
-  to {
-    transform: translateX(102%);
+@media (max-width: 800px) {
+  .inner {
+    grid-template-columns: 1.2fr 1fr;
+    min-height: 615px;
+  }
+  .copy {
+    padding-block: 42px;
+  }
+  .title {
+    font-size: 46px;
+  }
+  .body {
+    max-width: 340px;
+    font-size: 17px;
+  }
+  .number strong {
+    font-size: 86px;
+  }
+  .portrait img {
+    top: 72px;
+    left: -28px;
+    width: clamp(340px, 55vw, 440px);
   }
 }
 
-@media (min-width: 640px) {
-  .hero {
-    padding-top: 10rem;
+/* No celular o retrato vira fundo e o texto se sobrepõe a ele: título e número
+   ficam por cima, com fundo próprio para continuar legíveis. */
+@media (max-width: 600px) {
+  .inner {
+    grid-template-columns: 46% minmax(0, 1fr);
+    column-gap: 0;
+    min-height: 0;
   }
-}
-
-@media (min-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .copy {
+    display: contents;
   }
-
-  .frame img {
-    aspect-ratio: 4 / 5;
-    object-position: 50% 32%;
+  .title {
+    grid-area: 1 / 1;
+    align-self: start;
+    z-index: 2;
+    width: clamp(215px, 62vw, 310px);
+    margin: clamp(158px, 44vw, 212px) 0 0;
+    font-size: clamp(30px, 8.2vw, 42px);
+    line-height: 1.04;
+  }
+  .lead {
+    padding: 0 0.1em 0.025em;
+    background: #fdc730ed;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .portrait {
+    grid-area: 1 / 1 / 2 / -1;
+    width: calc(100% + 20px);
+    height: clamp(475px, 128vw, 570px);
+    -webkit-mask-image: linear-gradient(black 86%, transparent 100%);
+    mask-image: linear-gradient(black 86%, transparent 100%);
+    pointer-events: none;
+  }
+  .portrait img {
+    top: -8px;
+    right: -14px;
+    left: auto;
+    width: clamp(320px, 92vw, 450px);
+    filter: none;
+  }
+  .number {
+    grid-area: 1 / 1;
+    align-self: start;
+    z-index: 2;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    margin: clamp(285px, 80vw, 365px) 0 0;
+  }
+  .number strong {
+    padding: 0 0.16em 0.06em 0.1em;
+    background: var(--navy);
+    color: #fff;
+    font-size: clamp(64px, 18.5vw, 92px);
+    line-height: 1;
+  }
+  .body {
+    grid-area: 2 / 1 / 3 / -1;
+    position: relative;
+    z-index: 2;
+    max-width: none;
+    margin: -39px 0 20px;
+    padding: 16px 18px;
+    border-radius: 8px;
+    background: var(--cream);
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .actions {
+    grid-area: 3 / 1 / 4 / -1;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 28px;
+  }
+  .actions :global(.button) {
+    gap: 10px;
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+  .actions :global(.text-link) {
+    gap: 6px;
+    font-size: 14px;
+  }
+  .strip {
+    height: 78px;
+  }
+  .strip img {
+    position: relative;
+    left: 50%;
+    width: 653px;
+    min-width: 653px;
+    max-width: none;
+    height: 78px;
+    transform: translateX(-50%);
   }
 }

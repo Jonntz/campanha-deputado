@@ -69,65 +69,64 @@ export function Credentials({ content }: { content: CredentialsContent }) {
   if (!slide) return null;
 
   return (
-    <section
-      className={`${styles.section} section--ink`}
-      aria-label={content.ariaLabel}
-    >
-      <div className="wrap">
+    <section className={styles.section} aria-label={content.ariaLabel}>
+      <div className="container">
         <Reveal>
           <div
-            className={`${styles.carousel} surface-card`}
+            className={styles.carousel}
             aria-roledescription={labels.roleDescription}
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            <button
-              type="button"
-              className={`${styles.arrow} ${styles.arrowPrev}`}
-              aria-label={labels.previous}
-              onClick={() => go(-1)}
-            >
-              <ChevronLeftIcon size={20} />
-            </button>
-
-            <button
-              type="button"
-              className={`${styles.arrow} ${styles.arrowNext}`}
-              aria-label={labels.next}
-              onClick={() => go(1)}
-            >
-              <ChevronRightIcon size={20} />
-            </button>
-
-            <div className={styles.slides}>
-              {/* A key por slide reexecuta a animação de entrada a cada troca. */}
-              <div className={styles.slide} key={slide.id}>
+            {/* A key por slide reexecuta a animação de entrada a cada troca. */}
+            <div className={styles.slide} key={slide.id}>
+              <div className={styles.photo}>
                 <Image
                   {...imageProps(slide.image)}
                   alt={slide.image.alt}
-                  style={{
-                    objectPosition: focalToObjectPosition(slide.image.focal),
-                  }}
-                  sizes="7rem"
+                  style={{ objectPosition: focalToObjectPosition(slide.image.focal) }}
+                  sizes="120px"
                 />
+              </div>
+              <div className={styles.text}>
                 <h3>{slide.title}</h3>
                 <p>{slide.text}</p>
               </div>
             </div>
 
-            <div className={styles.dots} role="tablist" aria-label={labels.dots}>
-              {items.map((credential, i) => (
-                <button
-                  key={credential.id}
-                  type="button"
-                  role="tab"
-                  aria-label={`${labels.goTo} ${credential.title}`}
-                  aria-selected={i === index}
-                  onClick={() => setIndex(i)}
-                />
-              ))}
+            <div className={styles.controls}>
+              <button
+                type="button"
+                className={styles.arrow}
+                aria-label={labels.previous}
+                onClick={() => go(-1)}
+              >
+                <ChevronLeftIcon size={20} />
+              </button>
+
+              <div className={styles.dots} role="tablist" aria-label={labels.dots}>
+                {items.map((credential, i) => (
+                  <button
+                    key={credential.id}
+                    type="button"
+                    role="tab"
+                    aria-label={`${labels.goTo} ${credential.title}`}
+                    aria-selected={i === index}
+                    onClick={() => setIndex(i)}
+                  />
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className={styles.arrow}
+                aria-label={labels.next}
+                onClick={() => go(1)}
+              >
+                <ChevronRightIcon size={20} />
+              </button>
             </div>
           </div>
         </Reveal>

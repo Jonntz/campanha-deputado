@@ -10,7 +10,11 @@ import {
   type SectionKey,
   type SiteContent,
 } from "@campanha/content";
-import { createDatabase, readPublishedDocument } from "@campanha/db";
+import {
+  createDatabase,
+  readDraftDocument,
+  readPublishedDocument,
+} from "@campanha/db";
 import { cache } from "react";
 
 /**
@@ -36,7 +40,7 @@ export type SiteData = {
   content: SiteContent;
   /** Já na ordem de renderização. */
   sections: readonly SectionSlot[];
-  source: "database" | "defaults";
+  source: "database" | "draft" | "defaults";
   /** Não-vazio significa que alguma parte caiu para o padrão. */
   issues: MergeIssue[];
 };
@@ -93,6 +97,20 @@ function resolveSections(
  * `cache` do React deduplica dentro de uma mesma renderização: o
  * `generateMetadata` do layout e a página compartilham uma única consulta.
  */
+/**
+ * Pré-visualização de rascunhos, só para rodar localmente.
+ *
+ * `CONTENT_SOURCE=draft` no .env.local faz o site ler os rascunhos em vez do
+ * conteúdo publicado. Existe porque o banco local é o mesmo da produção:
+ * publicar para conferir um texto no layout novo mudaria o site no ar. Nunca
+ * vale na Vercel, onde `VERCEL` está sempre definida.
+ */
+const DRAFT_PREVIEW = process.env.CONTENT_SOURCE === "draft" && !process.env.VERCEL;
+
+if (DRAFT_PREVIEW) {
+  console.warn("[content] CONTENT_SOURCE=draft — exibindo RASCUNHOS, não o publicado.");
+}
+
 export const getSiteData = cache(async (): Promise<SiteData> => {
   if (!process.env.TURSO_DATABASE_URL) {
     // Preview sem banco configurado, ou CI: o padrão commitado basta.
@@ -101,7 +119,7 @@ export const getSiteData = cache(async (): Promise<SiteData> => {
 
   try {
     const raw = await withTimeout(
-      readPublishedDocument(createDatabase()),
+      (DRAFT_PREVIEW ? readDraftDocument : readPublishedDocument)(createDatabase()),
       READ_TIMEOUT_MS,
     );
     const { content, issues } = mergeWithDefaults(defaultContent, raw);
@@ -116,7 +134,7 @@ export const getSiteData = cache(async (): Promise<SiteData> => {
     return {
       content,
       sections: resolveSections(raw.layout),
-      source: "database",
+      source: DRAFT_PREVIEW ? "draft" : "database",
       issues,
     };
   } catch (error) {

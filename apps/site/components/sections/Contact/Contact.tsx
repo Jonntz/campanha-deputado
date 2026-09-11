@@ -1,88 +1,43 @@
 import type { SiteContent } from "@campanha/content";
 import { whatsappHref } from "@campanha/content";
 import { Reveal } from "@/components/ui/Reveal";
-import {
-  InstagramIcon,
-  MessageCircleIcon,
-  PhoneIcon,
-} from "@/components/ui/icons";
+import { ArrowUpRightIcon, InstagramIcon, WhatsAppIcon } from "@/components/ui/icons";
 import styles from "./Contact.module.css";
 
 export function Contact({ content }: { content: SiteContent }) {
   const { contact, identity } = content;
-  const whatsapp = whatsappHref(content);
+  const { title } = contact.header;
 
   return (
-    <section id="contato" className={`section ${styles.contact}`}>
-      <div className={`glow ${styles.glow}`} aria-hidden="true" />
-
-      <div className="wrap">
+    <section id="contato" className={styles.contact}>
+      <div className={`container ${styles.inner}`}>
         <Reveal>
-          <p className="eyebrow">{contact.header.eyebrow}</p>
-          <h2 className="section-title">
-            {`${contact.header.title.lead} `}
-            <span className="text-gradient">{contact.header.title.accent}</span>
-          </h2>
-          {/* Lead próprio: este é centralizado, ao contrário do .section-lead
-              global usado em Propostas e Galeria. */}
-          <p className={styles.lead}>{contact.header.lead}</p>
+          {/* Aqui o título é uma linha só; nas outras seções, duas. */}
+          <h2 className="heading">{`${title.lead} ${title.accent}`}</h2>
+          {contact.header.lead ? <p>{contact.header.lead}</p> : null}
         </Reveal>
 
-        <div className={styles.cards}>
-          <Reveal>
-            <a
-              href={whatsapp}
-              target="_blank"
-              rel="noreferrer noopener"
-              className={`${styles.card} surface-card`}
-            >
-              <span className={styles.cardIcon}>
-                <PhoneIcon size={24} />
-              </span>
-              <span>
-                <strong>{contact.whatsappLabel}</strong>
-                <span>{identity.whatsapp.display}</span>
-              </span>
-            </a>
-          </Reveal>
-
-          <Reveal delay={90}>
-            <a
-              href={identity.instagram.url}
-              target="_blank"
-              rel="noreferrer noopener"
-              className={`${styles.card} ${styles.cardAmber} surface-card`}
-            >
-              <span className={styles.cardIcon}>
-                <InstagramIcon size={24} />
-              </span>
-              <span>
-                <strong>{contact.instagramLabel}</strong>
-                <span>{identity.instagram.handle}</span>
-              </span>
-            </a>
-          </Reveal>
-        </div>
-
-        <Reveal delay={140}>
+        <Reveal delay={100}>
           <div className={styles.actions}>
             <a
+              className="button button--yellow"
+              href={whatsappHref(content)}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <WhatsAppIcon size={24} />
+              {contact.whatsappActionLabel}
+              <ArrowUpRightIcon size={20} />
+            </a>
+            <a
+              className={styles.instagram}
               href={identity.instagram.url}
               target="_blank"
               rel="noreferrer noopener"
-              className="btn btn--ghost"
             >
-              <InstagramIcon size={16} />
+              <InstagramIcon size={22} />
               {contact.instagramActionLabel}
-            </a>
-            <a
-              href={whatsapp}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="btn btn--primary pulse-cta"
-            >
-              <MessageCircleIcon size={16} />
-              {contact.whatsappActionLabel}
+              <ArrowUpRightIcon size={18} />
             </a>
           </div>
         </Reveal>

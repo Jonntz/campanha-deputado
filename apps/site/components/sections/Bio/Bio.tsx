@@ -1,18 +1,14 @@
 import Image from "next/image";
-import { Fragment } from "react";
 import type { SiteContent } from "@campanha/content";
+import { focalToObjectPosition, parseBold } from "@campanha/content";
 import { imageProps } from "@/lib/media";
 import { Reveal } from "@/components/ui/Reveal";
 import styles from "./Bio.module.css";
 
-/** Converte os trechos entre ** do texto em <strong>, sem injetar HTML. */
+/** Trechos entre ** viram <strong>, sem injetar HTML — o mesmo parser do painel. */
 function renderParagraph(text: string) {
-  return text.split(/\*\*(.+?)\*\*/g).map((chunk, i) =>
-    i % 2 === 1 ? (
-      <strong key={i}>{chunk}</strong>
-    ) : (
-      <Fragment key={i}>{chunk}</Fragment>
-    ),
+  return parseBold(text).map((chunk, index) =>
+    chunk.bold ? <strong key={index}>{chunk.text}</strong> : chunk.text,
   );
 }
 
@@ -20,43 +16,34 @@ export function Bio({ content }: { content: SiteContent }) {
   const { bio } = content;
 
   return (
-    <section id="bio" className="section">
-      <div className="wrap">
-        <div className={styles.grid}>
-          <Reveal>
-            <div className={styles.figure}>
-              <Image
-                {...imageProps(bio.image)}
-                alt={bio.image.alt}
-                sizes="(max-width: 1023px) calc(100vw - 2.5rem), 36rem"
-              />
-            </div>
-          </Reveal>
-
-          <Reveal delay={100}>
-            <p className="eyebrow">{bio.header.eyebrow}</p>
-            <h2 className="section-title">
-              {`${bio.header.title.lead} `}
-              <span className="text-gradient">{bio.header.title.accent}</span>
-            </h2>
-
-            <div className={styles.body}>
-              {bio.paragraphs.map((paragraph) => (
-                <p key={paragraph.id}>{renderParagraph(paragraph.text)}</p>
-              ))}
-            </div>
-
-            <dl className={styles.stats}>
-              {bio.stats.map((stat) => (
-                <div key={stat.id} className="surface-card">
-                  <dt>{stat.value}</dt>
-                  <dd>{stat.label}</dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
+    <section id="bio" className={`section container ${styles.about}`}>
+      <Reveal>
+        <div className={styles.photo}>
+          <Image
+            {...imageProps(bio.image)}
+            alt={bio.image.alt}
+            fill
+            sizes="(max-width: 600px) calc(100vw - 40px), 520px"
+            style={{
+              objectFit: "cover",
+              objectPosition: focalToObjectPosition(bio.image.focal) ?? "50% 10%",
+            }}
+          />
         </div>
-      </div>
+      </Reveal>
+
+      <Reveal delay={100}>
+        <div className={styles.copy}>
+          <h2 className="heading">
+            {bio.header.title.lead}
+            <br />
+            {bio.header.title.accent}
+          </h2>
+          {bio.paragraphs.map((paragraph) => (
+            <p key={paragraph.id}>{renderParagraph(paragraph.text)}</p>
+          ))}
+        </div>
+      </Reveal>
     </section>
   );
 }

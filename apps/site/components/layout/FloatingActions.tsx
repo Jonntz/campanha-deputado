@@ -1,29 +1,23 @@
 import type { SiteContent } from "@campanha/content";
 import { whatsappHref } from "@campanha/content";
-import { InstagramIcon, MessageCircleIcon } from "@/components/ui/icons";
+import { WhatsAppIcon } from "@/components/ui/icons";
 import styles from "./FloatingActions.module.css";
 
+/**
+ * Atalho fixo para o WhatsApp. O Instagram deixou de ter botão flutuante no
+ * layout novo: o link dele fica no contato, e dois círculos disputando o canto
+ * da tela com o widget do VLibras poluíam a leitura no celular.
+ */
 export function FloatingActions({ content }: { content: SiteContent }) {
   return (
-    <div className={styles.floating}>
-      <a
-        href={content.identity.instagram.url}
-        target="_blank"
-        rel="noreferrer noopener"
-        aria-label={content.contact.instagramLabel}
-        className={`${styles.instagram} pulse-cta`}
-      >
-        <InstagramIcon size={28} />
-      </a>
-      <a
-        href={whatsappHref(content)}
-        target="_blank"
-        rel="noreferrer noopener"
-        aria-label={content.contact.whatsappLabel}
-        className={`${styles.whatsapp} pulse-cta`}
-      >
-        <MessageCircleIcon size={28} />
-      </a>
-    </div>
+    <a
+      href={whatsappHref(content)}
+      target="_blank"
+      rel="noreferrer noopener"
+      aria-label={content.contact.whatsappActionLabel}
+      className={styles.whatsapp}
+    >
+      <WhatsAppIcon size={30} />
+    </a>
   );
 }

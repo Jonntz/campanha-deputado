@@ -1,38 +1,115 @@
 .footer {
-  border-top: 1px solid var(--border);
-  background: var(--ink);
-  padding-block: 2.5rem;
+  padding-block: 42px;
+  background: var(--cream);
 }
 
-.footer :global(.wrap) {
+.inner {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  text-align: center;
+  gap: 55px;
 }
 
 .brand {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  position: relative;
+  display: block;
+  width: 210px;
+  height: 169px;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
-.brand span {
-  color: var(--brand-green);
+.brand img {
+  position: absolute;
+  top: -87px;
+  left: -33px;
+  width: 276px;
+  max-width: none;
+  height: auto;
 }
 
-.note {
-  font-size: 0.75rem;
-  color: var(--muted-foreground);
+.copy > strong {
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 900;
 }
 
-@media (min-width: 640px) {
-  .footer :global(.wrap) {
-    flex-direction: row;
-    text-align: left;
+.copy p {
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.party {
+  width: 90px;
+  height: auto;
+  margin: 16px 0;
+}
+
+.copy p.legal {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.backTop {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  margin-left: auto;
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.backTop:hover {
+  color: var(--teal);
+}
+
+@media (max-width: 1100px) {
+  .inner {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 800px) {
+  .inner {
+    flex-wrap: wrap;
+  }
+  .copy {
+    flex: 1;
+  }
+  .backTop {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer {
+    padding-block: 35px;
+  }
+  .inner {
+    flex-direction: column;
+    justify-content: center;
+    gap: 26px;
+    text-align: center;
+  }
+  .brand {
+    width: 195px;
+    height: 157px;
+  }
+  .brand img {
+    top: -81px;
+    left: -30px;
+    width: 256px;
+  }
+  .copy > strong {
+    font-size: 26px;
+  }
+  .party {
+    margin-inline: auto;
+  }
+  .backTop {
+    margin: 0;
+    font-size: 15px;
   }
 }

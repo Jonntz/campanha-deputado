@@ -1,0 +1,48 @@
+.intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  margin-bottom: 40px;
+}
+
+.intro h2 {
+  margin: 0;
+}
+
+.intro > p {
+  max-width: 365px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.intro[data-tone="dark"] h2 {
+  color: var(--yellow);
+}
+
+.intro[data-tone="dark"] > p {
+  color: #d3e0dc;
+}
+
+@media (max-width: 800px) {
+  .intro {
+    align-items: flex-start;
+    gap: 30px;
+  }
+  .intro > p {
+    max-width: 285px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .intro {
+    display: block;
+    margin-bottom: 26px;
+  }
+  .intro > p {
+    max-width: 100%;
+    margin-top: 20px;
+    font-size: 17px;
+  }
+}

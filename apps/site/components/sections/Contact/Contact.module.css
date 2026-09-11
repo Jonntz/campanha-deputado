@@ -1,91 +1,87 @@
 .contact {
-  overflow: hidden;
-  text-align: center;
+  padding-block: 65px;
+  background: var(--teal);
+  color: #fff;
 }
 
-.glow {
-  bottom: -10rem;
-  left: 50%;
-  width: 40rem;
-  height: 40rem;
-  transform: translateX(-50%);
-}
-
-.contact :global(.wrap) {
-  position: relative;
-  max-width: 64rem;
-}
-
-.lead {
-  max-width: 42rem;
-  margin: 1rem auto 0;
-  color: var(--muted-foreground);
-}
-
-.cards {
+.inner {
   display: grid;
-  gap: 1.25rem;
-  margin-top: 3rem;
-}
-
-.card {
-  display: flex;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 1rem;
-  height: 100%;
-  padding: 1.5rem;
-  text-align: left;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  gap: 80px;
 }
 
-.card:hover {
-  transform: translateY(-0.25rem);
-  border-color: oklch(72% 0.2 148 / 0.5);
+.inner h2 {
+  margin-bottom: 18px;
+  font-size: 56px;
 }
 
-.cardAmber:hover {
-  border-color: oklch(78% 0.16 72 / 0.5);
-}
-
-.cardIcon {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  border-radius: var(--radius);
-  background: oklch(72% 0.2 148 / 0.12);
-  color: var(--brand-green);
-}
-
-.cardAmber .cardIcon {
-  background: oklch(78% 0.16 72 / 0.12);
-  color: var(--brand-amber);
-}
-
-.card strong {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 700;
-}
-
-.card span {
-  font-size: 0.875rem;
-  color: var(--muted-foreground);
+.inner p {
+  max-width: 490px;
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.55;
 }
 
 .actions {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
 }
 
-@media (min-width: 640px) {
-  .cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.instagram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 44px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.instagram:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+@media (max-width: 1100px) {
+  .inner {
+    gap: 30px;
+  }
+  .inner h2 {
+    font-size: 47px;
+  }
+}
+
+@media (max-width: 800px) {
+  .inner {
+    gap: 25px;
+  }
+  .inner h2 {
+    font-size: 42px;
+  }
+  .inner p {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact {
+    padding-block: 48px;
+  }
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .inner h2 {
+    font-size: 43px;
+  }
+  .inner p {
+    font-size: 18px;
+  }
+  .actions {
+    align-items: stretch;
+    gap: 16px;
   }
 }

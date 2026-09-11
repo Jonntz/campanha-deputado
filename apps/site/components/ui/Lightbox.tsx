@@ -50,25 +50,33 @@ export function Lightbox({ item, labels, onClose }: LightboxProps) {
     <dialog
       ref={dialogRef}
       className={styles.lightbox}
-      aria-label={labels.dialog}
-      onClick={onClose}
+      aria-label={item?.caption ?? labels.dialog}
+      // Fecha no clique do fundo escurecido — o alvo é o próprio <dialog>.
+      // Clicar na foto não fecha.
+      onClick={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
     >
       {item ? (
         <>
-          <button
-            type="button"
-            className={styles.close}
-            aria-label={labels.close}
-            onClick={onClose}
-          >
-            <CloseIcon size={20} />
-          </button>
-          <Image
-            {...imageProps(item.image)}
-            alt={item.image.alt}
-            sizes="(max-width: 46rem) 100vw, 46rem"
-          />
-          {item.caption ? <p className={styles.caption}>{item.caption}</p> : null}
+          <div className={styles.top}>
+            <p className={styles.title}>{item.caption ?? labels.dialog}</p>
+            <button
+              type="button"
+              className={styles.close}
+              aria-label={labels.close}
+              onClick={onClose}
+            >
+              <CloseIcon size={24} />
+            </button>
+          </div>
+          <div className={styles.photo}>
+            <Image
+              {...imageProps(item.image)}
+              alt={item.image.alt}
+              sizes="(max-width: 700px) 100vw, 650px"
+            />
+          </div>
         </>
       ) : null}
     </dialog>

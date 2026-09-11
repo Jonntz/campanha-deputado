@@ -24,15 +24,18 @@ export function VideoGrid({ content }: { content: VideoGridContent }) {
   };
 
   return (
-    <div className={styles.videosGrid} ref={containerRef}>
+    <div className={styles.videos} ref={containerRef}>
       {content.videos.map((video, index) => (
         <Reveal key={video.id} delay={index * 80}>
-          <figure className={`${styles.videoCard} surface-card`}>
+          <figure className={styles.videoCard}>
+            {/* Os vídeos têm legenda queimada na imagem; não há faixa de
+                legenda separada para oferecer. */}
             <video
               controls
               preload="none"
               playsInline
               poster={video.poster}
+              aria-label={video.caption}
               onPlay={(event) => pauseOthers(event.currentTarget)}
             >
               <source src={video.src} type="video/mp4" />

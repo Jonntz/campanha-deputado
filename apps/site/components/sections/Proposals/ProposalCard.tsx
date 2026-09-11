@@ -1,20 +1,12 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { useId, useState, type ReactNode } from "react";
 import type { ProposalItem } from "@campanha/content";
 import { ChevronDownIcon } from "@/components/ui/icons";
 import styles from "./Proposals.module.css";
 
-const RESIZE_DEBOUNCE_MS = 150;
-
 type ProposalCardProps = {
+  number: string;
   proposal: ProposalItem;
   /**
    * O ícone chega já renderizado: componentes são funções e não atravessam a
@@ -24,76 +16,59 @@ type ProposalCardProps = {
   labels: { expand: string; collapse: string; source: string };
 };
 
-export function ProposalCard({ proposal, icon, labels }: ProposalCardProps) {
-  const [expanded, setExpanded] = useState(false);
-  const textRef = useRef<HTMLDivElement>(null);
-  const textId = useId();
-
-  /**
-   * A altura expandida vem do conteúdo real, então o texto nunca fica cortado.
-   * Ao recolher, limpamos o inline e o max-height do CSS volta a valer.
-   */
-  const toggle = useCallback(() => {
-    const next = !expanded;
-    const element = textRef.current;
-    if (element) {
-      element.style.maxHeight = next ? `${element.scrollHeight}px` : "";
-    }
-    setExpanded(next);
-  }, [expanded]);
-
-  // Ao mudar a largura da tela o texto reflui e a altura precisa ser refeita.
-  useEffect(() => {
-    if (!expanded) return;
-
-    let timer: number;
-    const onResize = () => {
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => {
-        const element = textRef.current;
-        if (!element) return;
-        element.style.maxHeight = "none";
-        element.style.maxHeight = `${element.scrollHeight}px`;
-      }, RESIZE_DEBOUNCE_MS);
-    };
-
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener("resize", onResize);
-    };
-  }, [expanded]);
+/**
+ * Item do acordeão de propostas, no padrão de disclosure do WAI-ARIA: o botão
+ * fica dentro do título, e o painel é ligado a ele por aria-controls.
+ *
+ * A altura anima pela troca de `grid-template-rows` entre 0fr e 1fr, então não
+ * há medição de scrollHeight nem recálculo no resize. Fechado, o painel fica
+ * `inert`: sai da ordem de tabulação e da leitura, em vez de só sumir da tela.
+ */
+export function ProposalCard({ number, proposal, icon, labels }: ProposalCardProps) {
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
 
   return (
-    <article
-      className={`${styles.card} surface-card`}
-      data-expanded={expanded ? "true" : "false"}
-    >
-      <span className={styles.icon}>{icon}</span>
+    <div className={styles.item} data-open={open ? "true" : "false"}>
+      <h3 className={styles.heading}>
+        <button
+          type="button"
+          className={styles.trigger}
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => setOpen((current) => !current)}
+        >
+          <span className={styles.number}>{number}</span>
+          <span className={styles.icon}>{icon}</span>
+          <span className={styles.text}>
+            <span className={styles.titleBlock}>
+              <span className={styles.tag}>{proposal.tag}</span>
+              <span className={styles.title}>{proposal.title}</span>
+            </span>
+            {proposal.summary ? (
+              <span className={styles.summary}>{proposal.summary}</span>
+            ) : null}
+          </span>
+          <span className={styles.chevron} aria-hidden="true">
+            <ChevronDownIcon size={23} />
+          </span>
+          <span className="sr-only">{open ? labels.collapse : labels.expand}</span>
+        </button>
+      </h3>
 
-      <span className={styles.tag}>{proposal.tag}</span>
-      <h3>{proposal.title}</h3>
-
-      <div className={styles.text} ref={textRef} id={textId}>
-        <p>{proposal.body}</p>
-        {/* O rótulo carrega o espaço final para o HTML sair idêntico ao
-            texto literal que havia aqui antes. */}
-        <span className={styles.source}>
-          {`${labels.source} `}
-          {proposal.source}
-        </span>
+      <div id={panelId} className={styles.panel} inert={!open}>
+        <div className={styles.panelClip}>
+          <div className={styles.content}>
+            <p>{proposal.body}</p>
+            {/* O rótulo carrega o espaço final para rótulo e fonte ficarem em
+                nós de texto separados, como no texto literal original. */}
+            <p className={styles.source}>
+              {`${labels.source} `}
+              {proposal.source}
+            </p>
+          </div>
+        </div>
       </div>
-
-      <button
-        type="button"
-        className={styles.toggle}
-        aria-expanded={expanded}
-        aria-controls={textId}
-        onClick={toggle}
-      >
-        <span>{expanded ? labels.collapse : labels.expand}</span>
-        <ChevronDownIcon size={16} />
-      </button>
-    </article>
+    </div>
   );
 }
