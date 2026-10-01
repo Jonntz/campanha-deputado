@@ -77,8 +77,8 @@ a apresentação mudou.
   do celular.
 - **Colinha**: seção entre a faixa de símbolos da abertura e o carrossel de
   credenciais, com foto redonda sobre o amarelo, o número embaixo e um botão que
-  baixa `apps/site/public/colinha.png`. Título, subtítulo, texto do botão,
-  arquivo e foto saem do painel, como em qualquer outra seção.
+  abre numa aba nova o destino configurado. Título, subtítulo, texto do botão,
+  link e foto saem do painel, como em qualquer outra seção.
 
 ### Seção nova precisa de uma linha no banco
 

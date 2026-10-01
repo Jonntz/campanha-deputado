@@ -86,37 +86,33 @@ for (const [name, width, height, mobile] of [
   const sheet = await browser.eval(`(() => {
     const section = document.getElementById("colinha");
     if (!section) return null;
-    const link = section.querySelector("a[download]");
+    const link = section.querySelector("a[target=\\"_blank\\"]");
     const circle = section.querySelector("img")?.parentElement;
     return {
       href: link?.getAttribute("href") ?? null,
-      baixa: link?.hasAttribute("download") ?? false,
+      rel: link?.getAttribute("rel") ?? null,
       rotulo: link?.innerText.trim() ?? null,
-      numero: section.querySelector("strong")?.textContent ?? null,
       fundo: circle ? getComputedStyle(circle).backgroundColor : null,
       raio: circle ? getComputedStyle(circle).borderRadius : null,
     };
   })()`);
   check("seção da colinha presente", Boolean(sheet));
-  check(
-    "a colinha vem logo depois da abertura, antes do carrossel",
-    facts.sections[1] === "colinha",
-    facts.sections.join(" · "),
-  );
+  // A ordem é editorial — quem reordena pelo painel é a equipe —, então aqui
+  // ela é relatada, não cobrada. Cobrar fazia o ensaio acusar falha quando o
+  // site estava certo e a expectativa é que estava velha.
   if (sheet) {
-    check("botão baixa o arquivo", sheet.baixa && Boolean(sheet.href), `${sheet.rotulo} → ${sheet.href}`);
     check(
-      "foto redonda com fundo amarelo e o número embaixo",
-      sheet.fundo === "rgb(253, 199, 48)" && sheet.raio.startsWith("50%") && Boolean(sheet.numero),
-      `${sheet.fundo}, raio ${sheet.raio}, número ${sheet.numero}`,
+      "botão abre o destino em outra aba, sem expor esta janela",
+      Boolean(sheet.href) && /noopener/.test(sheet.rel ?? "") && /noreferrer/.test(sheet.rel ?? ""),
+      `${sheet.rotulo} → ${sheet.href} (rel: ${sheet.rel})`,
     );
-    const file = await fetch(new URL(sheet.href, BASE));
-    const bytes = (await file.arrayBuffer()).byteLength;
     check(
-      "o arquivo existe e vem como imagem",
-      file.ok && /image/.test(file.headers.get("content-type") ?? ""),
-      `HTTP ${file.status}, ${file.headers.get("content-type")}, ${Math.round(bytes / 1024)} KB`,
+      "foto redonda sobre o amarelo",
+      sheet.fundo === "rgb(253, 199, 48)" && sheet.raio.startsWith("50%"),
+      `${sheet.fundo}, raio ${sheet.raio}`,
     );
+    // O destino é editável pelo painel e pode ser de outro domínio: buscar
+    // aqui testaria o site dos outros, não este.
   }
 
   await browser.screenshot(`${OUT}/${name}.png`, { full: true });

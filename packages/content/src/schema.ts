@@ -220,7 +220,10 @@ export const cheatSheetSchema = z.object({
   /** `lead` do cabeçalho é o subtítulo cinza; o chapéu não é exibido. */
   header: sectionHeaderSchema,
   image: mediaRefSchema,
-  /** Caminho ou endereço do arquivo que o botão baixa. */
+  /**
+   * Destino do botão, aberto numa aba nova. O nome da chave é anterior ao
+   * botão virar link e fica como está: o banco e o site publicado a usam.
+   */
   file: z.string().min(1),
   buttonLabel: trimmed(60),
 });

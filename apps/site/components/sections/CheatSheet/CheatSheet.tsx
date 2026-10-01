@@ -46,14 +46,15 @@ export function CheatSheet({ content }: { content: SiteContent }) {
               ) : null}
             </div>
 
-            {/* Arquivo da própria origem (`/colinha.png` em public/): o
-                atributo `download` basta e a pessoa não sai da página. Se um dia
-                o arquivo vier de outro domínio, o navegador ignora o `download`
-                e abre em vez de baixar. */}
+            {/* Abre o destino numa aba nova, sem tirar a pessoa da campanha.
+                `noreferrer noopener` porque o destino é editável pelo painel:
+                sem isso, qualquer endereço que entrar lá ganha acesso a esta
+                janela pelo `window.opener`. */}
             <a
               className={`button button--yellow ${styles.action}`}
               href={cheatSheet.file}
-              download
+              target="_blank"
+              rel="noreferrer noopener"
             >
               <DownloadIcon size={22} />
               {cheatSheet.buttonLabel}

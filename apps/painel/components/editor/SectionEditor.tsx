@@ -281,17 +281,17 @@ export function SectionEditor({
               >
                 <SectionHeaderField value={v.header} onChange={(header) => set({ ...v, header })} />
               </Group>
-              <Group title="Botão e arquivo">
+              <Group title="Botão e destino">
                 <Text
                   label="Texto do botão"
                   value={v.buttonLabel}
                   onChange={(buttonLabel) => set({ ...v, buttonLabel })}
                 />
                 <Text
-                  label="Arquivo da colinha"
+                  label="Link do botão"
                   value={v.file}
                   onChange={(file) => set({ ...v, file })}
-                  hint="Caminho no site, como /colinha.png, ou o endereço de um arquivo enviado em Mídias."
+                  hint="Abre numa aba nova. Endereço completo, como https://exemplo.com, ou um caminho do próprio site."
                 />
               </Group>
               <Group title="Foto">
