@@ -10,12 +10,13 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "db:push": "node --env-file=../../.env.local ../../node_modules/drizzle-kit/bin.cjs push",
-    "db:studio": "node --env-file=../../.env.local ../../node_modules/drizzle-kit/bin.cjs studio",
+    "db:push": "node --env-file=../../.env.local ./node_modules/drizzle-kit/bin.cjs push",
+    "db:studio": "node --env-file=../../.env.local ./node_modules/drizzle-kit/bin.cjs studio",
     "db:seed": "tsx --env-file=../../.env.local scripts/seed.ts",
     "db:verify": "tsx --env-file=../../.env.local scripts/verify.ts",
     "db:drill": "tsx --env-file=../../.env.local scripts/drill-resilience.ts",
-    "db:drill-read": "tsx --env-file=../../.env.local scripts/drill-readpath.ts"
+    "db:drill-read": "tsx --env-file=../../.env.local scripts/drill-readpath.ts",
+    "db:drill-layout": "tsx --env-file=../../.env.local scripts/drill-layout.ts"
   },
   "dependencies": {
     "@campanha/content": "workspace:*",

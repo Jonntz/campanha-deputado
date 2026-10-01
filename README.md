@@ -170,9 +170,20 @@ remover e reordenar por botões ↑↓ — acessíveis por teclado, funcionais n
 celular, e sem dependência de arrastar.
 
 A ordem e a visibilidade das seções são colunas, então reordenar não reescreve
-payload nenhum. `inicio` não pode ser ocultada, e isso é garantido em três
-lugares: a caixa vem desabilitada, a server action força o valor, e o site força
-de novo na leitura — só a última protege contra uma escrita direta no banco.
+payload nenhum. Cada uma tem seu par de rascunho — `draft_position` e
+`draft_visible`, nulas quando não há nada pendente —, e o site lê só as
+publicadas: reordenar ou ocultar aparece na contagem de não publicadas e entra
+no ar pelo mesmo botão Publicar que os textos. Antes disso as colunas eram
+escritas direto e o site nunca era avisado, então a mudança só aparecia na
+revalidação automática, até uma hora depois.
+
+`inicio` não pode ser ocultada, e isso é garantido em três lugares: a caixa vem
+desabilitada, a server action força o valor, e o site força de novo na leitura —
+só a última protege contra uma escrita direta no banco.
+
+`pnpm --filter @campanha/db db:drill-layout` ensaia esse caminho inteiro (salvar,
+conferir que o site não mudou, publicar, conferir que mudou) num locale
+descartável, sem encostar no `pt-BR` que está no ar.
 
 ## Manual para a equipe
 

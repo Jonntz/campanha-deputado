@@ -92,7 +92,13 @@ export async function saveSettingsDraft(
   });
 }
 
-/** Ordem e visibilidade são colunas, então reordenar não reescreve payload. */
+/**
+ * Guarda ordem e visibilidade como rascunho.
+ *
+ * São colunas, e não payload, então reordenar não reescreve o conteúdo de
+ * ninguém. Escreve nas colunas de rascunho: o site lê as publicadas, e quem
+ * reordena passa pela mesma revisão de quem edita um texto.
+ */
 export async function saveLayout(
   db: Database,
   layout: { key: SectionKey; position: number; visible: boolean }[],
@@ -101,7 +107,7 @@ export async function saveLayout(
   for (const slot of layout) {
     await db
       .update(sections)
-      .set({ position: slot.position, visible: slot.visible })
+      .set({ draftPosition: slot.position, draftVisible: slot.visible })
       .where(and(eq(sections.locale, locale), eq(sections.key, slot.key)));
   }
 }
@@ -126,7 +132,13 @@ export async function getPendingChanges(
   }
 
   for (const row of sectionRows) {
-    if (canonical(row.draftJson) !== canonical(row.publishedJson)) {
+    // A ordem e a visibilidade contam junto com o texto: sem isto, mover uma
+    // seção não aparecia como pendente e o botão de publicar ficava inerte.
+    const conteudo = canonical(row.draftJson) !== canonical(row.publishedJson);
+    const ordem = row.draftPosition != null && row.draftPosition !== row.position;
+    const visibilidade = row.draftVisible != null && row.draftVisible !== row.visible;
+
+    if (conteudo || ordem || visibilidade) {
       pending.push({ key: row.key, label: row.key });
     }
   }
@@ -177,7 +189,15 @@ export async function publishAll(
 
       await tx
         .update(sections)
-        .set({ publishedJson: row.draftJson, publishedAt: now })
+        .set({
+          publishedJson: row.draftJson,
+          position: row.draftPosition ?? row.position,
+          visible: row.draftVisible ?? row.visible,
+          // Zerar o rascunho mantém "null = nada pendente" verdadeiro.
+          draftPosition: null,
+          draftVisible: null,
+          publishedAt: now,
+        })
         .where(and(eq(sections.locale, locale), eq(sections.key, key)));
     }
 

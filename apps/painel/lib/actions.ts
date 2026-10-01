@@ -165,7 +165,10 @@ export async function saveSectionLayout(
   void user;
 
   revalidatePath("/conteudo");
-  return { ok: true, message: "Ordem e visibilidade salvas." };
+  return {
+    ok: true,
+    message: "Ordem e visibilidade salvas no rascunho. Publique para levar ao site.",
+  };
 }
 
 /**

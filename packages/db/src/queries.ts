@@ -64,7 +64,12 @@ export async function readDraftDocument(
 
   for (const row of sectionRows) {
     payloads[row.key] = row.draftJson;
-    layout.push({ key: row.key, position: row.position, visible: row.visible });
+    // Null nas colunas de rascunho quer dizer "igual ao que está no ar".
+    layout.push({
+      key: row.key,
+      position: row.draftPosition ?? row.position,
+      visible: row.draftVisible ?? row.visible,
+    });
   }
 
   layout.sort((a, b) => a.position - b.position);
@@ -130,6 +135,10 @@ export async function writeWholeDocument(
         target: [sections.locale, sections.key],
         set: {
           position: index,
+          // O seed reescreve o documento inteiro: um rascunho de ordem que
+          // tivesse sobrado passaria a contradizê-lo.
+          draftPosition: null,
+          draftVisible: null,
           draftJson: payload,
           publishedJson: payload,
           draftUpdatedAt: now,

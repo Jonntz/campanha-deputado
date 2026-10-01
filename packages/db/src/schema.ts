@@ -26,10 +26,18 @@ export const sections = sqliteTable(
   {
     locale: text("locale").notNull().default(DEFAULT_LOCALE),
     key: text("key").$type<SectionKey>().notNull(),
-    /** Ordem na página. */
+    /** Ordem na página, como o site a lê. Só o publicar escreve aqui. */
     position: integer("position").notNull(),
     /** Se a seção é renderizada. `inicio` não pode ser ocultada. */
     visible: integer("visible", { mode: "boolean" }).notNull().default(true),
+    /**
+     * Rascunho da ordem e da visibilidade, no mesmo espírito do `draft_json`:
+     * o painel escreve aqui e o site só enxerga depois de publicar. Null
+     * significa "nada pendente", e não "posição zero" — por isso aceitam null
+     * em vez de copiar o valor publicado.
+     */
+    draftPosition: integer("draft_position"),
+    draftVisible: integer("draft_visible", { mode: "boolean" }),
     schemaVersion: integer("schema_version").notNull().default(1),
     draftJson: text("draft_json", { mode: "json" })
       .$type<SectionPayloads[SectionKey]>()
