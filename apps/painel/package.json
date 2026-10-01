@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start --port 3001",
-    "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
+    "corrigir-instagram": "tsx --env-file=.env.local scripts/corrigir-instagram.ts",
     "create-admin": "tsx --env-file=.env.local scripts/create-admin.ts",
-    "migrar-midias": "tsx --env-file=.env.local scripts/migrar-midias-locais.ts",
+    "criar-secao-colinha": "tsx --env-file=.env.local scripts/criar-secao-colinha.ts",
+    "dev": "next dev --port 3001",
     "importar-textos": "tsx --env-file=.env.local scripts/importar-textos-novos.ts",
-    "testar:imagem": "NODE_OPTIONS=--conditions=react-server tsx scripts/testar-imagem.ts"
+    "lint": "eslint .",
+    "migrar-midias": "tsx --env-file=.env.local scripts/migrar-midias-locais.ts",
+    "start": "next start --port 3001",
+    "testar:imagem": "NODE_OPTIONS=--conditions=react-server tsx scripts/testar-imagem.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@campanha/content": "workspace:*",

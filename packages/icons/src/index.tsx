@@ -255,6 +255,16 @@ export function ExpandIcon(props: IconProps) {
   );
 }
 
+export function DownloadIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" x2="12" y1="15" y2="3" />
+    </Icon>
+  );
+}
+
 /**
  * Marca do WhatsApp, do Font Awesome Free (CC BY 4.0) — a mesma da referência
  * visual. Preenchida em vez de traçada: é um logotipo, e não deve herdar a
@@ -308,6 +318,7 @@ export const ICONS: Record<IconName, ComponentType<IconProps>> = {
   "users-round": UsersRoundIcon,
   "arrow-up-right": ArrowUpRightIcon,
   expand: ExpandIcon,
+  download: DownloadIcon,
   whatsapp: WhatsAppIcon,
 };
 

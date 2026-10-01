@@ -59,8 +59,8 @@ export const defaultContent = {
     brand: { lead: "Minas", accent: "é o mundo" },
     whatsapp: { display: "(31) 99696-5298", e164: "5531996965298" },
     instagram: {
-      handle: "@matheus.biancardine",
-      url: "https://instagram.com/matheus.biancardine",
+      handle: "@matheus.biancardinemg",
+      url: "https://instagram.com/matheus.biancardinemg",
     },
     donation: { url: "https://queroapoiar.com.br/matheusbiancardine" },
     number: "3055",
@@ -319,6 +319,17 @@ export const defaultContent = {
         caption: "Quem caminha com a gente",
       },
     ],
+  },
+
+  cheatSheet: {
+    header: {
+      eyebrow: "Colinha",
+      title: { lead: "Leve o 3055", accent: "na palma da mão." },
+      lead: "Baixe a colinha, poste no seu story do Instagram e marque @matheus.biancardinemg.",
+    },
+    image: PORTRAIT,
+    file: "/colinha.png",
+    buttonLabel: "Baixar a colinha",
   },
 
   contact: {

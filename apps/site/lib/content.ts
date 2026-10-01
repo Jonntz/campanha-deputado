@@ -78,8 +78,12 @@ function resolveSections(
 ): readonly SectionSlot[] {
   if (!layout?.length) return DEFAULT_SECTIONS;
 
-  const seen = new Set(layout.map((row) => row.key));
-  const slots: SectionSlot[] = layout.map((row) => ({
+  // Uma chave que o banco tem e este código não conhece é ignorada: acontece
+  // quando o banco já recebeu uma seção nova e o deploy ainda não chegou, e
+  // sem isto a leitura inteira cairia para o padrão.
+  const known = layout.filter((row) => row.key in SECTION_REGISTRY);
+  const seen = new Set(known.map((row) => row.key));
+  const slots: SectionSlot[] = known.map((row) => ({
     key: row.key,
     // `inicio` é o alvo do link da marca e o estado inicial do scrollspy:
     // ocultá-la quebraria a navegação, então o painel não pode fazê-lo.

@@ -13,6 +13,7 @@ export const SECTION_KEYS = [
   "bio",
   "propostas",
   "galeria",
+  "colinha",
   "contato",
 ] as const;
 
@@ -36,6 +37,9 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionMeta> = {
   bio: { anchor: "bio", navigable: true, canHide: true },
   propostas: { anchor: "propostas", navigable: true, canHide: true },
   galeria: { anchor: "galeria", navigable: true, canHide: true },
+  // Tem âncora para poder ser destino de botão, mas fica fora do menu: é uma
+  // chamada para ação, não um capítulo do site.
+  colinha: { anchor: "colinha", navigable: false, canHide: true },
   contato: { anchor: "contato", navigable: true, canHide: true },
 };
 

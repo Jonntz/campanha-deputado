@@ -29,6 +29,7 @@ export const ICON_NAMES = [
   "users-round",
   "arrow-up-right",
   "expand",
+  "download",
   "whatsapp",
 ] as const;
 

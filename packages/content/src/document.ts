@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   analyticsSchema,
   bioSchema,
+  cheatSheetSchema,
   contactSchema,
   credentialsSchema,
   footerSchema,
@@ -49,6 +50,7 @@ export const SECTION_CONTENT_KEY = {
   bio: "bio",
   propostas: "proposals",
   galeria: "gallery",
+  colinha: "cheatSheet",
   contato: "contact",
 } as const satisfies Record<SectionKey, keyof SiteContent>;
 
@@ -58,6 +60,7 @@ export const SECTION_PAYLOAD_SCHEMAS = {
   bio: bioSchema,
   propostas: proposalsSchema,
   galeria: gallerySchema,
+  colinha: cheatSheetSchema,
   contato: contactSchema,
 } as const;
 
@@ -87,6 +90,7 @@ export function splitContent(content: SiteContent): ContentDocument {
       bio: content.bio,
       propostas: content.proposals,
       galeria: content.gallery,
+      colinha: content.cheatSheet,
       contato: content.contact,
     },
   };
@@ -107,6 +111,7 @@ export function composeContent(document: ContentDocument): SiteContent {
     bio: sections.bio,
     proposals: sections.propostas,
     gallery: sections.galeria,
+    cheatSheet: sections.colinha,
     contact: sections.contato,
   };
 }

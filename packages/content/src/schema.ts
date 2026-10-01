@@ -216,6 +216,15 @@ export const gallerySchema = z.object({
   ),
 });
 
+export const cheatSheetSchema = z.object({
+  /** `lead` do cabeçalho é o subtítulo cinza; o chapéu não é exibido. */
+  header: sectionHeaderSchema,
+  image: mediaRefSchema,
+  /** Caminho ou endereço do arquivo que o botão baixa. */
+  file: z.string().min(1),
+  buttonLabel: trimmed(60),
+});
+
 export const contactSchema = z.object({
   header: sectionHeaderSchema,
   whatsappLabel: trimmed(40),
@@ -281,6 +290,7 @@ export const siteContentSchema = z.object({
   bio: bioSchema,
   proposals: proposalsSchema,
   gallery: gallerySchema,
+  cheatSheet: cheatSheetSchema,
   contact: contactSchema,
   footer: footerSchema,
   analytics: analyticsSchema,
@@ -304,6 +314,7 @@ export type ProposalItem = Proposals["items"][number];
 export type Gallery = z.infer<typeof gallerySchema>;
 export type GalleryPhoto = Gallery["photos"][number];
 export type EventVideo = Gallery["videos"][number];
+export type CheatSheet = z.infer<typeof cheatSheetSchema>;
 export type Contact = z.infer<typeof contactSchema>;
 export type Footer = z.infer<typeof footerSchema>;
 export type Analytics = z.infer<typeof analyticsSchema>;

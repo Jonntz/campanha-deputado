@@ -82,6 +82,38 @@ for (const [name, width, height, mobile] of [
   console.log(`        seções: ${facts.sections.join(" · ")}`);
   check("CNPJ no rodapé", /CNPJ: \d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}/.test(facts.footer), facts.footer.slice(0, 120));
 
+  // --- colinha ------------------------------------------------------------
+  const sheet = await browser.eval(`(() => {
+    const section = document.getElementById("colinha");
+    if (!section) return null;
+    const link = section.querySelector("a[download]");
+    const circle = section.querySelector("img")?.parentElement;
+    return {
+      href: link?.getAttribute("href") ?? null,
+      baixa: link?.hasAttribute("download") ?? false,
+      rotulo: link?.innerText.trim() ?? null,
+      numero: section.querySelector("strong")?.textContent ?? null,
+      fundo: circle ? getComputedStyle(circle).backgroundColor : null,
+      raio: circle ? getComputedStyle(circle).borderRadius : null,
+    };
+  })()`);
+  check("seção da colinha presente", Boolean(sheet));
+  if (sheet) {
+    check("botão baixa o arquivo", sheet.baixa && Boolean(sheet.href), `${sheet.rotulo} → ${sheet.href}`);
+    check(
+      "foto redonda com fundo amarelo e o número embaixo",
+      sheet.fundo === "rgb(253, 199, 48)" && sheet.raio.startsWith("50%") && Boolean(sheet.numero),
+      `${sheet.fundo}, raio ${sheet.raio}, número ${sheet.numero}`,
+    );
+    const file = await fetch(new URL(sheet.href, BASE));
+    const bytes = (await file.arrayBuffer()).byteLength;
+    check(
+      "o arquivo existe e vem como imagem",
+      file.ok && /image/.test(file.headers.get("content-type") ?? ""),
+      `HTTP ${file.status}, ${file.headers.get("content-type")}, ${Math.round(bytes / 1024)} KB`,
+    );
+  }
+
   await browser.screenshot(`${OUT}/${name}.png`, { full: true });
 
   // --- propostas: expandir e recolher -------------------------------------

@@ -15,6 +15,7 @@ const LABELS: Record<string, string> = {
   bio: "Biografia",
   propostas: "Propostas",
   galeria: "Galeria",
+  colinha: "Colinha",
   contato: "Contato",
   [SETTINGS_KEY]: "Configurações",
 };

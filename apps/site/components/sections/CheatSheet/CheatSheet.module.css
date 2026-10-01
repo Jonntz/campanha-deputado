@@ -1,0 +1,106 @@
+.section {
+  padding-block: 0 90px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 40px;
+  padding: 32px 40px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.figure {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.circle {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--yellow);
+}
+
+/* Mesma família, peso e inclinação dos títulos do site. */
+.number {
+  color: var(--navy);
+  font-size: 34px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.copy h2 {
+  margin: 0 0 10px;
+  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+}
+
+.subtitle {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.action {
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .card {
+    gap: 28px;
+    padding: 28px 32px;
+  }
+  .circle {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+/* O botão desce para a linha de baixo antes de espremer o texto. */
+@media (max-width: 900px) {
+  .card {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: 24px;
+  }
+  .action {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 600px) {
+  .section {
+    padding-bottom: 52px;
+  }
+  .card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 20px;
+    padding: 26px 20px;
+    text-align: center;
+  }
+  .circle {
+    width: 132px;
+    height: 132px;
+  }
+  .number {
+    font-size: 28px;
+  }
+  .subtitle {
+    font-size: 16px;
+  }
+  .action {
+    grid-column: auto;
+    justify-self: stretch;
+  }
+}

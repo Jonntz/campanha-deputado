@@ -11,6 +11,7 @@ const TITLES: Record<SectionKey, string> = {
   bio: "Biografia",
   propostas: "Propostas",
   galeria: "Galeria",
+  colinha: "Colinha",
   contato: "Contato",
 };
 
@@ -261,6 +262,40 @@ export function SectionEditor({
                     </div>
                   )}
                 />
+              </Group>
+            </>
+          )}
+        </SectionForm>
+      );
+    }
+
+    case "colinha": {
+      const initial = payload as SectionPayloads["colinha"];
+      return (
+        <SectionForm sectionKey={sectionKey} title={title} initial={initial}>
+          {(v, set) => (
+            <>
+              <Group
+                title="Chamada"
+                description="O subtítulo aparece em cinza, abaixo do título."
+              >
+                <SectionHeaderField value={v.header} onChange={(header) => set({ ...v, header })} />
+              </Group>
+              <Group title="Botão e arquivo">
+                <Text
+                  label="Texto do botão"
+                  value={v.buttonLabel}
+                  onChange={(buttonLabel) => set({ ...v, buttonLabel })}
+                />
+                <Text
+                  label="Arquivo da colinha"
+                  value={v.file}
+                  onChange={(file) => set({ ...v, file })}
+                  hint="Caminho no site, como /colinha.png, ou o endereço de um arquivo enviado em Mídias."
+                />
+              </Group>
+              <Group title="Foto">
+                <MediaField label="Foto do círculo" value={v.image} onChange={(image) => set({ ...v, image })} />
               </Group>
             </>
           )}

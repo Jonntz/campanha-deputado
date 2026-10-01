@@ -75,6 +75,25 @@ a apresentação mudou.
 - **Campos novos no painel**: número de urna, resumo de cada proposta, destino
   dos botões da abertura, frase e aviso legal do rodapé, CNPJ, rótulos do menu
   do celular.
+- **Colinha**: seção com foto redonda sobre o amarelo, o número embaixo e um
+  botão que baixa `apps/site/public/colinha.png`. Título, subtítulo, texto do
+  botão, arquivo e foto saem do painel, como em qualquer outra seção.
+
+### Seção nova precisa de uma linha no banco
+
+O site renderiza uma seção a partir do conteúdo padrão mesmo sem linha no banco,
+mas o painel monta a lista de Conteúdo a partir das linhas — sem ela, a seção
+não aparece para editar. A linha se cria **depois do deploy**: o site no ar lê o
+mesmo banco, e uma chave de seção que o código dele ainda não conhece derrubaria
+a leitura inteira para o padrão.
+
+```bash
+pnpm --filter painel criar-secao-colinha             # mostra o que faria
+pnpm --filter painel criar-secao-colinha --aplicar   # cria a linha
+```
+
+O script confere o site publicado antes e se recusa a rodar se o deploy ainda
+não tiver saído.
 
 ### O schema só cresce
 

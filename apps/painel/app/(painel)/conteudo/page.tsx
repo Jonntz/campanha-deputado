@@ -10,6 +10,7 @@ const LABELS: Record<SectionKey, string> = {
   bio: "Biografia",
   propostas: "Propostas",
   galeria: "Galeria",
+  colinha: "Colinha",
   contato: "Contato",
 };
 

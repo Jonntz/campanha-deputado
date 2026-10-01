@@ -1,6 +1,7 @@
 import { Bio } from "@/components/sections/Bio/Bio";
 import { Contact } from "@/components/sections/Contact/Contact";
 import { Credentials } from "@/components/sections/Credentials/Credentials";
+import { CheatSheet } from "@/components/sections/CheatSheet/CheatSheet";
 import { Gallery } from "@/components/sections/Gallery/Gallery";
 import { Hero } from "@/components/sections/Hero/Hero";
 import { Proposals } from "@/components/sections/Proposals/Proposals";
@@ -48,6 +49,8 @@ export default async function HomePage() {
             return <Proposals key={slot.key} content={content} />;
           case "galeria":
             return <Gallery key={slot.key} content={content} />;
+          case "colinha":
+            return <CheatSheet key={slot.key} content={content} />;
           case "contato":
             return <Contact key={slot.key} content={content} />;
         }
