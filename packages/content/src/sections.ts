@@ -9,11 +9,11 @@
 
 export const SECTION_KEYS = [
   "inicio",
+  "colinha",
   "credenciais",
   "bio",
   "propostas",
   "galeria",
-  "colinha",
   "contato",
 ] as const;
 
@@ -32,14 +32,15 @@ export const SECTION_REGISTRY: Record<SectionKey, SectionMeta> = {
   // Não pode ser ocultada: é o alvo do link da marca e o estado inicial do
   // scrollspy.
   inicio: { anchor: "inicio", navigable: true, canHide: false },
+  // Tem âncora para poder ser destino de botão, mas fica fora do menu: é uma
+  // chamada para ação, não um capítulo do site. Vem logo abaixo da faixa de
+  // símbolos que acompanha a abertura.
+  colinha: { anchor: "colinha", navigable: false, canHide: true },
   // O carrossel de credenciais nunca teve id nem entrada na navegação.
   credenciais: { anchor: null, navigable: false, canHide: true },
   bio: { anchor: "bio", navigable: true, canHide: true },
   propostas: { anchor: "propostas", navigable: true, canHide: true },
   galeria: { anchor: "galeria", navigable: true, canHide: true },
-  // Tem âncora para poder ser destino de botão, mas fica fora do menu: é uma
-  // chamada para ação, não um capítulo do site.
-  colinha: { anchor: "colinha", navigable: false, canHide: true },
   contato: { anchor: "contato", navigable: true, canHide: true },
 };
 

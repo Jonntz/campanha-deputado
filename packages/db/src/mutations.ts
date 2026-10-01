@@ -209,3 +209,88 @@ export async function recordRevalidation(
     .where(eq(publishEvents.id, eventId));
 }
 
+
+export type SectionPlacement = {
+  /** A linha já está no banco. */
+  exists: boolean;
+  /** Posição que a seção tem, ou que receberia ao ser criada. */
+  position: number;
+};
+
+/** Serve tanto o banco quanto uma transação: ler e escrever é igual nos dois. */
+type Querier = Database | Parameters<Parameters<Database["transaction"]>[0]>[0];
+
+async function placement(
+  db: Querier,
+  key: SectionKey,
+  before: SectionKey | undefined,
+  locale: string,
+): Promise<{ rows: { key: SectionKey; position: number }[] } & SectionPlacement> {
+  const rows = await db
+    .select({ key: sections.key, position: sections.position })
+    .from(sections)
+    .where(eq(sections.locale, locale));
+
+  const existing = rows.find((row) => row.key === key);
+  if (existing) return { rows, exists: true, position: existing.position };
+
+  const anchor = before ? rows.find((row) => row.key === before) : undefined;
+  return { rows, exists: false, position: anchor?.position ?? rows.length };
+}
+
+/** Onde uma seção entraria, sem gravar nada. */
+export async function planSectionRow(
+  db: Database,
+  key: SectionKey,
+  before?: SectionKey,
+  locale = DEFAULT_LOCALE,
+): Promise<SectionPlacement> {
+  const { exists, position } = await placement(db, key, before, locale);
+  return { exists, position };
+}
+
+/**
+ * Cria a linha de uma seção que o código já conhece mas o banco ainda não.
+ *
+ * O site renderiza a seção a partir do conteúdo padrão mesmo sem linha, mas o
+ * painel monta a lista de Conteúdo a partir das linhas — sem esta, a seção não
+ * aparece para editar. Entra antes de `before`, empurrando o resto; sem
+ * `before`, vai para o fim. Nasce publicada: o que o site já mostra é
+ * exatamente este payload, então publicar depois não mudaria nada.
+ */
+export async function createSectionRow<K extends SectionKey>(
+  db: Database,
+  key: K,
+  payload: SectionPayloads[K],
+  before?: SectionKey,
+  locale = DEFAULT_LOCALE,
+): Promise<SectionPlacement> {
+  const now = new Date();
+
+  return db.transaction(async (tx) => {
+    // Recalcula dentro da transação: entre o plano e a gravação alguém pode
+    // ter reordenado as seções pelo painel.
+    const { rows, exists, position } = await placement(tx, key, before, locale);
+    if (exists) return { exists, position };
+
+    for (const row of rows.filter((candidate) => candidate.position >= position)) {
+      await tx
+        .update(sections)
+        .set({ position: row.position + 1 })
+        .where(and(eq(sections.locale, locale), eq(sections.key, row.key)));
+    }
+
+    await tx.insert(sections).values({
+      locale,
+      key,
+      position,
+      visible: true,
+      draftJson: payload,
+      publishedJson: payload,
+      draftUpdatedAt: now,
+      publishedAt: now,
+    });
+
+    return { exists: false, position };
+  });
+}

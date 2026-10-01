@@ -98,6 +98,11 @@ for (const [name, width, height, mobile] of [
     };
   })()`);
   check("seção da colinha presente", Boolean(sheet));
+  check(
+    "a colinha vem logo depois da abertura, antes do carrossel",
+    facts.sections[1] === "colinha",
+    facts.sections.join(" · "),
+  );
   if (sheet) {
     check("botão baixa o arquivo", sheet.baixa && Boolean(sheet.href), `${sheet.rotulo} → ${sheet.href}`);
     check(

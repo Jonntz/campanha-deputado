@@ -15,11 +15,11 @@
  *   pnpm --filter painel criar-secao-colinha --aplicar   # cria a linha
  */
 import { defaultContent, splitContent } from "@campanha/content";
-import { createDatabase, tables } from "@campanha/db";
-import { and, eq } from "drizzle-orm";
+import { createDatabase, createSectionRow, planSectionRow } from "@campanha/db";
 
 const KEY = "colinha";
-const LOCALE = "pt-BR";
+/** A colinha entra logo abaixo da faixa de símbolos, antes do carrossel. */
+const BEFORE = "credenciais";
 
 async function siteJaConheceAColinha(): Promise<boolean | null> {
   const siteUrl = process.env.SITE_URL;
@@ -38,22 +38,13 @@ async function main() {
   const db = createDatabase();
   const payload = splitContent(defaultContent).sections.colinha;
 
-  const existing = await db
-    .select()
-    .from(tables.sections)
-    .where(and(eq(tables.sections.locale, LOCALE), eq(tables.sections.key, KEY)))
-    .limit(1);
-
-  if (existing[0]) {
+  const plan = await planSectionRow(db, KEY, BEFORE);
+  if (plan.exists) {
     console.log("A linha da colinha já existe no banco. Nada a fazer.");
     return;
   }
 
-  const rows = await db.select().from(tables.sections).where(eq(tables.sections.locale, LOCALE));
-  const contato = rows.find((row) => row.key === "contato");
-  const position = contato?.position ?? rows.length;
-
-  console.log(`criar seção "${KEY}" na posição ${position}, antes do contato`);
+  console.log(`criar seção "${KEY}" na posição ${plan.position}, antes das credenciais`);
   console.log(`  título: ${payload.header.title.lead} ${payload.header.title.accent}`);
   console.log(`  arquivo: ${payload.file}`);
 
@@ -76,29 +67,13 @@ async function main() {
     return;
   }
 
-  const now = new Date();
-  await db.transaction(async (tx) => {
-    // Abre espaço: o contato e o que vier depois descem uma posição.
-    for (const row of rows.filter((r) => r.position >= position)) {
-      await tx
-        .update(tables.sections)
-        .set({ position: row.position + 1 })
-        .where(and(eq(tables.sections.locale, LOCALE), eq(tables.sections.key, row.key)));
-    }
+  const result = await createSectionRow(db, KEY, payload, BEFORE);
+  if (result.exists) {
+    console.log("\nA linha apareceu no banco enquanto o script rodava. Nada a fazer.");
+    return;
+  }
 
-    await tx.insert(tables.sections).values({
-      locale: LOCALE,
-      key: KEY,
-      position,
-      visible: true,
-      draftJson: payload,
-      publishedJson: payload,
-      draftUpdatedAt: now,
-      publishedAt: now,
-    });
-  });
-
-  console.log("\nLinha criada, já publicada com o conteúdo padrão.");
+  console.log(`\nLinha criada na posição ${result.position}, já publicada com o conteúdo padrão.`);
   console.log("A seção passa a aparecer no painel, em Conteúdo, para editar como as outras.");
 }
 

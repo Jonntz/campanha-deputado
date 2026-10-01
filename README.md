@@ -75,9 +75,10 @@ a apresentação mudou.
 - **Campos novos no painel**: número de urna, resumo de cada proposta, destino
   dos botões da abertura, frase e aviso legal do rodapé, CNPJ, rótulos do menu
   do celular.
-- **Colinha**: seção com foto redonda sobre o amarelo, o número embaixo e um
-  botão que baixa `apps/site/public/colinha.png`. Título, subtítulo, texto do
-  botão, arquivo e foto saem do painel, como em qualquer outra seção.
+- **Colinha**: seção entre a faixa de símbolos da abertura e o carrossel de
+  credenciais, com foto redonda sobre o amarelo, o número embaixo e um botão que
+  baixa `apps/site/public/colinha.png`. Título, subtítulo, texto do botão,
+  arquivo e foto saem do painel, como em qualquer outra seção.
 
 ### Seção nova precisa de uma linha no banco
 

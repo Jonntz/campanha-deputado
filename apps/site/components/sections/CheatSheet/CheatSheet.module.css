@@ -1,5 +1,7 @@
+/* Encaixa entre a faixa de símbolos da abertura e o carrossel. O espaço de
+   baixo é o padding de cima do carrossel — somar os dois abriria um vão. */
 .section {
-  padding-block: 0 90px;
+  padding-block: 56px 0;
 }
 
 .card {
@@ -80,7 +82,7 @@
 
 @media (max-width: 600px) {
   .section {
-    padding-bottom: 52px;
+    padding-top: 40px;
   }
   .card {
     grid-template-columns: 1fr;
