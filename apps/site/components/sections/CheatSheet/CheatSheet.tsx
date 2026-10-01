@@ -7,10 +7,10 @@ import { DownloadIcon } from "@/components/ui/icons";
 import styles from "./CheatSheet.module.css";
 
 export function CheatSheet({ content }: { content: SiteContent }) {
-  const { cheatSheet, identity } = content;
+  const { cheatSheet } = content;
 
   return (
-    <section id="colinha" className={`section ${styles.section}`}>
+    <section id="colinha" className={`section ${styles.section}`} style={{ marginBottom: 50 }}>
       <div className="container">
         <Reveal>
           <div className={styles.card}>
@@ -30,9 +30,9 @@ export function CheatSheet({ content }: { content: SiteContent }) {
                   }}
                 />
               </div>
-              {identity.number ? (
+              {/* {identity.number ? (
                 <strong className={styles.number}>{identity.number}</strong>
-              ) : null}
+              ) : null} */}
             </div>
 
             <div className={styles.copy}>
